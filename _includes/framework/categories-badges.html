@@ -1,0 +1,7 @@
+{% assign categories = include.categories %}
+
+{% if categories %}
+  {% for category in categories %}
+    {% include framework/category-link.html category_name=category show_count=false %}
+  {% endfor %}
+{% endif %}

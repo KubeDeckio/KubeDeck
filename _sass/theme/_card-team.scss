@@ -1,0 +1,55 @@
+.card.card-team {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: none;
+  height: 100%;
+  background-color: var(--color-base-bg);
+  border: none;
+  border-radius: unset;
+  box-shadow: unset;
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--color-base-bg-2);
+  .card-thumbnail {
+    display: flex;
+    justify-content: center;
+    a {
+      display: block;
+    }
+    img {
+      width: 140px;
+      height: 140px;
+      vertical-align: bottom;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  .card-title {
+    margin: 0;
+  }
+  .card-jobtitle {
+    margin: 0;
+    font-weight: bold;
+  }
+  .card-content {
+    padding: 0;
+  }
+  .card-links {
+    margin-top: 10px;
+    > div {
+      display: flex;
+      align-items: center;
+      padding: 3px 0;
+      i {
+        margin-right: 5px;
+      }
+      a {
+        display: block;
+      }
+    }
+  }
+}

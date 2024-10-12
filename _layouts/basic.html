@@ -1,0 +1,45 @@
+---
+layout: default
+body_classes: page-basic
+---
+
+{% if page.hero.enabled %}
+  {% include framework/hero.html 
+    heading=page.hero.heading
+    sub_heading=page.hero.sub_heading
+    text_color=page.hero.text_color
+    background_image=page.hero.background_image
+    background_image_blend_mode=page.hero.background_image_blend_mode
+    background_color=page.hero.background_color
+    background_gradient=page.hero.background_gradient
+    fullscreen_mobile=page.hero.fullscreen_mobile
+    fullscreen_desktop=page.hero.fullscreen_desktop
+    height=page.hero.height
+    buttons=page.hero.buttons
+  %}
+{% else %}
+  <div class="section">
+    <div class="container">
+    {% include framework/title.html
+      fa_icon=page.fa_icon
+      icon=page.icon
+      title=page.title
+      description=page.description
+      image=page.image
+    %}
+    </div>
+  </div>
+{% endif %}
+
+{% assign content = content | strip_newlines %}
+{% if content != "" %}
+  <div class="section pt-0">
+    <div class="container">
+      <div class="row justify-content-start">
+        <div class="col-12 col-lg-8">
+          <div class="content">{{ content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

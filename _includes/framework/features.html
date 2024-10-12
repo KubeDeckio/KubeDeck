@@ -1,0 +1,26 @@
+{% assign cards = include.cards %}
+{% assign limit = include.limit | default: nil %}
+{% assign sort_by = include.sort | default: 'date' %}
+{% assign columns = include.columns | default: 3 %}
+
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% assign cards = cards | sort: 'date' | 'reverse' %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+
+{% if cards.size > 0 %}
+  <div class="row">
+    {% for card in cards limit: limit %}
+        <div class="col-12 col-md-6 {{ columns }} mb-3 mt-3 {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mt-md-0">
+        {% include framework/feature.html
+            title=card.title 
+            description=card.description
+            icon=card.icon
+            fa_icon=card.fa_icon
+            url=card.url
+        %}
+        </div>
+    {% endfor %}
+  </div>
+{% endif %} 

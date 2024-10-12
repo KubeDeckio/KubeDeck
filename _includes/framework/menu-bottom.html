@@ -1,0 +1,9 @@
+<div class="menu-bottom">
+  <ul>
+    {% for item in site.data.menu.bottom %}
+      <li class="menu-item-{{ item.name }}">
+        <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

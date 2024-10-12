@@ -1,0 +1,24 @@
+{% assign headline = include.headline %}
+{% assign quote = include.quote %}
+{% assign name = include.name %}
+{% assign avatar = include.avatar %}
+{% assign twitter = include.twitter %}
+{% assign date = include.date %}
+
+<div class="testimonial">
+    <div class="testimonial-header">
+        <div class="testimonial-avatar">
+            <img src="{{ .avatar | relative_url }}" height="40" width="40" />
+        </div>
+        <div class="testimonial-content">
+            <h3 class="testimonial-headline">{{ .headline }}</h3>
+            <div>
+                <span class="testimonial-twitter">{{ .twitter }}</span>
+                <span class="testimonial-date">{{ .date }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="testimonial-content">
+       <p>{{ .quote }}</p>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="logos">
+  <div class="logo logo-desktop">
+    {% if site.logo.show_logo_image_on_desktop %}
+      <div class="logo-image">
+        <a href="{{ site.baseurl }}/">
+          <img height="{{ site.logo.logo_image_desktop_height }}" width="{{ site.logo.logo_image_desktop_width }}" alt="{{ site.title }} Logo" src="{{ site.logo.logo_image | relative_url }}"/>
+        </a>
+      </div>
+    {% endif %}
+  
+    {% if site.logo.show_logo_text_on_desktop %}
+      <div class="logo-text"><a href="{{ site.baseurl }}/">{{ site.logo.logo_text }}</a></div>
+    {% endif %}
+    
+  </div>
+
+  <div class="logo logo-desktop-invert">
+    
+    {% if site.logo.show_logo_image_on_desktop %}
+      <div class="logo-image">
+        <a href="{{ site.baseurl }}/">
+          <img height="{{ site.logo.logo_image_desktop_height }}" width="{{ site.logo.logo_image_desktop_width }}" alt="{{ site.title }} Logo" src="{{ site.logo.logo_image_invert | relative_url }}"/>
+        </a>
+      </div>
+    {% endif %}
+  
+    {% if site.logo.show_logo_text_on_desktop %}
+      <div class="logo-text"><a href="{{ site.baseurl }}/">{{ site.logo.logo_text }}</a></div>
+    {% endif %}
+    
+  </div>
+
+  <div class="logo logo-mobile">
+    
+    {% if site.logo.show_logo_image_on_mobile %}
+      <div class="logo-image">
+        <a href="{{ site.baseurl }}/">
+          <img height="{{ site.logo.logo_image_mobile_height }}" width="{{ site.logo.logo_image_mobile_width }}" alt="{{ site.title }} Logo" src="{{ site.logo.logo_image_mobile | relative_url }}"/>
+        </a>
+      </div>
+    {% endif %}
+  
+    {% if site.logo.show_logo_text_on_mobile %}
+      <div class="logo-text"><a href="{{ site.baseurl }}/">{{ site.logo.logo_text }}</a></div>
+    {% endif %}
+    
+  </div>
+
+
+  <div class="logo logo-mobile-invert">
+    
+    {% if site.logo.show_logo_image_on_mobile %}
+      <div class="logo-image">
+        <a href="{{ site.baseurl }}/">
+          <img height="{{ site.logo.logo_image_mobile_height }}" width="{{ site.logo.logo_image_mobile_width }}" alt="{{ site.title }} Logo" src="{{ site.logo.logo_image_invert_mobile | relative_url }}"/>
+        </a>
+      </div>
+    {% endif %}
+  
+    {% if site.logo.show_logo_text_on_mobile %}
+      <div class="logo-text"><a href="{{ site.baseurl }}/">{{ site.logo.logo_text }}</a></div>
+    {% endif %}
+
+  </div>
+
+</div>
+

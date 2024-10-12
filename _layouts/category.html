@@ -1,0 +1,40 @@
+---
+layout: default
+body_classes: page-category
+---
+
+<div class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        {% include framework/title.html
+          title=page.title
+          description=page.description
+          image=page.image
+          badge="category"
+        %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section strip-base">
+  <div class="container">
+    {% assign category = page.title %}
+    {% for post in site.categories[category] %}
+      <div class="row">
+        <div class="col-12 col-md-8 mb-3 mb-lg-6">
+          {% include theme/cards/card-posts.html 
+            title=post.title
+            date=post.date
+            description=post.description 
+            thumbnail=post.thumbnail 
+            url=post.url 
+            style="row"
+          %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

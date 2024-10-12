@@ -1,0 +1,26 @@
+
+{% capture cookie_banner_controlled %}
+{% if site.cookie_banner.enabled %} data-cookiecategory="comments" type="text/plain" {% endif %}
+{% endcapture %}
+
+<div id="disqus_thread">
+<button class="load-disqus-button button" onclick="loadDisqus();return false;">Show/Post Comments</button> 
+</div>
+
+<script {{cookie_banner_controlled}}>
+  var disqus_shortname = "{{ site.comments.disqus.shortname }}";
+  var disqus_config = function () {
+    this.page.url = '{{ page.url | absolute_url }}';
+    this.page.identifier = '{{ page.url | absolute_url }}';
+  };
+  var is_disqus_loaded = false;
+  function loadDisqus() {  
+    if (!is_disqus_loaded){
+      is_disqus_loaded = true;
+      var d = document, s = d.createElement('script');
+      s.src = '//' + disqus_shortname +'.disqus.com/embed.js';   
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  };
+</script>

@@ -1,0 +1,24 @@
+<meta property="og:type" content="{{ site.open_graph.meta_opengraph_type }}"/>
+<meta property="og:url" content="{{ page.url | absolute_url }}"/>
+
+{% if page.meta_title %}
+  <meta property="og:title" content="{{ page.meta_title }}"/>
+{% elsif page.title %}
+  <meta property="og:title" content="{{ page.title }}"/>
+{% endif %}
+
+{% if page.meta_description %}
+  <meta property="og:description" content="{{ page.meta_description }}"/>
+{% elsif page.description %}
+  <meta property="og:description" content="{{ page.description }}"/>
+{% endif %}
+
+{% if page.meta_image %}
+  <meta property="og:image" content="{{ page.meta_image | absolute_url }}"/>
+{% elsif page.image %}
+  <meta property="og:image" content="{{ page.image | absolute_url }}"/>
+{% endif %}
+
+<meta name="twitter:card" content="{{ site.open_graph.meta_twitter_card }}"/>
+<meta name="twitter:site" content="{{ site.open_graph.meta_twitter_site }}" />
+<meta name="twitter:creator" content="{{ site.open_graph.meta_twitter_creator }}" />

@@ -1,0 +1,29 @@
+{% if jekyll.environment == "production" %}
+
+  {% capture cookie_banner_controlled %}
+    {% if site.cookie_banner.enabled %}data-cookiecategory="analytics" type="text/plain"{% endif %}
+  {% endcapture %}
+
+  {% assign env_google_analytics_id = site.env.GOOGLE_ANALYTICS_ID %}
+
+  {% if env_google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ env_google_analytics_id }}" {{cookie_banner_controlled}}></script>
+    <script {{cookie_banner_controlled}}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', '{{ env_google_analytics_id }}');
+    </script>
+    {% elsif site.analytics.google_analytics_id and site.analytics.google_analytics_id != '' %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{site.analytics.google_analytics_id}}" {{cookie_banner_controlled}}></script>
+    <script {{cookie_banner_controlled}}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{site.analytics.google_analytics_id}}');
+    </script>
+  {% endif %}
+
+{% endif %}

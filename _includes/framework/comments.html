@@ -1,0 +1,15 @@
+{% if page.comments != false %}
+
+    {% if site.comments.commento.enabled %}
+        <div class="comments">
+            {% include framework/commento.html %}
+        </div>
+    {% endif %}
+
+    {% if site.comments.disqus.shortname and site.comments.disqus.shortname != '' %}
+        <div class="comments">
+            {% include framework/disqus.html %}
+        </div>
+    {% endif %}
+
+{% endif %}

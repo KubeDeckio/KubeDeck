@@ -1,0 +1,10 @@
+{% assign limit = include.limit | default: 10 %}
+{% if .site.data.social %}
+<div class="social" id="social">
+  {% for social in .site.data.social limit: limit %}
+  <a href="{{ social.url }}" target="blank" title="{{ social.title }}">
+    <i class="{{ social.fa_icon }}"></i>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}

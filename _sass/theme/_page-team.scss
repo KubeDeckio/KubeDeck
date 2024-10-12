@@ -1,0 +1,45 @@
+.page-team {
+    .team-image {
+        margin-bottom: 40px;
+        @include media-breakpoint-up(md) {
+            margin-bottom: 0;
+        }
+    }
+    .team-header {
+        h1 {
+            font-size: 34px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            font-weight: 600;
+            @include media-breakpoint-up(md) {
+                font-size: 50px;
+                font-weight: 500;
+            }
+        }
+        p {
+            font-size: 22px;
+            letter-spacing: -1px;
+            line-height: 1.24;
+            font-family: $font-family-base;
+            color: var(--color-base-text-2);
+            @include media-breakpoint-up(md) {
+                font-size: 28px;
+                line-height: 1.32;
+                color: var(--color-base-text-2);
+                margin-top: 10px;
+            }
+        }
+        .team-meta {
+            display: flex;
+            align-items: center;
+            padding: 20px 0 20px 0;
+            font-size: 22px;
+        }
+        .team-jobtitle {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        .team-links {
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{% assign contact = include.contact %}
+
+<div class="contact">
+  {% if contact.email and contact.email != "" %}
+    <div class="contact-email">
+      <strong>Email:</strong>
+      <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+    </div>
+  {% endif %}
+  {% if contact.phone and contact.phone != "" %}
+    <div class="contact-phone">
+      <strong>Phone:</strong>
+      {{ contact.phone }}</div>
+  {% endif %}
+  {% if contact.fax and contact.fax != "" %}
+    <div class="contact-fax">
+      <strong>Fax:</strong>
+      {{ contact.fax }}</div>
+  {% endif %}
+  {% if contact.address and contact.address != "" %}
+    <div class="contact-address">
+      <strong>Address:</strong>
+      {{ contact.address }} {% if contact.map_link %}<a href="{{ contact.map_link }}" target="_blank" rel="noreferrer">(View Map)</a> {% endif %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,30 @@
+.author {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  .author-image {
+    margin-right: 7px;
+    img {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+    }
+  }
+  .author-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .author-name {
+      display: block;
+      font-weight: 600;
+    }
+    .author-job {
+      display: block;
+      color: var(--color-base-text-2);
+    }
+    .author-date {
+      display: block;
+      color: var(--color-base-text-2);
+    }
+  }
+}

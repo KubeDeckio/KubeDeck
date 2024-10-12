@@ -1,0 +1,43 @@
+{% if include.collection %}
+  {% if site[include.collection].size > 0 %}
+    <div class="sidebar">
+      {% if include.collection == 'posts' %}
+        <h5>Recent Posts</h5>
+        {% assign items = site[include.collection] | sort: 'weight' %}
+        <ul>
+          {% for item in items %}
+            <li>
+              <a {% if item.url==page.url %} class="active" {% endif %} href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <h5>{{ include.collection }}</h5>
+        {% assign items = site[include.collection] | sort: 'weight' %}
+        <ul>
+          {% for item in items %}
+            <li>
+              <a {% if item.url==page.url %} class="active" {% endif %} href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  {% assign pages = site.pages %}
+  {% if pages.size > 0 %}
+    <div class="sidebar">
+      <h2>Pages</h2>
+      <ul>
+        {% for item in pages %}
+          {% if item.layout == "basic" %}
+            <li>
+              <a {% if item.url==page.url %} class="active" {% endif %} href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endif %}

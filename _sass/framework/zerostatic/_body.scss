@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  color: var(--color-base-text);
+  background: var(--color-base-bg);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.page {
+  .wrapper {
+    flex: 1;
+  }
+}

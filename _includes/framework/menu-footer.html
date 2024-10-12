@@ -1,0 +1,10 @@
+{% assign menu = include.menu %}
+<div class="menu-footer">
+  <ul>
+    {% for item in menu %}
+      <li class="{% if item.url == page.url %}active{% endif %}">
+        <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

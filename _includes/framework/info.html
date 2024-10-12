@@ -1,0 +1,53 @@
+{% assign heading = include.heading %}
+{% assign sub_heading = include.sub_heading %}
+{% assign text = include.text %}
+{% assign image = false %}
+{% if include.image and include.image != '' %}{% assign image = include.image %}{% endif %}
+{% assign align = include.align | default: 'left' %}
+{% assign bullets = include.bullets %}
+{% assign buttons = include.buttons %}
+
+<div class="info">
+  <div class="row {% if align == 'center' %}justify-content-center text-center{% endif %}">
+    <div class="col-12 {% if align == 'center' %}col-md-10{% else %}col-md-6{% endif %} {% if align == 'center' and image %}mb-4{% endif %} {% if align == 'left' %}order-1{% elsif align == 'right' %}order-2{% elsif align == 'center' %}{% endif %}">
+      <div class="info-content">
+        {% if heading %}
+          <h2>{{ heading }}</h2>
+        {% endif %}
+        {% if sub_heading %}
+          <p class="mt-1 {% if align == 'center' %}mx-auto{% endif %}">{{ sub_heading }}</p>
+        {% endif %}
+        {% if bullets.list.size > 0 %}
+          <ul>
+            {% for feature in bullets.list %}
+              <li><i class="{% if feature.fa_icon %}{{ feature.fa_icon }} mr-1{% endif %}"></i>{{ feature.text }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if buttons.list.size > 0 %}
+          <div class="info-buttons mt-2">
+            {% for button in buttons.list %}
+              {% include framework/button.html 
+                text=button.text
+                url=button.url
+                external=button.external
+                size=button.size
+                outline=button.outline
+                rounded=button.rounded
+                style=button.style
+                fa_icon=button.fa_icon
+              %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-12 {% if image and align == 'center' %}col-md-10 mt-3{% else %}col-md-6{% endif %} {% if align == 'left' %}order-2 mt-3 mt-md-0{% elsif align == 'right' %}order-1{% elsif align == 'center' %}{% endif %}">
+      {% if image %}
+        <img width="{% if align == 'center' %}1280{% else %}640{% endif %}" height="{% if align == 'center' %}720{% else %}360{% endif %}" alt="{{ heading }}" class="img-fluid" src="{{ image | relative_url }}"/>
+      {% endif %}
+    </div>
+
+  </div>
+</div>

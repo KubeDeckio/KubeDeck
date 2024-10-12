@@ -1,0 +1,49 @@
+{% assign title = include.title %}
+{% assign description = include.description %}
+{% assign thumbnail = include.thumbnail %}
+{% assign jobtitle = include.jobtitle %}
+{% assign links = include.links %}
+{% assign url = include.url %}
+
+<div class="card card-team {% if include.thumbnail %}card-has-thumbnail{% endif %} {% if include.icon %}card-has-icon{% endif %}">
+  {% if thumbnail %}
+    <div class="card-thumbnail">
+      {% if url %}
+        <a href="{{ url | relative_url }}">
+          <img width="140" height="140" src="{{ thumbnail | relative_url }}"/>
+        </a>
+      {% else %} 
+        <img width="140" height="140" src="{{ thumbnail | relative_url }}"/>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="card-content">
+    <div class="card-title">
+      {% if url %}
+        <a href="{{ url | relative_url }}">
+          <h3>{{ title }}</h3>
+        </a>
+      {% else %} 
+        <h3>{{ title }}</h3>
+      {% endif %}
+    </div>
+    <div class="card-jobtitle">{{ jobtitle }}</div>
+    {% if description %}
+      <div class="card-description">
+        <p>{{ description }}</p>
+      </div>
+    {% endif %}
+    {% if links %}
+      <div class="card-links">
+        {% for link in links %}
+          {% if link.icon %}
+            <a href="{{ link.url }}">
+              <i class="{{ link.icon }}"></i>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>

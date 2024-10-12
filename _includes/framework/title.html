@@ -1,0 +1,67 @@
+{% assign title = include.title %}
+{% assign description = include.description %}
+{% assign image = include.image %}
+{% assign date = include.date %}
+{% assign badge = include.badge %}
+{% assign social = include.show_social %}
+{% assign columns = include.columns %}
+
+<div class="title">
+  <div class="col-12 {% if columns %}col-md{{ columns }}{% endif %}">
+  <div class="row align-items-center">
+
+    <div class="col-12 {% if image and image != '' %}col-md-6{% else %}col-md-10{% endif %}">
+
+      {% if date %}
+      <div class="title-date">
+        {% assign day = date | date: "%-d" %}
+        {% case day %}
+        {% when '1' or '21' or '31' %}
+        {{ day }}st
+        {% when '2' or '22' %}
+        {{ day }}nd
+        {% when '3' or '23' %}
+        {{ day }}rd
+        {% else %}
+        {{ day }}th
+        {% endcase %}
+        {{ date | date: "of %B, %Y" }}
+      </div>
+      {% endif %}
+
+      {% if badge %}
+      <div class="title-badge">
+        <span>{{ badge }}</span>
+      </div>
+      {% endif %}
+
+      {% if title %}
+      <div class="title-heading">
+        <h1>{{ title }}</h1>
+      </div>
+      {% endif %}
+
+      {% if description %}
+      <div class="title-description">
+        <p>{{ description }}</p>
+      </div>
+      {% endif %}
+
+      {% if social %}
+      <div class="title-social">
+        {% include framework/social.html %}
+      </div>
+      {% endif %}
+
+    </div>
+
+    {% if image and image != "" %}
+    <div class="col-12 col-md-6 mt-3 mt-md-0">
+      <div class="title-image">
+        <img {% if title %} alt="{{ title }}" {% endif %} src="{{ image | relative_url }}" />
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  </div>
+</div>

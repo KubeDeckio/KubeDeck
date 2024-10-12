@@ -1,0 +1,9 @@
+{% if paginator %}
+  {% if paginator.page != 1 %}
+    <div class="col-12">
+      <div class="pagination-count">
+        <h3>Page {{ paginator.page }}</h3>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

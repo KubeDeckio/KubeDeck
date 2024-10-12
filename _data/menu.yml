@@ -1,0 +1,59 @@
+main:
+  - name: Home
+    url: /
+    weight: 1
+  - name: Tools
+    url: /projects/
+    weight: 2
+    child:
+      - name: "KubeTidy"
+        url: /projects/KubeTidy/
+  # - name: Blog
+  #   url: /blog/
+  #   weight: 4
+  - name: About
+    url: /about/
+    weight: 5
+  - name: PixelRobots
+    url: https://pixelrobots.co.uk
+    weight: 6
+footer_primary:
+  - name: Home
+    url: /
+    weight: 1
+  - name: Services
+    url: /services/
+    weight: 2
+  - name: Projects
+    url: /projects/
+    weight: 3
+  - name: Team
+    url: /team/
+    weight: 4
+footer_secondary:
+  - name: Blog
+    url: /blog/
+    weight: 1
+  - name: About
+    url: /about/
+    weight: 2
+  - name: Contact
+    url: /contact/
+    weight: 3
+footer_tertiary:
+  - name: Privacy Policy
+    url: /privacy-policy/
+    weight: 1
+  - name: Terms and Conditions
+    url: /terms-and-conditions/
+    weight: 2
+  - name: Buy Now
+    url: https://www.zerostatic.io/theme/jekyll-advance/
+    weight: 3
+bottom:
+  - name: Privacy Policy
+    url: /privacy-policy/
+    weight: 3
+  - name: Terms and Conditions
+    url: /terms-and-conditions/
+    weight: 4

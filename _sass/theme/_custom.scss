@@ -1,0 +1,52 @@
+.section {
+  background-repeat: no-repeat;
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+  @include media-breakpoint-up(md) {
+    padding-top: calc(var(--section-padding) * 2);
+    padding-bottom: calc(var(--section-padding) * 2);
+  }
+}
+
+.footer {
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary-text);
+  
+  .menu-footer {
+    font-size: 16px;
+    a {
+      color: var(--color-primary-text);
+    }
+  }
+}
+
+.grid-footer {
+  .grid-view-more-button {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-primary-bg);
+    font-family: $font-family-base;
+  }
+}
+.grid-header {
+  h2 {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-base-text);
+    font-family: var(--font-family-heading);
+  }
+}
+
+.bottom {
+  background-color: var(--color-primary-bg-2);
+  color: var(--color-primary-text);
+}
+
+.page.page-home {
+  .card-services {
+    padding: 25px;
+    background-color: var(--color-base-bg-3);
+  }
+}

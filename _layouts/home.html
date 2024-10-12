@@ -1,0 +1,233 @@
+---
+layout: default
+body_classes: page-home
+---
+
+{% if page.hero.enabled %}
+  {% include framework/hero.html
+    heading=page.hero.heading
+    sub_heading=page.hero.sub_heading
+    background_image=page.hero.background_image
+    background_image_blend_mode=page.hero.background_image_blend_mode
+    background_color=page.hero.background_color
+    background_gradient=page.hero.background_gradient
+    text_color=page.hero.text_color
+    fullscreen_mobile=page.hero.fullscreen_mobile
+    fullscreen_desktop=page.hero.fullscreen_desktop
+    height=page.hero.height
+    buttons=page.hero.buttons
+  %}
+{% else %}
+  <div class="section">
+    <div class="container">
+    {% include framework/title.html
+      fa_icon=page.fa_icon
+      icon=page.icon
+      title=page.title
+      description=page.description
+      image=page.image
+    %}
+    </div>
+  </div>
+{% endif %}
+
+{% assign cards = site.services | sort: 'date' | reverse %}
+{% assign limit = page.services.limit | default: 3 %}
+{% assign sort_by = page.services.sort | default: 'date' %}
+{% assign columns =  page.services.columns | default: 3 %}
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+
+{% if page.services.enabled %}
+  <div class="section section-base-bg-2">
+    <div class="container">
+      <div class="row">
+
+        {% include framework/grid-header.html
+          heading=page.services.heading
+          sub_heading=page.services.sub_heading
+          align="center"
+        %}
+        
+        {% for card in cards limit: limit %}
+
+          {% assign url = card.url %}
+          {% if page.services.prevent_click %}
+            {% assign url = null %}
+          {% endif %}
+          
+          <div class="col-12 col-md-4 {{ columns }} mb-3 {% if forloop.first %}mt-0 {% endif %} {% if forloop.last %}mb-0 {% endif %}">
+            {% include theme/cards/card-services.html 
+              title=card.title 
+              description=card.description
+              fa_icon=card.fa_icon
+              icon=card.icon
+              url=url 
+              weight=card.weight
+            %}
+          </div>
+        {% endfor %}
+
+        {% include framework/grid-footer.html 
+          view_more_button_text=page.services.view_more_button_text
+          view_more_button_link=page.services.view_more_button_link
+          align="center"
+        %}
+
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if page.intro.enabled %}
+  <div class="section">
+    <div class="container">
+      {% include framework/info.html
+      heading=page.intro.heading
+      sub_heading=page.intro.sub_heading
+      align=page.intro.align
+      features=page.intro.features
+      buttons=page.intro.buttons
+      image=page.intro.image
+      %}
+    </div>
+  </div>
+{% endif %}
+
+
+{% if page.partners.enabled %}
+{% assign partners = site.data.partners %}
+{% assign partners_limit = page.partners.limit | default: 4 %}
+{% assign partners_sort = page.partners.sort | default: 'weight' %}
+{% if partners.size > 0 %}
+<div class="section pt-0 partners">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      {% for partner in partners limit: partners_limit %}
+      <div class="col-4 col-lg-2 text-center mb-1 mt-1">
+        <img src="{{ partner.image | relative_url }}" alt="{{ partner.title }}" />
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+{% assign cards = site.projects | sort: 'date' | reverse %}
+{% assign limit = page.projects.limit | default: 2 %}
+{% assign sort_by = page.projects.sort | default: 'date' %}
+{% assign columns =  page.projects.columns | default: 2 %}
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+
+{% if page.projects.enabled %}
+  <div class="section section-base-bg-2">
+    <div class="container">
+      <div class="row">
+
+        {% include framework/grid-header.html
+          heading=page.projects.heading
+          sub_heading=page.projects.sub_heading
+          align="center"
+        %}
+        
+        {% for card in cards limit: limit %}
+
+          {% assign url = card.url %}
+          {% if page.projects.prevent_click %}
+            {% assign url = null %}
+          {% endif %}
+
+          <div class="col-12 col-md-4 {{ columns }} mb-3 {% if forloop.first %}mt-0 {% endif %} {% if forloop.last %}mb-0 {% endif %}">
+            {% include theme/cards/card-projects.html 
+              title=card.title 
+              description=card.description
+              thumbnail=card.thumbnail
+              url=url 
+              weight=card.weight
+            %}
+          </div>
+        {% endfor %}
+
+        {% include framework/grid-footer.html 
+          view_more_button_text=page.projects.view_more_button_text
+          view_more_button_link=page.projects.view_more_button_link
+          align="center"
+        %}
+
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
+{% if page.outro.enabled %}
+<div class="section">
+  <div class="container">
+    {% include framework/info.html
+    heading=page.outro.heading
+    sub_heading=page.outro.sub_heading
+    align=page.outro.align
+    features=page.outro.features
+    buttons=page.outro.buttons
+    image=page.outro.image
+    %}
+  </div>
+</div>
+{% endif %}
+
+{% assign cards = site.posts | sort: 'date' | reverse %}
+{% assign limit = page.posts.limit | default: 2 %}
+{% assign sort_by = page.posts.sort | default: 'date' %}
+{% assign columns =  page.posts.columns | default: 2 %}
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+
+{% if page.posts.enabled %}
+  <div class="section section-base-bg-2">
+    <div class="container">
+      <div class="row">
+
+        {% include framework/grid-header.html
+          heading=page.posts.heading
+          sub_heading=page.posts.sub_heading
+          align="center"
+        %}
+        
+        {% for card in cards limit: limit %}
+
+          {% assign url = card.url %}
+          {% if page.posts.prevent_click %}
+            {% assign url = null %}
+          {% endif %}
+          
+          <div class="col-12 col-md-4 {{ columns }} mb-3 {% if forloop.first %}mt-0 {% endif %} {% if forloop.last %}mb-0 {% endif %}">
+            {% include theme/cards/card-posts.html 
+              title=card.title 
+              description=card.description
+              thumbnail=card.thumbnail
+              url=url 
+              weight=card.weight
+            %}
+          </div>
+        {% endfor %}
+
+        {% include framework/grid-footer.html 
+          view_more_button_text=page.posts.view_more_button_text
+          view_more_button_link=page.posts.view_more_button_link
+          align="center"
+        %}
+
+    </div>
+  </div>
+</div>
+{% endif %}

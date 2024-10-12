@@ -1,0 +1,47 @@
+<div class="menu-main">
+  <ul>
+    {% for item in site.data.menu.main %}
+      {% if item.child %}
+
+        {% assign active_parent = false %}
+        {% for childitem in item.child %}
+          {% if childitem.url == page.url %}
+            {% assign active_parent = true %}
+          {% endif %}
+        {% endfor %}
+
+        <li class="menu-item-dropdown menu-item-{{ item.name }}{% if item.url == page.url %} active {% endif %} {% if active_parent %} active {% endif %}">
+          <a href="{{ item.url | relative_url }}">{{ item.name }} <i class="fa-solid fa-chevron-down"></i></a>
+          
+          <div class="dropdown-menu">
+            {% for childitem in item.child  %}
+              <a href="{{ childitem.url | relative_url }}" class="dropdown-item {% if childitem.url == page.url %} active {% endif %}">
+                {% if childitem.icon %}
+                  <div class="dropdown-item-icon"><img src="{{ childitem.icon | relative_url }}" /></div>
+                {% endif %}
+                {% if childitem.icon_darkmode %}
+                  <div class="dropdown-item-icon icon-invert"><img src="{{ childitem.icon_darkmode  | relative_url }}" /></div>
+                {% endif %}
+
+                <div class="dropdown-item-content">
+                  {% if childitem.name %}<div class="dropdown-item-name">{{ childitem.name }}</div>{% endif %}
+                  {% if childitem.description %}<div class="dropdown-item-description">{{ childitem.description }}</div>{% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+
+        </li>
+      {% else %}
+        {% if item.url == page.url  %}
+          {% assign active = true %}
+        {% else %}
+          {% assign active = nil %}
+        {% endif %}
+        <li class="{% if item.url == page.url %}active{% endif %} {% if item.button %}menu-item-button{% endif %}">
+          <a href="{{ item.url | relative_url }}" {% if .item.external %}target="_blank" rel="noopener"{% endif %}>{{ item.name }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>

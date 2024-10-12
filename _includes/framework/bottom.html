@@ -1,0 +1,30 @@
+<div class="bottom">
+  <div class="container relative">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-auto">
+       
+        {% if site.bottom.enable_bottom_menu %}
+          {% include framework/menu-bottom.html %}
+        {% endif %}
+        {% if site.cookie_banner.enabled and site.cookie_banner.show_manage_cookies_at_bottom %}
+          <a href="#" data-cc="c-settings">Cookies</a>
+        {% endif %}
+        {% if site.bottom.copyright_text and site.bottom.copyright_text != "" %}
+          <div class="copyright">{{ site.bottom.copyright_text }}</div>
+        {% endif %}
+        
+        {% if site.bottom.show_rss_icon %}
+          <a class="feed" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+            <i class="fas fa-feed"></i>
+          </a>
+        {% endif %}
+        
+      </div>
+      {% if site.darkmode.enable_dark_mode and site.darkmode.show_dark_mode_toggle_in_bottom %}
+        <div class="col-auto">
+          {% include framework/dark-mode-switcher.html %}
+        </div>
+      {% endif %}   
+    </div>
+  </div>
+</div>

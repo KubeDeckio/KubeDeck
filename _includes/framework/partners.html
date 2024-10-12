@@ -1,0 +1,12 @@
+{% assign partners = site.data.partners %}
+{% assign partners_limit = include.partners.limit | default: 4 %}
+
+<div class="partners">
+  <div class="row justify-content-center align-items-center">
+    {% for partner in partners limit: partners_limit %}
+    <div class="col-4 col-lg-2 text-center mb-1 mt-1">
+      <img src="{{ partner.image | relative_url }}" alt="{{ partner.title }}" />
+    </div>
+    {% endfor %}
+  </div>
+</div>

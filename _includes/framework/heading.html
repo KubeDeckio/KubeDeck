@@ -1,0 +1,35 @@
+{% assign title = include.title %}
+{% assign description = include.description %}
+{% assign image = include.image %}
+{% assign icon = include.icon %}
+{% assign fa_icon = include.fa_icon %}
+{% assign align = include.align | default: 'left' %}
+{% assign authors = include.authors %}
+{% assign date = include.date %}
+{% assign badge = include.badge %}
+
+<div class="heading {% if align %}heading-{{ align }}{% endif %}">
+  {% if badge %}
+    <div class="heading-badge">
+      <span>{{ badge }}</span>
+    </div>
+  {% endif %}
+  
+  {% if title %}
+  <div class="heading-heading">
+    <h1>{{ title }}</h1>
+  </div>
+  {% endif %}
+  
+  {% if description %}
+    <div class="heading-description">
+      <p>{{ description }}</p>
+    </div>
+  {% endif %}
+
+  {% if image and image != "" %}
+    <div class="heading-image">
+      <img {% if title %} alt="{{ title }}" {% endif %} src="{{ image | relative_url }}"/>
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,33 @@
+{% assign title = include.title %}
+{% assign description = include.description %}
+{% assign icon = include.icon %}
+{% assign fa_icon = include.fa_icon %}
+{% assign url = include.url %}
+
+<div class="card card-feature {% if thumbnail %}card-has-thumbnail{% endif %} {% if icon or fa_icon %}card-has-icon{% endif %}">
+    
+  {% if icon %}
+      <div class="card-icon">
+        <img alt="{{ title }}" width="50" height="50" src=" {{ icon | relative_url }} "/>
+      </div>
+    {% elsif fa_icon %}
+      <div class=" card-icon">
+        <i class="{{fa_icon}}"></i>
+      </div>
+    {% endif %}
+
+    <div class="card-title">
+      {% if url %}
+        <h3><a href="{{ url | relative_url }}">{{ title }}</a></h3>
+      {% else %} 
+        <h3>{{ title }}</h3>
+      {% endif %}
+    </div>
+
+    {% if description %}
+      <div class="card-description">
+        <p>{{ description }}</p>
+      </div>
+    {% endif %}
+
+</div>

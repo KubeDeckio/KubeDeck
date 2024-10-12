@@ -1,0 +1,36 @@
+sage_kirk:
+  title: "Sage Kirk"
+  name: "Sage Kirk"
+  job: "Co-founder & CEO"
+  image: "assets/images/authors/sage-kirk.jpg"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."
+mike_vance:
+  title: "Mike Vance"
+  name: "Mike Vance"
+  job: "Software Engineer"
+  image: "assets/images/authors/mike-vance.jpg"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."
+marc_paulo:
+  title: "Mark Paulo"
+  name: "Mark Paulo"
+  job: "Software Engineer"
+  image: "assets/images/authors/marc-paulo.jpg"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."
+jodi_harmon:
+  title: "Jodi Harmon"
+  name: "Jodi Harmon"
+  job: "Marketing Manager"
+  image: "assets/images/authors/jodi-harmon.jpg"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."
+alec_mendez:
+  title: "Alec Mendez"
+  name: "Alec Mendez"
+  job: "Graphic Designer"
+  image: "assets/images/authors/alec-mendez.png"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."
+shyam_wolf:
+  title: "Shyam Wolf"
+  name: "Shyam Wolf"
+  job: "Product Manager"
+  image: "assets/images/authors/shyam-wolf.png"
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum arcu vitae elementum curabitur vitae nunc sed. Tortor at risus viverra adipiscing at in."

@@ -1,0 +1,8 @@
+{% if jekyll.environment == "production" %}
+  {% assign env_plausible_data_domain = site.env.PLAUSIBLE_DATA_DOMAIN %}
+  {% if env_plausible_data_domain %}
+    <script defer data-domain="{{ env_plausible_data_domain }}" src="https://plausible.io/js/plausible.js"></script>
+  {% elsif site.analytics.plausible_data_domain and site.analytics.plausible_data_domain != '' %}
+    <script defer data-domain="{{ site.analytics.plausible_data_domain }}" src="https://plausible.io/js/plausible.js"></script>
+  {% endif %}
+{% endif %}

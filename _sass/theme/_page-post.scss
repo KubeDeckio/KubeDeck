@@ -1,0 +1,105 @@
+.page-post-1 {
+  .post-header {
+    .post-date {
+      display: inline-block;
+      margin-right: 10px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-base-text-2);
+    }
+    .post-categories {
+      display: inline-flex;
+      font-size: 12px;
+      font-family: $font-family-base;
+      a {
+        color: var(--color-primary-text);
+        padding: 4px 8px;
+        border-radius: 3px;
+        margin-right: 10px;
+        background-color: var(--color-primary-bg);
+      }
+    }
+    .post-authors {
+      display: flex;
+      flex-direction: row;
+      .author {
+        margin-right: 16px;
+      }
+    }
+    .post-title {
+      margin-top: 10px;
+      h1 {
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+    }
+    .post-description {
+      p {
+        color: var(--color-base-text-2);
+        margin-bottom: 20px;
+        font-size: 22px;
+      }
+    }
+    .post-image {
+      margin-top: 40px;
+      img {
+        margin-top: 20px;
+        max-width: 100%;
+        height: auto;
+        border-radius: $border-radius;
+      }
+    }
+  }
+}
+.page-post-2 {
+  .post-header {
+    .categories {
+      margin-bottom: 4px;
+      > a {
+        font-size: 14px;
+        background: none;
+        background: var(--color-primary-bg);
+        color: var(--color-primary-text);
+        padding: 5px 12px;
+        border-radius: $border-radius;
+      }
+    }
+    .post-title {
+      h1 {
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+    }
+    .post-description {
+      p {
+        color: var(--color-base-text-2);
+        margin-bottom: 20px;
+        font-size: 22px;
+      }
+    }
+    .post-image {
+      margin-top: 40px;
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: $border-radius;
+      }
+    }
+  }
+}
+.page-post-3 {
+  .categories {
+    margin-bottom: 4px;
+    > a {
+      font-size: 14px;
+      background: none;
+      color: var(--color-primary-bg);
+      text-transform: uppercase;
+      padding: 0;
+      font-size: 14px;
+      display: inline-flex;
+      font-family: $font-family-monospace;
+      margin-right: 8px;
+    }
+  }
+}

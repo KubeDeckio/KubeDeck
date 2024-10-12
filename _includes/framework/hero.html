@@ -1,0 +1,73 @@
+{% assign hero = include or page.hero %}
+
+{% assign heading = hero.heading %}
+{% assign sub_heading = hero.sub_heading %}
+{% assign text_color = hero.text_color %}
+{% assign divider = hero.divider %}
+{% assign background_image = hero.background_image %}
+{% assign background_image_blend_mode = hero.background_image_blend_mode %}
+{% assign background_color = hero.background_color %}
+{% assign background_gradient = hero.background_gradient %}
+{% assign fullscreen_desktop = hero.fullscreen_desktop %}
+{% assign fullscreen_mobile = hero.fullscreen_mobile %}
+{% assign buttons = hero.buttons %}
+{% assign height = hero.height %}
+
+{% capture bg_image %}
+  {% if background_image and background_image != "" %}background-image: url('{{ background_image | absolute_url }}');{% endif %}
+  {% if background_image_blend_mode and background_image != "" %}mix-blend-mode: {{ background_image_blend_mode }};{% endif %}
+{% endcapture %}
+
+{% capture bg_color %}
+  {% if background_color and background_color != "" %}background-color: {{ background_color }};{% endif %}
+{% endcapture %}
+
+{% capture gradient %}
+  {% if background_gradient %}hero-gradient{% endif %}
+{% endcapture %}
+
+{% capture fullscreen %}
+  {% if fullscreen_desktop %}hero-fullscreen-desktop{% endif %}
+  {% if fullscreen_mobile %}hero-fullscreen-mobile{% endif %}
+{% endcapture %}
+
+{% capture bg_height %}
+  {% if height %}height: {{ height }};{% endif %}
+{% endcapture %}
+
+<div class="hero {{ fullscreen }} {{ gradient }}" style="{{ bg_color }} {{ bg_height }}">
+  <div class="hero-background-image" style="{{ bg_image }}"></div>
+  {% if divider %}{% include framework/divider.html %}{% endif %}
+  <div class="container {% if divider %}pb-10{% endif %}">
+    <div class="row align-items-center">
+      <div class="col-12 {% if image %}col-lg-6{% else %}col-lg-8{% endif %}">
+        <div class="hero-text" style="{% if text_color %}color: {{ text_color }};{% endif %}">
+          {% if heading %}<h1>{{ heading }}</h1>{% endif %}
+          {% if sub_heading %}<p>{{ sub_heading }}</p>{% endif %}
+          {% if buttons.enabled and buttons.list.size > 0 %}
+            <div class="hero-buttons">
+              {% for button in buttons.list %}
+                {% include framework/button.html 
+                  text=button.text
+                  url=button.url
+                  external=button.external
+                  size=button.size
+                  outline=button.outline
+                  style=button.style
+                  fa_icon=button.fa_icon
+                %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% if image %}
+        <div class="col-12 col-lg-6">
+          <div class="hero-image">
+            <img src="{{ image | relative_url }}"/>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

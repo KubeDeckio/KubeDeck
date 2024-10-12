@@ -1,0 +1,46 @@
+.info {
+  .info-content {
+    font-size: 20px;
+    h1,
+    h2 {
+      margin-bottom: 20px;
+      color: inherit;
+      font-weight: 500;
+      font-size: 34px;
+      line-height: 1.2;
+    }
+    p {
+      color: inherit;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.36;
+      @include media-breakpoint-up(md) {
+        width: 90%;
+      }
+    }
+    ul {
+      margin-top: 30px;
+      li {
+        font-size: 20px;
+        padding: 8px 0;
+        i {
+          margin-right: 6px;
+          color: var(--color-primary-bg);
+        }
+      }
+    }
+    .info-buttons {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      @include media-breakpoint-up(md) {
+        margin-bottom: 0;
+      }
+      .button {
+        margin-right: 5px;
+        &:last-of-type {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

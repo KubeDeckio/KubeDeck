@@ -1,0 +1,9 @@
+{% if site.fonts.use_google_fonts %}
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="{{ site.fonts.google_fonts_url }}" rel="stylesheet">
+{% endif %}
+{% if site.fonts.use_self_hosted_fonts %}
+    <link href="{{ '/assets/css/fonts.css' | relative_url }}" rel="stylesheet">
+{% endif %}
+
+

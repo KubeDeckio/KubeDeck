@@ -1,0 +1,137 @@
+---
+layout: default
+body_classes: page-list
+---
+
+{% if page.hero.enabled %}
+  {% include framework/hero.html 
+    heading=page.hero.heading
+    sub_heading=page.hero.sub_heading
+    background_image=page.hero.background_image
+    background_image_blend_mode=page.hero.background_image_blend_mode
+    background_color=page.hero.background_color
+    background_gradient=page.hero.background_gradient
+    text_color=page.hero.text_color
+    fullscreen_mobile=page.hero.fullscreen_mobile
+    fullscreen_desktop=page.hero.fullscreen_desktop
+    height=page.hero.height
+    buttons=page.hero.buttons
+  %}
+{% else %}
+  {% include framework/title.html 
+    fa_icon=page.fa_icon
+    icon=page.icon
+    title=page.title
+    description=page.description
+    image=page.image
+  %}
+{% endif %}
+
+{% if page.intro.enabled == true %}
+  <div class="section section-base-bg-2 strip-border-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          {% include framework/info.html 
+            heading=page.intro.heading
+            sub_heading=page.intro.sub_heading
+            align=page.intro.align
+            buttons=page.intro.buttons
+            features=page.intro.features
+            image=page.intro.image 
+          %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% assign cards = site[page.grid.collection] | sort: 'date' | reverse %}
+{% assign limit = page.grid.limit | default: nil %}
+{% assign sort_by = page.grid.sort_by | default: 'date' %}
+{% assign columns =  page.grid.columns | default: 3 %}
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+{% assign card_type = page.grid.collection %}
+
+{% if cards.size > 0 %}
+<div class="section">
+  <div class="container">
+    <div class="row">
+
+      {% include framework/grid-header.html
+        heading=page.grid.heading
+        sub_heading=page.grid.sub_heading
+        align="center"
+      %}
+      
+      {% for card in cards limit: limit %}
+
+        {% assign url = card.url %}
+        {% if page.grid.prevent_click %}
+          {% assign url = null %}
+        {% endif %}
+        
+        <div class="col-12 col-md-4 {{ columns }} {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mb-3 mb-md-6">
+          {% include theme/cards/card-{{ card_type | strip }}.html
+            title=card.title 
+            description=card.description
+            fa_icon=card.fa_icon
+            icon=card.icon
+            thumbnail=card.thumbnail
+            image=card.image
+            url=url 
+            weight=card.weight
+            jobtitle=card.jobtitle
+            links=card.links
+          %}
+        </div>
+      {% endfor %}
+
+      {% include framework/grid-footer.html 
+        view_more_button_text=page.grid.view_more_button_text
+        view_more_button_link=page.grid.view_more_button_link
+        align="right"
+      %}
+
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if page.outro.enabled == true %}
+  <div class="section section-base-bg-2 strip-border-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          {% include framework/info.html 
+            heading=page.outro.heading
+            sub_heading=page.outro.sub_heading
+            description=page.outro.description 
+            align=page.outro.align
+            buttons=page.outro.buttons
+            features=page.outro.features
+            image=page.outro.image 
+          %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% assign content = content | strip_newlines %}
+{% if content != ""  %}
+  <div class="section strip-border-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <div class="content">
+            {{ content }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %} 

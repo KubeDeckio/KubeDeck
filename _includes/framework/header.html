@@ -1,0 +1,14 @@
+{% capture header_classes %}
+  {% if site.header.align %}header-{{ site.header.align}} {% endif %}{% if site.header.fixed %}header-fixed {% endif %}{% if page.header_transparent %}header-transparent {% endif %}{{ page.header_classes }}
+{% endcapture %}
+
+<div id="header" class='header {{ header_classes | strip }}'>
+  <div class="container">
+    {% include framework/logo.html %}
+    {% include framework/menu-main.html %}
+    {% if site.darkmode.enable_dark_mode and site.darkmode.show_dark_mode_toggle_in_header %}
+      {% include framework/dark-mode-switcher.html %}
+    {% endif %}
+    {% include framework/hamburger.html %}
+  </div>
+</div>

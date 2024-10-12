@@ -1,0 +1,39 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px var(--color-base-bg-2) dotted;
+  padding-top: $grid-gutter-width;
+  margin-top: $grid-gutter-width;
+  @include media-breakpoint-up(lg) {
+    border-top: none;
+    border-left: 2px var(--color-base-bg-2) dotted;
+    padding-left: $grid-gutter-width;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    text-transform: capitalize;
+    padding-top: 4px;
+    margin-bottom: 10px;
+  }
+  ul {
+    list-style: none;
+    li {
+      list-style: none;
+      a {
+        display: inline-block;
+        padding: 5px 0 5px 0;
+        &.active {
+          font-weight: bold;
+        }
+      }
+      span {
+        margin-left: 5px;
+      }
+    }
+  }
+}

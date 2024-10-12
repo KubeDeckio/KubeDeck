@@ -1,0 +1,80 @@
+{% assign collection = include.collection %}
+{% assign cards = site[collection] %}
+{% assign limit = include.limit | default: nil %}
+{% assign sort_by = include.sort | default: 'date' %}
+{% assign heading = include.heading %}
+{% assign sub_heading = include.sub_heading %}
+{% assign view_more_button_text = include.view_more_button_text | default: "View More" %}
+{% assign view_more_button_link = include.view_more_button_link %}
+{% assign view_more_button_align = include.view_more_button_align | default: "right" %}
+{% assign columns = include.columns | default: 3 %}
+
+{% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
+{% assign cards = cards | sort: 'date' | 'reverse' %}
+{% if sort_by == 'weight' %}
+  {% assign cards = cards | sort: 'weight' %}
+{% endif %}
+
+{% if cards.size > 0 %}
+  <div class="row grid">
+
+    {% if heading or sub_heading %}
+      <div class="col-12">
+        <div class="grid-heading">
+          {% if heading != "" %}<h2>{{ heading }}</h2>{% endif %}
+          {% if sub_heading and sub_heading != "" %}<p class="large">{{ sub_heading }}</p>{% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% for card in cards limit: limit %}
+      {% case collection %}
+        {% when 'posts' %}
+          <div class="col-12 col-md-6 {{ columns }} mb-gutter mt-gutter {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mt-md-0">
+            {% include theme/cards/card-post.html
+              title=card.title 
+              thumbnail=card.thumbnail
+              
+              url=card.url 
+            %}
+          </div>
+        {% when 'projects' %}
+          <div class="col-12 col-md-6 {{ columns }} mb-gutter mt-gutter {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mt-md-0">
+            {% include theme/cards/card-project.html
+              title=card.title 
+              description=card.description
+              thumbnail=card.thumbnail
+              authors=card.authors
+              categories=card.categories
+              date=card.date
+              url=card.url 
+              weight=card.weight
+              client=card.client
+              icon=card.icon
+              fa_icon=card.fa_icon
+            %}
+          </div>
+        {% else %}
+        <div class="col-12 col-md-6 {{ columns }} mb-gutter mt-gutter {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mt-md-0">
+            {% include theme/cards/card-post.html 
+              title=card.title 
+              description=card.description
+              thumbnail=card.thumbnail
+              url=card.url 
+            %}
+          </div>
+      {% endcase %}
+    {% endfor %}
+
+    <div class="col-12">
+      {% if view_more_button_link and view_more_button_link != '' %}
+        <div class="grid-footer grid-footer-align-{{ view_more_button_align }}">
+          <a href="{{view_more_button_link | relative_url }}" class="grid-view-more-button">
+            {{ view_more_button_text }} <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+{% endif %} 

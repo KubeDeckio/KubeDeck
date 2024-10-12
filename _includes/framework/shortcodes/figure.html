@@ -1,0 +1,9 @@
+<figure {% if include.full %} class="figure-full" {% endif %}>
+  <a href="{{ include.link | relative_url }}" target="{{ include.target }}">
+    <img src="{{ include.src | relative_url }}" alt="{{ include.alt }}">
+  </a>
+  <figcaption>
+    <h4>{{ include.title }}</h4>
+    <p>{{ include.caption }}</p>
+  </figcaption>
+</figure>

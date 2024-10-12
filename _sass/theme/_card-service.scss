@@ -1,0 +1,83 @@
+.card.card-service {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: $card-border-radius;
+  .card-content {
+    padding: 0;
+    padding-top: 20px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .card-title {
+    margin-bottom: 10px;
+    h3 {
+      font-weight: 400;
+      font-size: 24px;
+    }
+  }
+  .card-description {
+    margin: 10px 0 10px 0;
+    p {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--color-base-text-2);
+    }
+  }
+  .card-title + .card-description {
+    margin-top: 0;
+  }
+  .card-readmore {
+    margin-top: auto;
+    line-height: 1;
+    i {
+      margin-left: 5px;
+      margin-top: 4px;
+    }
+  }
+  .card-date {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .card-categories {
+    display: inline-block;
+    font-size: 11px;
+    font-family: $font-family-monospace;
+    .card-category {
+      background-color: var(--color-base-bg);
+      padding: 3px 7px;
+      border-radius: 2px;
+    }
+  }
+  .card-image {
+    width: 60px;
+    margin-bottom: 10px;
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+  .card-meta {
+    display: flex;
+    .on {
+      margin: 0 4px 0 4px;
+    }
+  }
+  .card-authors {
+    margin-right: 7px;
+    display: flex;
+  }
+  // Tweaks for dark mode
+  html[data-bs-theme="dark"] & {
+    background-color: var(--color-base-bg-2);
+    .card-icon {
+      img {
+        filter: invert(1);
+      }
+    }
+  }
+}

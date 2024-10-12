@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    {% include framework/seo-meta-tags.html %}
+    {% include framework/og-meta-tags.html %}
+    {% include framework/feed.html %}
+    {% include framework/favicon.html %}
+
+    <link href="{{ '/assets/css/main.css' | relative_url }}" rel="stylesheet">
+
+    {% if site.darkmode.enable_dark_mode != false %}
+      <script>
+          localStorage.getItem('darkMode') === 'true' && document.documentElement.setAttribute('data-bs-theme', 'dark');
+      </script>
+    {% endif %}
+
+    {% if site.cookie_banner.enabled %}
+      {% include framework/cookie-consent.html %}
+    {% endif %}
+
+    {% include framework/fonts.html %}
+    {% include framework/google-tag-manager.html %}
+
+  </head>
+<body class="page {% if page.body_classes %}{{ page.body_classes }}{% elsif layout.body_classes %}{{ layout.body_classes }}{% endif %}{% if site.header.fixed %} has-fixed-header{% else %} has-static-header{% endif %}">
+
+{% include framework/menu-main-mobile.html %}
+{% include framework/header.html %}
+
+<div id="wrapper" class="wrapper">     
+  {{ content }}
+</div>
+
+{% if site.footer.enable_footer %}
+  {% include framework/footer.html %}
+{% endif %}
+{% if site.bottom.enable_bottom %}
+  {% include framework/bottom.html %}
+{% endif %}
+
+<script type="text/javascript" src="{{ '/assets/js/scripts.js' | relative_url }}"></script>
+{% if site.header.fixed %}
+  <script type="text/javascript" src="{{ '/assets/js/header.js' | relative_url }}"></script>
+{% endif %}
+<script type="text/javascript" src="{{ '/assets/js/hamburger.js' | relative_url }}"></script>
+<script type="text/javascript" src="{{ '/assets/js/darkModeSwitch.js' | relative_url }}"></script>
+
+{% include framework/google-analytics.html %}
+{% include framework/plausible-analytics.html %}
+{% include framework/umami-analytics.html %}
+
+</body>
+</html>

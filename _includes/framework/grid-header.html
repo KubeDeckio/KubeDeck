@@ -1,0 +1,13 @@
+
+{% assign heading = include.heading %}
+{% assign sub_heading = include.sub_heading %}
+{% assign align = include.align | default: "left" %}
+
+{% if heading or sub_heading %}
+<div class="col-12">
+  <div class="grid-header grid-header-align-{{ align }}">
+    {% if heading and heading != "" %}<h2>{{ heading }}</h2>{% endif %}
+    {% if sub_heading and sub_heading != "" %}<p class="large">{{ sub_heading }}</p>{% endif %}
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,49 @@
+---
+---
+
+:root {
+  --font-family-base: {{ site.fonts.base }}, sans-serif;
+  --font-family-heading: {{ site.fonts.heading }}, sans-serif;
+  --font-family-monospace: {{ site.fonts.monospace }}, monospace;
+  --font-family-logo: {{ site.fonts.logo }}, sans-serif;
+
+  --color-primary-bg: {{ site.colors.primary_bg | default: "#2b3af7" }};
+  --color-primary-bg-2: {{ site.colors.primary_bg_2 | default: "#424ff8" }};
+  --color-primary-bg-3: {{ site.colors.primary_bg_3 | default: "#702bf7" }};
+  --color-primary-text: {{ site.colors.primary_text | default: "#ffffff" }};
+  --color-base-bg: {{ site.colors.base_bg | default: "#ffffff" }};
+  --color-base-bg-2: {{ site.colors.base_bg_2 | default: "#f8fafc" }};
+  --color-base-bg-3: {{ site.colors.base_bg_3 | default: "#f1f5f9" }};
+  --color-base-text: {{ site.colors.base_text | default: "#202020" }};
+  --color-base-text-2: {{ site.colors.base_text_2 | default: "#4b5563" }};
+  --color-header-text:  {{ site.colors.header_text | default: "#111827" }};
+  
+  --logo-text-font-size: {{ site.logo.logo_text_font_size | default: "28px" }};
+  --logo-text-font-weight: {{ site.logo.logo_text_font_weight | default: "500" }};
+
+  --menu-font-family: {{ site.fonts.base }}, sans-serif;
+  --menu-font-size: {{ site.header.header_menu_font_size }};
+  --menu-text-transform: "Capitalize";
+  --menu-font-weight: 400;
+
+  --header-height: {{ site.header.header_height | default: "60px" }};
+  --section-padding: 80px;
+  --card-border-radius: 5px;
+  --button-border-radius: 5px;
+}
+
+html[data-bs-theme='dark'] {
+  --color-primary-bg: {{ site.colors.primary_bg_dark | default: site.colors.primary_bg }};
+  --color-primary-bg-2: {{ site.colors.primary_bg_2_dark | default: site.colors.primary_bg_2 }};
+  --color-primary-bg-3: {{ site.colors.primary_bg_3_dark | default: site.colors.primary_bg_3 }};
+  --color-primary-text: {{ site.colors.primary_text_dark | default: site.colors.primary_text }};
+  --color-base-bg: {{ site.colors.base_bg_dark | default: "#121418" }};
+  --color-base-bg-2: {{ site.colors.base_bg_2_dark | default: "#1d2026" }};
+  --color-base-bg-3: {{ site.colors.base_bg_3_dark | default: "#24272d" }};
+  --color-base-text: {{ site.colors.base_text_dark | default: "#F4F4F5" }};
+  --color-base-text-2: {{ site.colors.base_text_2_dark | default: "#D1D5DB" }};
+  --color-logo-text: {{ site.colors.logo_text_dark | default: "#F4F4F5" }};
+  --color-header-text: {{ site.colors.header_text_dark | default: "#F4F4F5" }};
+}
+
+@import 'style';

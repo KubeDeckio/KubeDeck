@@ -1,0 +1,212 @@
+# -------------------
+# Jekyll Config
+# --------------------
+baseurl: ""
+url: "https://kubedeck.io"
+permalink: pretty
+markdown: kramdown
+highlighter: rouge
+
+
+# Plugins
+plugins:
+  - jekyll-environment-variables
+  - jekyll-paginate
+
+paginate: 6
+paginate_path: "/blog/page/:num"
+
+# Collections
+collections_dir: collections
+collections:
+  services:
+    output: true
+    permalink: /:collection/:path/
+  projects:
+    output: true
+    permalink: /:collection/:path/
+  team:
+    output: true
+    permalink: /:collection/:path/
+  posts:
+    output: true
+    permalink: /blog/:path/
+
+# Pages
+defaults:
+  - scope:
+      path: ""
+      type: services
+    values:
+      layout: service
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
+  - scope:
+      path: ""
+      type: team
+    values:
+      layout: team
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      weight: 999
+  - scope:
+      path: "images"
+    values:
+      image: true
+  - scope:
+      path: "categories"
+    values:
+      permalink: /category/:basename/
+  - scope:
+      path: "pages"
+    values:
+      permalink: /:basename/
+
+# SCSS
+sass:
+  style: compact
+
+# Excludes
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - netlify.toml
+
+
+# -------------------
+# Theme Config
+# --------------------
+title: "KubeDeck"
+category_dir: category
+
+colors:
+  #light-mode colors
+  primary_bg: "#289dcd"
+  primary_bg_2: "#000000"
+  primary_bg_3: "#702bf7"
+  primary_text: "#fdfcf9"
+  base_bg: "#ffffff"
+  base_bg_2: "#f8f9ff"
+  base_bg_3: "#eef2f9"
+  text: "#0d042b"
+  text_2: "#3b364c"
+  logo_text: "#289dcd"
+  header_text: "#0d042b"
+
+  # dark-mode colors
+  primary_bg_dark: "#289dcd"
+  primary_bg_2_dark: "#000000"
+  primary_bg_3_dark: "#702bf7"
+  primary_text_dark: "#fdfcf9"
+  base_bg_dark: "#0f0f10"
+  base_bg_2_dark: "#1a191c"
+  base_bg_3_dark: "#222124"
+  text_dark: "#f5f5ec"
+  text_2_dark: "#b6c3d6"
+  logo_text_dark: "#289dcd"
+  header_text_dark: "#f5f5ec"
+
+fonts:
+  use_google_fonts: false
+  google_fonts_url: "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Source+Code+Pro&family=Source+Sans+3:wght@300;400;700&display=swap"
+  use_self_hosted_fonts: true # font files must be placed in /assets/fonts folder and the @font-face definitions must be added to /assets/css/fonts.css
+  heading: "Lato"
+  base: "'Source Sans 3'"
+  monospace: "'Source Code Pro'"
+  logo: "Lato"
+
+logo:
+  logo_text: "KubeDeck"
+  logo_image: assets/images/logo/KubeDeckLogo.png
+  logo_image_mobile: assets/images/logo/KubeDeckLogo.png
+  logo_image_invert: assets/images/logo/KubeDeckLogo.png
+  logo_image_invert_mobile: assets/images/logo/KubeDeckLogo.png
+  logo_image_desktop_height: "60px"
+  logo_image_desktop_width: "264px"
+  logo_image_mobile_height: "40px"
+  logo_image_mobile_width: "176px"
+  show_logo_image_on_mobile: true
+  show_logo_image_on_desktop: true
+  show_logo_text_on_mobile: false
+  show_logo_text_on_desktop: false
+
+header: 
+  fixed: true
+
+open_graph:
+  meta_opengraph_type: "website"
+  meta_twitter_card: "summary"
+  meta_twitter_site: "@zerostaticio"
+  meta_twitter_creator: "@zerostaticio"
+
+darkmode:
+  enable_dark_mode: true
+  show_dark_mode_toggle_in_header: true
+  show_dark_mode_toggle_in_bottom: false
+  show_dark_mode_toggle_in_mobile_menu: true
+
+cookie_banner:
+  enabled: false
+  show_manage_cookies_at_bottom: false
+
+analytics:
+  google_analytics_id: "G-SL5FWY00S6" # G-XXXXXXXXXX
+  gtm_id: "" # GTM-XXXXXXXX
+  plausible_data_domain: "" # example: mywebsite.com
+  umami_data_website_id: "" # example: "ddd14336-5fb0-4cdd-8f32-e1bfa906cc2b"
+  umami_src: "" # "https://analytics.eu.umami.is/script.js"
+
+comments:
+  commento:
+    enabled: false # you must have a commento account and be on the correct domain. does not work locally.
+  disqus:
+    shortname: "" # Your disqus shortcode for example "zerostatic". leave this blank ie "" to disable.
+
+newsletter:
+  mailchimp:
+    form_action_url: https://zerostatic.us21.list-manage.com/subscribe/post?u=798e19886b83aaab346734382&amp;id=f1c526a772&amp;f_id=0027e3e6f0
+    form_title: "Let's keep in touch"
+
+contact_form: 
+  use_netlify_form: true
+  use_formspree_form: false
+  formspree_endpoint: https://formspree.io/f/moqyklqv
+  netlify_form_name: "contact"
+
+menu: 
+  show_dropdown_items_in_mobile_menu: true
+  show_social_media_in_mobile_menu: false
+
+footer:
+  enable_footer: false # show/hide the entire footer
+  footer_title: "KubeDeck"
+  footer_description: "KubeDeck is a comprehensive platform designed to streamline and optimize Kubernetes management. Simplify your Kubernetes operations with powerful tools and an intuitive interface."
+  enable_social_media_icons: false
+  enable_contact_details: false
+  enable_menu_footer_primary: false
+  enable_menu_footer_secondary: false
+  enable_menu_footer_tertiary: false
+  footer_primary_menu_title: "Product"
+  footer_secondary_menu_title: "Company"
+  footer_tertiary_menu_title: "Other"
+
+bottom:
+  enable_bottom: true # show/hide the entire bottom (below the footer)
+  enable_bottom_menu: true # if enabled, the bottom menu can be edited in `_data/menu.yml`
+  copyright_text: "© 2024 KubeDeck"
+  show_rss_icon: false
+
+sidebar:
+  enable_sidebar_services: true
+  enable_breadcrumbs_services: true
+  enable_sidebar_projects: false
+  enable_breadcrumbs_projects: true
+

@@ -1,0 +1,82 @@
+.title {
+  .title-heading {
+    h1 {
+      font-size: 36px;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      font-weight: bold;
+      @include media-breakpoint-up(md) {
+        font-size: 56px;
+      }
+    }
+  }
+  .title-description {
+    width: 90%;
+    p {
+      font-size: 22px;
+      letter-spacing: -1px;
+      line-height: 1.24;
+      font-family: var(--font-family-base);
+      color: var(--color-base-text-2);
+      @include media-breakpoint-up(md) {
+        font-size: 29px;
+        line-height: 1.32;
+      }
+    }
+  }
+  .title-heading + .title-description {
+    margin-top: 20px;
+    @include media-breakpoint-up(md) {
+      margin-top: 30px;
+    }
+  }
+  .title-social {
+    margin-top: 30px;
+    @include media-breakpoint-up(md) {
+      margin-top: 50px;
+    }
+  }
+  .title-badge {
+    font-family: var(--font-family-monospace);
+    color: var(--color-primary-bg);
+  }
+  .title-icon {
+    width: 48px;
+    margin-bottom: 10px;
+    i {
+      font-size: 48px;
+      color: var(--color-base);
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+  .title-date {
+    color: var(--color-base-text-2);
+    font-size: 17px;
+    font-family: var(--font-family-base);
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  .title-image {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;
+    text-align: center;
+    position: relative;
+    @include media-breakpoint-up(md) {
+      background-position: center center;
+    }
+    img {
+      border-radius: var(--card-border-radius);
+      max-width: 100%;
+      z-index: 1;
+    }
+    svg {
+      position: absolute;
+      z-index: 0;
+      width: 500px;
+    }
+  }
+}

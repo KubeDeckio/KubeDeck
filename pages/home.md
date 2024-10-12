@@ -1,0 +1,103 @@
+---
+layout: home
+permalink: "/"
+title: "KubeDeck"
+description: "KubeDeck helps you manage Kubernetes operations efficiently with tools like KubeTidy for resource cleanup and KubeSnapIt (coming soon) for snapshots."
+header_transparent: false
+meta_title: KubeDeck - Simplifying Kubernetes Management
+
+hero:
+  enabled: true
+  heading: "KubeDeck"
+  sub_heading: "The ultimate platform for simplifying Kubernetes management, featuring tools like KubeTidy and KubeSnapIt (coming soon) to automate resource cleanup and snapshots."
+  text_color: "#FFFFFF"
+  background_color: "#289dcd"
+  background_gradient: false
+  background_image: "/assets/images/gen/home/home.png"
+  background_image_blend_mode: overlay # "overlay", "multiply", "screen"
+  fullscreen_mobile: true
+  fullscreen_desktop: false
+  height: "660px"
+  buttons:
+    enabled: false
+    list:
+      - text: "Learn More"
+        url: "#intro"
+        external: false
+        fa_icon: false
+        size: large # "small", "normal", "large"
+        outline: false
+        style: "light" # "light", "dark", "primary"
+      - text: "Get Started"
+        url: "/contact"
+        external: false
+        fa_icon: false
+        size: large
+        outline: false
+        style: "light"
+
+services:
+  enabled: false
+  heading: "Our Core Tools"
+  sub_heading: "KubeDeck streamlines Kubernetes management with powerful tools."
+  limit: 2
+  sort: "weight" # 'date'
+  view_more_button_text: "View All Tools"
+  view_more_button_link: "/services"
+  prevent_click: false
+  list:
+    - title: "KubeTidy"
+      desc: "Automatically clean up unused or outdated Kubernetes resources with KubeTidy, ensuring an efficient and optimized environment."
+      icon: fas fa-broom
+    - title: "KubeSnapIt"
+      desc: "Easily create and manage snapshots of Kubernetes objects to safeguard your infrastructure with KubeSnapIt."
+      icon: fas fa-camera
+
+intro:
+  enabled: true
+  align: left
+  image: "/assets/images/gen/home/KubeDeck.png"
+  heading: "Effortless Kubernetes Management"
+  sub_heading: "With KubeDeck, managing your Kubernetes environment is easier than ever. Use KubeTidy to clean up resources automatically, and stay tuned for KubeSnapIt—our upcoming tool for seamless snapshot management."
+  features:
+    enabled: true
+    list:
+      - text: "Configure the homepage sections in front-matter."
+        fa_icon: "fas fa-check"
+  buttons:
+    enabled: true
+    list:
+      - text: "More Info"
+        url: "/about"
+        external: false
+        fa_icon: ""
+        size: large
+        outline: false
+        style: "primary"
+
+projects:
+  enabled: true
+  heading: "Our Tools"
+  sub_heading: "Discover how KubeDeck simplifies Kubernetes management with powerful, easy-to-use tools for optimizing and maintaining your clusters."
+  limit: 2
+  columns: 2
+  sort: "weight" # 'date'
+  view_more_button_text: "View All Tools"
+  view_more_button_link: "/projects"
+  prevent_click: false
+
+outro:
+  enabled: true
+  align: center
+  image: false
+  heading: Get Involved
+  sub_heading: "Join the KubeDeck community on GitHub and help us optimize and manage Kubernetes environments together. Contribute, collaborate, and make Kubernetes management easier for everyone."
+  buttons:
+    enabled: true
+    list:
+      - text: "GitHub"
+        url: "https://github.com/PixelRobots/KubeDeck"
+        external: true
+        size: "large"
+---
+

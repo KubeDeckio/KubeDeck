@@ -1,0 +1,60 @@
+
+<div class="menu-main-mobile {% if site.menu.show_dropdown_items_in_mobile_menu %}nested{% endif %}" id="menu-main-mobile">
+  
+  <div class="menu-main-mobile-top">
+    <div id="close-overlay" class="menu-main-close">
+      <div class="hamburger"></div>
+    </div>
+  </div>
+
+  <div class="menu-main-mobile-center">
+    {% if site.menu.show_dropdown_items_in_mobile_menu %}
+      <ul class="menu">
+        {% for item in site.data.menu.main %}
+          {% if item.child %}
+            <li class="menu-item-{{ item.name | downcase }}{% if item.url == page.url %} active{% endif %}">
+              <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+              <div class="dropdown">
+                <ul class="sub-menu">
+                  {% for childitem in item.child  %}
+                    <li class="{% if childitem.url == page.url %} active {% endif %}">
+                      <a href="{{ childitem.url | relative_url }}">{{ childitem.name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
+          {% else %}
+            {% if item.url == page.url  %}
+              {% assign active = true %}
+            {% else %}
+              {% assign active = nil %}
+            {% endif %}
+            <li class="{% if item.url == page.url %}active{% endif %}">
+              <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <ul class="menu">
+        {% for item in site.data.menu.main %}
+          <li class="menu-item-{{ item.name | downcase }}{% if item.url == page.url %} active {% endif %}">
+            <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="menu-main-mobile-bottom">
+    {% if site.menu.show_social_media_in_mobile_menu %}
+      {% include framework/social.html limit=3%}
+    {% endif %}
+    {% if site.darkmode.enable_dark_mode and site.darkmode.show_dark_mode_toggle_in_mobile_menu %}
+      {% include framework/dark-mode-switcher.html %}
+    {% endif %}
+  </div>
+
+</div>
+

@@ -1,0 +1,42 @@
+---
+layout: default
+title: Categories
+body_classes: page-categories
+---
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-8">
+        <h1>{{ page.title }}
+        </h1>
+        <h2>{{ page.description }}</h2>
+      </div>
+      {% if page.image %}
+        <div class="col-12 col-lg-12">
+          <img class="img-fluid" src={{ page.image | relative_url }}/>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="section strip-base">
+  <div class="container">
+    <div class="row">
+        {% for category in site.categories %}
+          {% assign category_name = category | first %}
+          {% assign category_slug = category_name | slugify %}
+          <div class="col-12 col-md-8 mb-2">
+            <h3 id="#{{ category_slug }}">{{ category_name }}</h3>
+            {% for post in site.categories[category_name] %}
+              <div>
+                <a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

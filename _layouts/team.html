@@ -1,0 +1,72 @@
+---
+layout: default
+body_classes: page-team
+---
+
+{% if page.hero.enabled %}
+  {% include framework/hero.html 
+    heading=page.hero.heading
+    sub_heading=page.hero.sub_heading
+    background_image=page.hero.background_image
+    background_image_blend_mode=page.hero.background_image_blend_mode
+    background_color=page.hero.background_color
+    background_gradient=page.hero.background_gradient
+    text_color=page.hero.text_color
+    fullscreen_mobile=page.hero.fullscreen_mobile
+    fullscreen_desktop=page.hero.fullscreen_desktop
+    height=page.hero.height
+    buttons=page.hero.buttons
+  %}
+{% else %}
+  <div class="section">
+    <div class="container">
+        {% assign title = include.title %}
+        {% assign description = include.description %}
+        {% assign image = include.image %}
+        {% assign date = include.date %}
+        {% assign badge = include.badge %}
+        {% assign social = include.show_social %}
+        
+          <div class="row">
+            {% if page.image and page.image != "" %}
+              <div class="col-12 col-md-6">
+                <div class="team-image">
+                  <img class="img-fluid" {% if page.title %} alt="{{ page.title }}" {% endif %} src="{{ page.image | relative_url }}"/>
+                </div>
+              </div>
+            {% endif %}
+            <div class="col-12 {% if page.image and page.image != "" %}col-md-6{% else %}col-md-10{% endif %}">
+                <div class="team-header">
+                    {% if page.title %}
+                        <h1>{{ page.title }}</h1>
+                    {% endif %}
+                    
+                    {% if page.description %}
+                        <p>{{ page.description }}</p>
+                    {% endif %}
+
+                    <div class="team-meta">
+                        {% if page.description %}
+                            <div class="team-jobtitle">{{ page.jobtitle }}</div>
+                        {% endif %}
+    
+                        {% if page.links %}
+                        <div class="team-links">
+                            {% for link in page.links %}
+                                {% if link.icon %}
+                                    <a href="{{ link.url }}">
+                                        <i class="{{ link.icon }}"></i>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="content">{{ content }}</div>
+              </div>
+        </div>
+    </div>
+  </div>
+{% endif %}
