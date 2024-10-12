@@ -98,7 +98,7 @@ outro:
       - text: "Get Involved"
         url: "https://github.com/KubeDeckio"
         external: true
-        fa_icon: "fa-regular fa-rocket"
+        fa_icon: "fa-rocket"
         size: "large"
 ---
 
