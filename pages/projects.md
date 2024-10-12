@@ -1,4 +1,3 @@
----
 layout: list
 collection: "projects"
 title: "Tools"
@@ -9,7 +8,7 @@ header_transparent: false
 hero:
   enabled: true
   heading: "KubeDeck Tools"
-  sub_heading: "Discover the powerful tools that make Kubernetes management easier. From automatic resource cleanup with KubeTidy to snapshot management with the upcoming KubeSnapIt."
+  sub_heading: "Discover the tools that make managing Kubernetes easier. From tidying up your KubeConfig with KubeTidy to handling snapshots with the upcoming KubeSnapIt."
   text_color: "#FFFFFF"
   background_color: false
   background_gradient: false
@@ -39,13 +38,10 @@ intro:
   enabled: true
   align: left
   image: false
-  heading: "Powerful Kubernetes Tools"
-  sub_heading: "KubeDeck offers tools designed to make Kubernetes management easier, more efficient, and reliable. Whether it’s cleaning up old resources or managing snapshots, we have the tools to keep your clusters optimized."
+  heading: "Making Kubernetes Easier"
+  sub_heading: "At KubeDeck, our goal is to take the complexity out of Kubernetes management. Whether you’re cleaning up your messy KubeConfig file with KubeTidy or looking forward to snapshot management with KubeSnapIt, we’ve got the tools to help you keep things organized and running smoothly."
   features:
     enabled: false
-    list:
-      - text: "All tools are open source and available on GitHub"
-        fa_icon: "fab fa-github"
   buttons:
     enabled: true
     list:
@@ -61,8 +57,8 @@ outro:
   enabled: false
   align: left
   image: false
-  heading: "Ready to get started?"
-  sub_heading: "Join the KubeDeck community and start optimizing your Kubernetes environment today."
+  heading: "Ready to simplify your workflow?"
+  sub_heading: "Join the KubeDeck community today and start making your Kubernetes environment easier to manage."
   buttons:
     enabled: true
     list:
@@ -73,4 +69,3 @@ outro:
         size: "normal"
         outline: false
         style: "primary"
----
