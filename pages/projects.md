@@ -1,3 +1,4 @@
+---
 layout: list
 collection: "projects"
 title: "Tools"
@@ -69,3 +70,4 @@ outro:
         size: "normal"
         outline: false
         style: "primary"
+---
