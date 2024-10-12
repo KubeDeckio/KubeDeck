@@ -95,9 +95,10 @@ outro:
   buttons:
     enabled: true
     list:
-      - text: "GitHub"
-        url: "https://github.com/PixelRobots/KubeDeck"
+      - text: "Get Involved"
+        url: "https://github.com/KubeDeckio"
         external: true
+        fa_icon: "fa-rocket-launch"
         size: "large"
 ---
 
