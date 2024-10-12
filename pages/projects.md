@@ -22,7 +22,7 @@ hero:
     enabled: true
     list:
       - text: "View on GitHub"
-        url: "https://github.com/kubedeck"
+        url: "https://github.com/kubedeckio"
         external: true
         fa_icon: "fab fa-github"
         size: large
@@ -47,7 +47,7 @@ intro:
     enabled: true
     list:
       - text: "Explore Our GitHub"
-        url: "https://github.com/kubedeck"
+        url: "https://github.com/kubedeckio"
         external: true
         fa_icon: "fab fa-github"
         size: "large"
