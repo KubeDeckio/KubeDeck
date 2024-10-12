@@ -21,7 +21,7 @@ hero:
   buttons:
     enabled: true
     list:
-      - text: "View on GitHub"
+      - text: "View on GitHub "
         url: "https://github.com/kubedeckio"
         external: true
         fa_icon: "fab fa-github"
@@ -46,7 +46,7 @@ intro:
   buttons:
     enabled: true
     list:
-      - text: "Explore Our GitHub"
+      - text: "Explore Our GitHub "
         url: "https://github.com/kubedeckio"
         external: true
         fa_icon: "fab fa-github"
