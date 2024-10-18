@@ -8,6 +8,8 @@ main:
     child:
       - name: "KubeTidy"
         url: /projects/KubeTidy/
+      - name: "KubeSnapIt"
+        url: /projects/KubeSnapIt/
   # - name: Blog
   #   url: /blog/
   #   weight: 4
