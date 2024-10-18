@@ -2,14 +2,14 @@
 layout: home
 permalink: "/"
 title: "KubeDeck"
-description: "KubeDeck helps you manage Kubernetes operations efficiently with tools like KubeTidy for resource cleanup and KubeSnapIt (coming soon) for snapshots."
+description: "KubeDeck helps you manage Kubernetes operations efficiently with tools like KubeTidy for resource cleanup and KubeSnapIt for snapshots."
 header_transparent: false
 meta_title: KubeDeck - Simplifying Kubernetes Management
 
 hero:
   enabled: true
   heading: "KubeDeck"
-  sub_heading: "The ultimate platform for simplifying Kubernetes management, featuring tools like KubeTidy and KubeSnapIt (coming soon) to automate resource cleanup and snapshots."
+  sub_heading: "The ultimate platform for simplifying Kubernetes management, featuring tools like KubeTidy and KubeSnapIt to automate resource cleanup and snapshots."
   text_color: "#FFFFFF"
   background_color: "#289dcd"
   background_gradient: false
@@ -58,7 +58,7 @@ intro:
   align: left
   image: "/assets/images/gen/home/KubeDeck.png"
   heading: "Effortless Kubernetes Management"
-  sub_heading: "With KubeDeck, managing your Kubernetes environment is easier than ever. Use KubeTidy to clean up resources automatically, and stay tuned for KubeSnapIt—our upcoming tool for seamless snapshot management."
+  sub_heading: "With KubeDeck, managing your Kubernetes environment is easier than ever. Use KubeTidy to automatically clean up resources, and leverage KubeSnapIt, our powerful tool for seamless snapshot, restore, and comparison management in your Kubernetes clusters."
   features:
     enabled: true
     list:
