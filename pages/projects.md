@@ -9,7 +9,7 @@ header_transparent: false
 hero:
   enabled: true
   heading: "KubeDeck Tools"
-  sub_heading: "Discover the tools that make managing Kubernetes easier. From tidying up your KubeConfig with KubeTidy to handling snapshots with the upcoming KubeSnapIt."
+  sub_heading: "Discover the tools that simplify Kubernetes management. From cleaning up your KubeConfig with KubeTidy to managing snapshots, restores, and comparisons with KubeSnapIt."
   text_color: "#FFFFFF"
   background_color: false
   background_gradient: false
@@ -40,7 +40,7 @@ intro:
   align: left
   image: false
   heading: "Making Kubernetes Easier"
-  sub_heading: "At KubeDeck, our goal is to take the complexity out of Kubernetes management. Whether you’re cleaning up your messy KubeConfig file with KubeTidy or looking forward to snapshot management with KubeSnapIt, we’ve got the tools to help you keep things organized and running smoothly."
+  sub_heading: "At KubeDeck, our goal is to simplify Kubernetes management. Whether you’re cleaning up your KubeConfig file with KubeTidy or managing snapshots, restores, and comparisons with KubeSnapIt, we have the tools to help you stay organized and keep everything running smoothly."
   features:
     enabled: false
   buttons:
