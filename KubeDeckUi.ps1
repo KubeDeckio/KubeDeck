@@ -32,25 +32,27 @@ function Create-KubeDeckLauncher {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KubeDeck Launcher" Height="500" Width="900" Background="$formBackColor" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontFamily="Roboto" FontSize="14">
+        Title="KubeDeck Launcher" Width="900" Background="$formBackColor" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Roboto" FontSize="14" SizeToContent="Height">
     <DockPanel>
 
         <!-- Header Section -->
         <Grid DockPanel.Dock="Top" Background="$headerBackColor" Height="60">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" /> <!-- Column for the logo image -->
+                <ColumnDefinition Width="*" />    <!-- Column for spacing -->
+                <ColumnDefinition Width="Auto" /> <!-- Column for the About button -->
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="KubeDeck" FontSize="24" Foreground="$headerForeColor" Padding="10,0,0,0" VerticalAlignment="Center" FontFamily="Roboto" />
+            <!-- Align the logo to the left -->
+            <Image Grid.Column="0" x:Name="logoImage" Height="40" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
             <!-- About Button on the Header with same style as other buttons -->
-            <Button x:Name="btnAbout" Grid.Column="1" Content="About" Width="80" Height="30" HorizontalAlignment="Right" Margin="10"
+            <Button x:Name="btnAbout" Grid.Column="2" Content="About" Width="80" Height="30" HorizontalAlignment="Right" Margin="10"
                     Background="$btnBackColor" Foreground="$headerForeColor" FontFamily="Roboto" FontSize="14" />
         </Grid>
 
         <!-- Main content using Grid to position material design cards -->
-        <Grid Margin="50" DockPanel.Dock="Top">
+        <Grid Margin="20,10,20,20" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -60,27 +62,29 @@ function Create-KubeDeckLauncher {
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- First Material Design Card for KubeTidy -->
-            <Border Grid.Row="0" Grid.Column="0" Background="$cardBackground" Padding="20" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+            <!-- First Material Design Card for KubeTidy (Using Image for Header) -->
+            <Border Grid.Row="0" Grid.Column="0" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="KubeTidy" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="0,0,0,10" />
-                    <TextBlock Text="Launch the KubeTidy application" Foreground="$labelForeColor" Margin="0,0,0,10" TextWrapping="Wrap" />
-                    <Button x:Name="btnKubeTidy" Content="Launch KubeTidy" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" />
+                    <!-- Image for KubeTidy Header, filling the card's width -->
+                    <Image x:Name="imgKubeTidyHeader" Stretch="UniformToFill" />
+
+                    <TextBlock Text="Launch the KubeTidy application" Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap" />
+                    <Button x:Name="btnKubeTidy" Content="Launch KubeTidy" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10,10,10,10" />
                 </StackPanel>
             </Border>
 
             <!-- Second Material Design Card for KubeSnapIt -->
-            <Border Grid.Row="0" Grid.Column="1" Background="$cardBackground" Padding="20" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+            <Border Grid.Row="0" Grid.Column="1" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="1">
                 <Border.Effect>
                     <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="KubeSnapIt" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="0,0,0,10" />
-                    <TextBlock Text="Launch the KubeSnapIt application" Foreground="$labelForeColor" Margin="0,0,0,10" TextWrapping="Wrap" />
-                    <Button x:Name="btnKubeSnapIt" Content="Launch KubeSnapIt" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" />
+                    <TextBlock Text="KubeSnapIt" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="10,0,10,10" />
+                    <TextBlock Text="Launch the KubeSnapIt application" Foreground="$labelForeColor" Margin="10,0,10,10" TextWrapping="Wrap" />
+                    <Button x:Name="btnKubeSnapIt" Content="Launch KubeSnapIt" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10,10,10,10" />
                 </StackPanel>
             </Border>
         </Grid>
@@ -91,6 +95,16 @@ function Create-KubeDeckLauncher {
     # Parse the XAML
     $reader = (New-Object System.Xml.XmlNodeReader $xaml)
     $window = [Windows.Markup.XamlReader]::Load($reader)
+
+    # Set the logo image source using $PSScriptRoot
+    $logoImage = $window.FindName("logoImage")
+    $imagePath = Join-Path $PSScriptRoot "assets/images/logo/KubeDeckLogo.png"
+    $logoImage.Source = [Windows.Media.Imaging.BitmapImage]::new([uri]::new($imagePath, [UriKind]::Absolute))
+
+    # Set the KubeTidy header image to fill the card's width
+    $imgKubeTidyHeader = $window.FindName("imgKubeTidyHeader")
+    $kubeTidyHeaderPath = Join-Path $PSScriptRoot "assets/images/gen/projects/KubeTidyHeader.png"
+    $imgKubeTidyHeader.Source = [Windows.Media.Imaging.BitmapImage]::new([uri]::new($kubeTidyHeaderPath, [UriKind]::Absolute))
 
     # Get the About button from the header
     $aboutButton = $window.FindName("btnAbout")
@@ -137,9 +151,6 @@ function Create-KubeDeckLauncher {
         $versionText.Margin = "0,0,0,10"
         $versionText.TextWrapping = 'Wrap'
         $stackPanel.Children.Add($versionText)
-
-        # Declare $progressWindow in a broader scope for access in the OK button
-        $script:progressWindow = $null
 
         # Add update button
         $updateButton = New-Object Windows.Controls.Button
