@@ -24,6 +24,8 @@ $headerBackColor = "Black"
 $headerForeColor = "White"
 $labelForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 $btnBackColor = "#11A9BB"
+$cardBackground = if ($isDarkMode -eq "Dark") { "#2c3e50" } else { "#ffffff" }
+$cardShadowColor = if ($isDarkMode -eq "Dark") { "#000000" } else { "#999999" }
 
 # Function to create the KubeDeck launcher using WPF
 function Create-KubeDeckLauncher {
@@ -47,26 +49,41 @@ function Create-KubeDeckLauncher {
                     Background="$btnBackColor" Foreground="$headerForeColor" FontFamily="Roboto" FontSize="14" />
         </Grid>
 
-        <!-- Main content inside a ScrollViewer -->
-        <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto">
-            <Grid Margin="50">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+        <!-- Main content using Grid to position material design cards -->
+        <Grid Margin="50" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnKubeTidy" Grid.Row="0" Grid.Column="0" Content="Launch KubeTidy" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10" FontFamily="Roboto" FontSize="14" />
-                <Label Grid.Row="1" Grid.Column="0" Content="Launch the KubeTidy application" Foreground="$labelForeColor" Padding="10" Margin="10" FontFamily="Roboto" FontSize="14" />
+            <!-- First Material Design Card for KubeTidy -->
+            <Border Grid.Row="0" Grid.Column="0" Background="$cardBackground" Padding="20" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="KubeTidy" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="0,0,0,10" />
+                    <TextBlock Text="Launch the KubeTidy application" Foreground="$labelForeColor" Margin="0,0,0,10" TextWrapping="Wrap" />
+                    <Button x:Name="btnKubeTidy" Content="Launch KubeTidy" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" />
+                </StackPanel>
+            </Border>
 
-                <Button x:Name="btnKubeSnapIt" Grid.Row="0" Grid.Column="1" Content="Launch KubeSnapIt" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10" FontFamily="Roboto" FontSize="14" />
-                <Label Grid.Row="1" Grid.Column="1" Content="Launch the KubeSnapIt application" Foreground="$labelForeColor" Padding="10" Margin="10" FontFamily="Roboto" FontSize="14" />
-            </Grid>
-        </ScrollViewer>
-
+            <!-- Second Material Design Card for KubeSnapIt -->
+            <Border Grid.Row="0" Grid.Column="1" Background="$cardBackground" Padding="20" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="KubeSnapIt" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="0,0,0,10" />
+                    <TextBlock Text="Launch the KubeSnapIt application" Foreground="$labelForeColor" Margin="0,0,0,10" TextWrapping="Wrap" />
+                    <Button x:Name="btnKubeSnapIt" Content="Launch KubeSnapIt" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" />
+                </StackPanel>
+            </Border>
+        </Grid>
     </DockPanel>
 </Window>
 "@
@@ -109,9 +126,11 @@ function Create-KubeDeckLauncher {
         $aboutText.TextWrapping = 'Wrap'
         $stackPanel.Children.Add($aboutText)
 
+        # Fetch KubeTidy and KubeSnapIt versions
         $kubeTidyVersion = (Get-Module -Name KubeTidy -ListAvailable | Select-Object -First 1).Version.ToString()
         $kubeSnapItVersion = (Get-Module -Name KubeSnapIt -ListAvailable | Select-Object -First 1).Version.ToString()
 
+        # Create version labels
         $versionText = New-Object Windows.Controls.TextBlock
         $versionText.Text = "KubeTidy Version: $kubeTidyVersion`nKubeSnapIt Version: $kubeSnapItVersion"
         $versionText.Foreground = [System.Windows.Media.Brushes]::White
