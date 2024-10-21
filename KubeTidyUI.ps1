@@ -140,6 +140,7 @@ function Create-KubeTidyLauncher {
                     <!-- Merge Config Section -->
                     <TextBlock x:Name="lblMergeConfig" Text="Merge Config Files:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="1" Grid.Column="0"/>
                     <TextBox x:Name="txtMergeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"/>
+                    <Button x:Name="btnBrowseMergeConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="1" Grid.Column="2" Margin="10,10,10,10"/>
 
                     <!-- Destination Config Section -->
                     <TextBlock x:Name="lblDestinationConfig" Text="Destination Config:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="0"/>
@@ -187,7 +188,7 @@ function Create-KubeTidyLauncher {
                 $excludeCluster = ($window.FindName("chkExcludeCluster")).IsChecked
                 $exclusionList = if ($excludeCluster) { ($window.FindName("txtExclusion")).Text } else { $null }
                 $mergeConfig = ($window.FindName("chkMergeConfig")).IsChecked
-                $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text } else { $null }
+                $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text -split ";" } else { $null }
                 $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
                 $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
 
@@ -202,7 +203,7 @@ function Create-KubeTidyLauncher {
                         ListContexts      = $listContexts
                         DryRun            = $dryRun
                         ExclusionList     = if ($excludeCluster) { $exclusionList } else { $null }
-                        MergeConfigs      = if ($mergeConfig) { $mergeConfigs } else { $null }
+                        MergeConfigs      = $mergeConfigs
                         DestinationConfig = if ($destinationConfigChecked) { $destinationConfig } else { $null }
                     }
                 
@@ -256,6 +257,19 @@ function Create-KubeTidyLauncher {
             })
     }
 
+    $btnBrowseMergeConfig = $window.FindName("btnBrowseMergeConfig")
+    if ($btnBrowseMergeConfig) {
+        $btnBrowseMergeConfig.Add_Click({
+                $fileDialog = New-Object -TypeName Microsoft.Win32.OpenFileDialog
+                $fileDialog.Filter = "Config Files (*.yaml, *.yml, *.config,)|*.yaml;*.yml;*.config|All Files (*.*)|*.*"
+                $fileDialog.Multiselect = $true
+                if ($fileDialog.ShowDialog() -eq $true) {
+                    $txtMergeConfig = [System.Windows.Controls.TextBox]$window.FindName("txtMergeConfig")
+                    $txtMergeConfig.Text = ($fileDialog.FileNames -join ";")
+                }
+            })
+    }
+
     $btnBrowseDestinationConfig = $window.FindName("btnBrowseDestinationConfig")
     if ($btnBrowseDestinationConfig) {
         $btnBrowseDestinationConfig.Add_Click({
@@ -286,14 +300,17 @@ function Create-KubeTidyLauncher {
     $chkMergeConfig = $window.FindName("chkMergeConfig")
     $txtMergeConfig = [System.Windows.Controls.TextBox]$window.FindName("txtMergeConfig")
     $lblMergeConfig = $window.FindName("lblMergeConfig")
+    $btnBrowseMergeConfig = $window.FindName("btnBrowseMergeConfig")
     if ($chkMergeConfig) {
         $chkMergeConfig.Add_Checked({
                 $txtMergeConfig.Visibility = [System.Windows.Visibility]::Visible
                 $lblMergeConfig.Visibility = [System.Windows.Visibility]::Visible
+                $btnBrowseMergeConfig.Visibility = [System.Windows.Visibility]::Visible
             })
         $chkMergeConfig.Add_Unchecked({
                 $txtMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
                 $lblMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
+                $btnBrowseMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
             })
     }
 
