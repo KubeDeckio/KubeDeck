@@ -63,7 +63,7 @@ function Create-KubeDeckLauncher {
             </Grid.ColumnDefinitions>
 
             <!-- First Material Design Card for KubeTidy (Using Image for Header) -->
-            <Border Grid.Row="0" Grid.Column="0" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+            <Border Grid.Row="0" Grid.Column="0" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="0">
                 <Border.Effect>
                     <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
                 </Border.Effect>
@@ -71,19 +71,32 @@ function Create-KubeDeckLauncher {
                     <!-- Image for KubeTidy Header, filling the card's width -->
                     <Image x:Name="imgKubeTidyHeader" Stretch="UniformToFill" />
 
-                    <TextBlock Text="Launch the KubeTidy application" Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap" />
+                    <TextBlock Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
+                        A PowerShell tool for cleaning up Kubernetes kubeconfig files by removing unreachable clusters, users, and contexts.
+                        <LineBreak/>
+                        <LineBreak/>
+                        Simplify your multi-cluster Kubernetes management with ease. Supports exclusion lists, automated backups, and a detailed summary report.
+                    </TextBlock>
                     <Button x:Name="btnKubeTidy" Content="Launch KubeTidy" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10,10,10,10" />
                 </StackPanel>
             </Border>
 
-            <!-- Second Material Design Card for KubeSnapIt -->
-            <Border Grid.Row="0" Grid.Column="1" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="1">
+            <!-- Second Material Design Card for KubeSnapIt (Using Image for Header) -->
+            <Border Grid.Row="0" Grid.Column="1" Background="$cardBackground" Padding="0" Margin="10" BorderBrush="#ddd" BorderThickness="0">
                 <Border.Effect>
                     <DropShadowEffect Color="$cardShadowColor" BlurRadius="10" ShadowDepth="4" />
                 </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="KubeSnapIt" FontSize="18" FontWeight="Bold" Foreground="$headerForeColor" Margin="10,0,10,10" />
-                    <TextBlock Text="Launch the KubeSnapIt application" Foreground="$labelForeColor" Margin="10,0,10,10" TextWrapping="Wrap" />
+                    <!-- Image for KubeSnapIt Header, filling the card's width -->
+                    <Image x:Name="imgKubeSnapItHeader" Stretch="UniformToFill" />
+
+                    <TextBlock Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
+                        A PowerShell tool for managing Kubernetes snapshots, restorations, and comparisons with ease.
+                        <LineBreak/>
+                        <LineBreak/>
+                        Capture snapshots of your Kubernetes resources, restore them when needed, and compare snapshots or live cluster states to track changes over time.
+                    </TextBlock>
+
                     <Button x:Name="btnKubeSnapIt" Content="Launch KubeSnapIt" Background="$btnBackColor" Foreground="$headerForeColor" Padding="10" Margin="10,10,10,10" />
                 </StackPanel>
             </Border>
@@ -105,6 +118,11 @@ function Create-KubeDeckLauncher {
     $imgKubeTidyHeader = $window.FindName("imgKubeTidyHeader")
     $kubeTidyHeaderPath = Join-Path $PSScriptRoot "assets/images/gen/projects/KubeTidyHeader.png"
     $imgKubeTidyHeader.Source = [Windows.Media.Imaging.BitmapImage]::new([uri]::new($kubeTidyHeaderPath, [UriKind]::Absolute))
+
+    # Set the KubeSnapIt header image to fill the card's width
+    $imgKubeSnapItHeader = $window.FindName("imgKubeSnapItHeader")
+    $kubeSnapItHeaderPath = Join-Path $PSScriptRoot "assets/images/gen/projects/KubeSnapItHeader.png"
+    $imgKubeSnapItHeader.Source = [Windows.Media.Imaging.BitmapImage]::new([uri]::new($kubeSnapItHeaderPath, [UriKind]::Absolute))
 
     # Get the About button from the header
     $aboutButton = $window.FindName("btnAbout")
