@@ -103,7 +103,7 @@ function Create-KubeTidyLauncher {
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="KubeConfig Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0"/>
-                    <TextBox x:Name="txtKubeConfig" Height="30" Width="600" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Grid.Column="1"/>
+                    <TextBox x:Name="txtKubeConfig" Height="30" Width="600" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Grid.Column="1" VerticalContentAlignment="Center"/>
                     <Button x:Name="btnBrowseKubeConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2"/>
                 </Grid>
 
@@ -135,15 +135,15 @@ function Create-KubeTidyLauncher {
 
                     <!-- Exclusion List Section -->
                     <TextBlock x:Name="lblExclusion" Text="Exclusion List:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="txtExclusion" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox x:Name="txtExclusion" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
 
                     <!-- Merge Config Section -->
                     <TextBlock x:Name="lblMergeConfig" Text="Merge Config Files:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox x:Name="txtMergeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="1" Grid.Column="1"/>
+                    <TextBox x:Name="txtMergeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"/>
 
                     <!-- Destination Config Section -->
                     <TextBlock x:Name="lblDestinationConfig" Text="Destination Config:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="2" Grid.Column="1"/>
+                    <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"/>
                     <Button x:Name="btnBrowseDestinationConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="2" Margin="10,10,10,10"/>
                 </Grid>
 
