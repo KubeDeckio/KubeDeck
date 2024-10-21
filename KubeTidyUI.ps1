@@ -1,5 +1,27 @@
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName PresentationFramework
+Add-Type -AssemblyName PresentationCore
+Add-Type -AssemblyName WindowsBase
+Add-Type -AssemblyName System.Xaml
+
+# Ensure the KubeTidy module is installed and loaded
+if (-not (Get-Module -ListAvailable -Name 'KubeTidy')) {
+    try {
+        Install-Module -Name 'KubeTidy' -Scope CurrentUser -Force -ErrorAction Stop
+    }
+    catch {
+        Write-Error "Error: Unable to install the KubeTidy module from the PowerShell Gallery. Please check your internet connection and permissions."
+        return
+    }
+}
+
+# Load the KubeTidy module
+try {
+    Import-Module KubeTidy -ErrorAction Stop
+}
+catch {
+    Write-Error "Error: Unable to load the KubeTidy module. Please make sure it is installed and accessible."
+    return
+}
 
 # Function to get system theme (light or dark mode)
 function Get-SystemTheme {
@@ -10,7 +32,8 @@ function Get-SystemTheme {
             return "Dark"
         }
         return "Light"
-    } catch {
+    }
+    catch {
         # Default to Light theme if anything goes wrong
         return "Light"
     }
@@ -20,459 +43,272 @@ function Get-SystemTheme {
 $isDarkMode = Get-SystemTheme
 
 # Set colors based on mode
-if ($isDarkMode) {
-    $formBackColor = [System.Drawing.Color]::FromArgb(255, 32, 47, 61)
-    $headerBackColor = [System.Drawing.Color]::Black
-    $headerForeColor = [System.Drawing.Color]::White
-    $labelForeColor = [System.Drawing.Color]::White
-    $btnBackColor = [System.Drawing.Color]::FromArgb(17, 169, 187)  # Brand color
-    $txtBackColor = [System.Drawing.Color]::FromArgb(50, 50, 50)  # Dark text box
-    $txtForeColor = [System.Drawing.Color]::White
-} else {
-    $formBackColor = [System.Drawing.Color]::FromArgb(32, 47, 61)  # Custom color #202f3d
-    $headerBackColor = [System.Drawing.Color]::Black  # Light header
-    $headerForeColor = [System.Drawing.Color]::White
-    $labelForeColor = [System.Drawing.Color]::Black
-    $btnBackColor = [System.Drawing.Color]::FromArgb(17, 169, 187)  # Brand color
-    $txtBackColor = [System.Drawing.Color]::White  # Light text box
-    $txtForeColor = [System.Drawing.Color]::Black
-}
+$formBackColor = if ($isDarkMode -eq "Dark") { "#202f3d" } else { "#f0f0f0" }
+$headerBackColor = "Black"
+$headerForeColor = "White"
+$labelForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
+$btnBackColor = "#11A9BB"
+$txtBackColor = if ($isDarkMode -eq "Dark") { "#323232" } else { "White" }
+$txtForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 
-# Create the form
-$form = New-Object system.Windows.Forms.Form
-$form.Text = "KubeTidy"
-$form.Size = New-Object System.Drawing.Size(920, 750)  # Initial form size
-$form.StartPosition = "CenterScreen"
-$form.AutoSize = $true  # Enable auto-resizing
-$form.AutoSizeMode = 'GrowAndShrink'  # Grow based on content
-$form.MinimumSize = New-Object System.Drawing.Size(920, 450)  # Minimum size of the form
-$form.BackColor = $formBackColor  # Set background color based on mode
+# Function to create the KubeTidy UI using WPF
+function Create-KubeTidyLauncher {
+    [xml]$xaml = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KubeTidy" 
+        SizeToContent="WidthAndHeight"
+        MinHeight="450" MinWidth="920"
+        Background="$formBackColor" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanMinimize" 
+        FontFamily="Roboto" 
+        FontSize="12">
 
-# Prevent maximizing and resizing
-$form.MaximizeBox = $false  # Disable the maximize button
-$form.FormBorderStyle = 'FixedDialog'  # Prevent resizing
+    <DockPanel>
+        <!-- Header Section -->
+        <Grid DockPanel.Dock="Top" Background="$headerBackColor" Height="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" /> <!-- Title Column -->
+                <ColumnDefinition Width="*" /> <!-- Filler Column -->
+                <ColumnDefinition Width="Auto" /> <!-- Checkboxes Column -->
+                <ColumnDefinition Width="Auto" /> <!-- Run Button Column -->
+            </Grid.ColumnDefinitions>
 
-# Set the font for Roboto
-$robotoFont = New-Object System.Drawing.Font("Roboto", 10)
+            <TextBlock Grid.Column="0" Text="KubeTidy" FontSize="24" Foreground="$headerForeColor" Padding="0" VerticalAlignment="Center" FontWeight="Bold"/>
+            
+            <!-- Checkboxes for Dry Run and Backup Options -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                <CheckBox x:Name="chkBackup" Content="Backup Config" Foreground="$headerForeColor" Margin="10,0" IsChecked="True"/>
+                <CheckBox x:Name="chkDryRun" Content="Dry Run" Foreground="$headerForeColor" Margin="10,0"/>
+                <CheckBox x:Name="chkForce" Content="Force" Foreground="$headerForeColor" Margin="10,0"/>
+                
+            </StackPanel>
 
-# Create a FlowLayoutPanel for dynamic layout
-$flowPanel = New-Object System.Windows.Forms.FlowLayoutPanel
-$flowPanel.Dock = 'Top'
-$flowPanel.FlowDirection = 'TopDown'
-$flowPanel.AutoSize = $true
-$flowPanel.WrapContents = $false
-$flowPanel.BackColor = [System.Drawing.Color]::Transparent
-$form.Controls.Add($flowPanel)
+            <!-- Run Button -->
+            <Button x:Name="btnRun" Grid.Column="3" Content="Run" Width="150" Height="30" HorizontalAlignment="Right" Margin="10"
+                    Background="$btnBackColor" Foreground="$headerForeColor" FontWeight="Bold"/>
+        </Grid>
 
-# Header panel
-$headerPanel = New-Object System.Windows.Forms.Panel
-$headerPanel.Size = New-Object System.Drawing.Size(880, 60)
-$headerPanel.BackColor = $headerBackColor
-$headerPanel.Padding = New-Object System.Windows.Forms.Padding(10)
-$headerPanel.Dock = 'Top'
-$form.Controls.Add($headerPanel)
+        <!-- Main Content -->
+        <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10" VerticalAlignment="Top">
 
-# Label for Title
-$lblTitle = New-Object System.Windows.Forms.Label
-$lblTitle.Text = "KubeTidy"
-$lblTitle.ForeColor = $headerForeColor
-$lblTitle.Font = New-Object System.Drawing.Font("Roboto", 18, [System.Drawing.FontStyle]::Bold)
-$lblTitle.AutoSize = $true
-$headerPanel.Controls.Add($lblTitle)
+                <!-- KubeConfig Path Section -->
+                <Grid Margin="10,20,10,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" /> <!-- Label Column -->
+                        <ColumnDefinition Width="*" /> <!-- Input Box Column -->
+                        <ColumnDefinition Width="Auto" /> <!-- Browse Button Column -->
+                    </Grid.ColumnDefinitions>
 
-# Center the label vertically within the header panel
-$lblTitleHeight = $lblTitle.Height
-$headerPanelHeight = $headerPanel.Height
-$verticalCenter = ($headerPanelHeight - $lblTitleHeight) / 2
-$lblTitle.Location = New-Object System.Drawing.Point(10, $verticalCenter)  # 10 is the X-position (horizontal)
+                    <TextBlock Text="KubeConfig Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0"/>
+                    <TextBox x:Name="txtKubeConfig" Height="30" Width="600" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Grid.Column="1"/>
+                    <Button x:Name="btnBrowseKubeConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2"/>
+                </Grid>
 
-# Panel to hold both the checkboxes and the "Run" button
-$headerFlowPanel = New-Object System.Windows.Forms.FlowLayoutPanel
-$headerFlowPanel.FlowDirection = 'RightToLeft'  # Align items from right to left
-$headerFlowPanel.Dock = 'Fill'
-$headerFlowPanel.AutoSize = $true
-$headerFlowPanel.WrapContents = $false  # Prevent wrapping
-$headerPanel.Controls.Add($headerFlowPanel)
+                <!-- Radio Buttons Section for List Clusters and Contexts -->
+                <StackPanel Orientation="Horizontal" Margin="10,15">
+                    <RadioButton x:Name="radListClusters" Content="List Clusters" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0"/>
+                    <RadioButton x:Name="radListContexts" Content="List Contexts" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0"/>
+                    <RadioButton x:Name="radNone" Content="None" GroupName="RadioGroup" Foreground="$labelForeColor" IsChecked="True" Margin="10,0"/>
+                </StackPanel>
 
-# Add the "Run" button first so it stays on the right (right-to-left flow)
-$btnExecute = New-Object System.Windows.Forms.Button
-$btnExecute.Text = "Run"
-$btnExecute.Size = New-Object System.Drawing.Size(150, 40)
-$btnExecute.Font = New-Object System.Drawing.Font("Roboto", 12, [System.Drawing.FontStyle]::Bold)
-$btnExecute.BackColor = $btnBackColor  # Brand color
-$btnExecute.ForeColor = $headerForeColor
-$btnExecute.FlatStyle = 'Flat'
-$btnExecute.FlatAppearance.BorderSize = 0
-$headerFlowPanel.Controls.Add($btnExecute)
+                <!-- Checkboxes Section for Exclude Cluster, Merge Config, Destination Config -->
+                <StackPanel Orientation="Horizontal" Margin="10,15">
+                    <CheckBox x:Name="chkExcludeCluster" Content="Exclude Cluster" Foreground="$labelForeColor" Margin="10,0"/>
+                    <CheckBox x:Name="chkMergeConfig" Content="Merge Config Files" Foreground="$labelForeColor" Margin="10,0"/>
+                    <CheckBox x:Name="chkDestinationConfig" Content="Destination Config" Foreground="$labelForeColor" Margin="10,0"/>
+                </StackPanel>
 
-# KubeConfig Path Section
-$kubeConfigPanel = New-Object System.Windows.Forms.Panel
-$kubeConfigPanel.Size = New-Object System.Drawing.Size(880, 60)
-$flowPanel.Controls.Add($kubeConfigPanel)
+                <Grid Margin="10,20,10,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" /> <!-- Label Column -->
+                        <ColumnDefinition Width="*" /> <!-- Input Box Column -->
+                        <ColumnDefinition Width="Auto" /> <!-- Browse Button Column, if applicable -->
+                    </Grid.ColumnDefinitions>
 
-$lblKubeConfig = New-Object System.Windows.Forms.Label
-$lblKubeConfig.Text = "KubeConfig Path:"
-$lblKubeConfig.AutoSize = $true
-$lblKubeConfig.Location = New-Object System.Drawing.Point(10, 20)
-$lblKubeConfig.Font = $robotoFont
-$lblKubeConfig.ForeColor = $labelForeColor
-$kubeConfigPanel.Controls.Add($lblKubeConfig)
+                    <!-- Exclusion List Section -->
+                    <TextBlock x:Name="lblExclusion" Text="Exclusion List:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox x:Name="txtExclusion" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="0" Grid.Column="1"/>
 
-$txtKubeConfig = New-Object System.Windows.Forms.TextBox
-$txtKubeConfig.Size = New-Object System.Drawing.Size(600, 25)
-$txtKubeConfig.Font = $robotoFont
-$txtKubeConfig.Location = New-Object System.Drawing.Point(150, 18)
-$txtKubeConfig.BackColor = $txtBackColor
-$txtKubeConfig.ForeColor = $txtForeColor
-$kubeConfigPanel.Controls.Add($txtKubeConfig)
+                    <!-- Merge Config Section -->
+                    <TextBlock x:Name="lblMergeConfig" Text="Merge Config Files:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox x:Name="txtMergeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="1" Grid.Column="1"/>
 
-$btnBrowseKubeConfig = New-Object System.Windows.Forms.Button
-$btnBrowseKubeConfig.Text = "Browse"
-$btnBrowseKubeConfig.Size = New-Object System.Drawing.Size(100, 30)
-$btnBrowseKubeConfig.Font = $robotoFont
-$btnBrowseKubeConfig.Location = New-Object System.Drawing.Point(760, 18)
-$btnBrowseKubeConfig.BackColor = $btnBackColor  # Brand color
-$btnBrowseKubeConfig.ForeColor = $headerForeColor
-$btnBrowseKubeConfig.FlatStyle = 'Flat'
-$kubeConfigPanel.Controls.Add($btnBrowseKubeConfig)
+                    <!-- Destination Config Section -->
+                    <TextBlock x:Name="lblDestinationConfig" Text="Destination Config:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="2" Grid.Column="1"/>
+                    <Button x:Name="btnBrowseDestinationConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="2" Margin="10,10,10,10"/>
+                </Grid>
 
-# Radio buttons for List Clusters and List Contexts
-$radioPanel = New-Object System.Windows.Forms.Panel
-$radioPanel.Size = New-Object System.Drawing.Size(880, 60)
-$flowPanel.Controls.Add($radioPanel)
+                <!-- Output Section -->
+                <TextBox x:Name="txtOutput" Height="150" Margin="10" VerticalScrollBarVisibility="Auto" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Background="Black" Foreground="Cyan"/>
+            </StackPanel>
+        </ScrollViewer>
 
-$radListClusters = New-Object System.Windows.Forms.RadioButton
-$radListClusters.Text = "List Clusters"
-$radListClusters.Location = New-Object System.Drawing.Point(10, 20)
-$radListClusters.Font = $robotoFont
-$radListClusters.ForeColor = $labelForeColor
-$radioPanel.Controls.Add($radListClusters)
+    </DockPanel>
+</Window>
+"@
 
-$radListContexts = New-Object System.Windows.Forms.RadioButton
-$radListContexts.Text = "List Contexts"
-$radListContexts.Location = New-Object System.Drawing.Point(150, 20)
-$radListContexts.Font = $robotoFont
-$radListContexts.ForeColor = $labelForeColor
-$radioPanel.Controls.Add($radListContexts)
+    # Load XAML
+    $reader = (New-Object System.Xml.XmlNodeReader $xaml)
+    $window = [Windows.Markup.XamlReader]::Load($reader)
 
-$radNone = New-Object System.Windows.Forms.RadioButton
-$radNone.Text = "None"
-$radNone.Checked = $true
-$radNone.Location = New-Object System.Drawing.Point(290, 20)
-$radNone.Font = $robotoFont
-$radNone.ForeColor = $labelForeColor
-$radioPanel.Controls.Add($radNone)
-
-# Checkboxes for "Exclude a Cluster", "Merge Config Files", and "Destination Config" - Horizontal Flow
-$chkPanel = New-Object System.Windows.Forms.FlowLayoutPanel
-$chkPanel.FlowDirection = 'LeftToRight'
-$chkPanel.AutoSize = $true
-$chkPanel.Padding = New-Object System.Windows.Forms.Padding(10)
-$flowPanel.Controls.Add($chkPanel)
-
-$chkExcludeCluster = New-Object System.Windows.Forms.CheckBox
-$chkExcludeCluster.Text = "Exclude a Cluster"
-$chkExcludeCluster.Font = $robotoFont
-$chkExcludeCluster.ForeColor = $labelForeColor
-$chkExcludeCluster.AutoSize = $true
-$chkPanel.Controls.Add($chkExcludeCluster)
-
-$chkMergeConfig = New-Object System.Windows.Forms.CheckBox
-$chkMergeConfig.Text = "Merge Config Files"
-$chkMergeConfig.Font = $robotoFont
-$chkMergeConfig.ForeColor = $labelForeColor
-$chkMergeConfig.AutoSize = $true
-$chkPanel.Controls.Add($chkMergeConfig)
-
-$chkDestinationConfig = New-Object System.Windows.Forms.CheckBox
-$chkDestinationConfig.Text = "Destination Config"
-$chkDestinationConfig.Font = $robotoFont
-$chkDestinationConfig.ForeColor = $labelForeColor
-$chkDestinationConfig.AutoSize = $true
-$chkPanel.Controls.Add($chkDestinationConfig)
-
-# Create a TableLayoutPanel to align the labels and text boxes
-$tablePanel = New-Object System.Windows.Forms.TableLayoutPanel
-$tablePanel.ColumnCount = 3  # Increase column count to accommodate button
-$tablePanel.RowCount = 0  # Start with 0 rows
-$tablePanel.AutoSize = $true
-$tablePanel.Dock = 'Top'
-$tablePanel.Margin = New-Object System.Windows.Forms.Padding(10)
-$flowPanel.Controls.Add($tablePanel)
-
-# Function to add label and textbox to the table
-function AddLabelTextBoxRow($labelText) {
-    $label = New-Object System.Windows.Forms.Label
-    $label.Text = $labelText
-    $label.AutoSize = $true
-    $label.Location = New-Object System.Drawing.Point(10, 20)
-    $label.Font = $robotoFont
-    $label.ForeColor = $labelForeColor
-
-    $textBox = New-Object System.Windows.Forms.TextBox
-    $textBox.Size = New-Object System.Drawing.Size(600, 30)  # Fixed width for all text boxes
-    $textBox.Font = $robotoFont
-    $textBox.BackColor = $txtBackColor  # Set background color for text box
-    $textBox.ForeColor = $txtForeColor  # Set foreground color for text box
-
-    # Add the label and text box to the next row
-    $tablePanel.Controls.Add($label, 0, $tablePanel.RowCount)
-    $tablePanel.Controls.Add($textBox, 1, $tablePanel.RowCount)
-    $tablePanel.RowCount++  # Increment row count
-
-    # Initially hide the label and text box
-    $label.Visible = $false
-    $textBox.Visible = $false
-
-    # Return the text box and label for later reference
-    return @($textBox, $label)
-}
-
-# Add text boxes and labels for Exclusion List, Merge Config Files, and Destination Config
-$exclusionRow = AddLabelTextBoxRow "Exclusion List:"
-$mergeConfigRow = AddLabelTextBoxRow "Merge Config Files:"
-$destinationRow = AddLabelTextBoxRow "Destination Config:"
-
-$exclusionTextBox = $exclusionRow[0]
-$lblExclusion = $exclusionRow[1]
-
-$mergeConfigTextBox = $mergeConfigRow[0]
-$lblMergeConfig = $mergeConfigRow[1]
-
-$destinationConfigTextBox = $destinationRow[0]
-$lblDestinationConfig = $destinationRow[1]
-
-# Create Browse button for Destination Config (Hidden by default)
-$btnBrowseDestinationConfig = New-Object System.Windows.Forms.Button
-$btnBrowseDestinationConfig.Text = "Browse"
-$btnBrowseDestinationConfig.Size = New-Object System.Drawing.Size(100, 30)
-$btnBrowseDestinationConfig.Font = $robotoFont
-$btnBrowseDestinationConfig.BackColor = $btnBackColor  # Brand color
-$btnBrowseDestinationConfig.ForeColor = $headerForeColor
-$btnBrowseDestinationConfig.FlatStyle = 'Flat'
-
-# Add the button to the table panel in the same row as the text box
-$tablePanel.Controls.Add($btnBrowseDestinationConfig, 2, $tablePanel.RowCount - 1)  # Add to the next column of the last row
-
-# Initially hide the button and text boxes
-$exclusionTextBox.Visible = $false
-$lblExclusion.Visible = $false
-$mergeConfigTextBox.Visible = $false
-$lblMergeConfig.Visible = $false
-$destinationConfigTextBox.Visible = $false
-$lblDestinationConfig.Visible = $false
-$btnBrowseDestinationConfig.Visible = $false
-
-# Dynamically adjust visibility based on checkbox selections
-$chkExcludeCluster.Add_CheckedChanged({
-    $exclusionTextBox.Visible = $chkExcludeCluster.Checked
-    $lblExclusion.Visible = $chkExcludeCluster.Checked  # Show/hide label
-})
-
-$chkMergeConfig.Add_CheckedChanged({
-    $mergeConfigTextBox.Visible = $chkMergeConfig.Checked
-    $lblMergeConfig.Visible = $chkMergeConfig.Checked  # Show/hide label
-})
-
-$chkDestinationConfig.Add_CheckedChanged({
-    $destinationConfigTextBox.Visible = $chkDestinationConfig.Checked
-    $lblDestinationConfig.Visible = $chkDestinationConfig.Checked  # Show/hide label
-    $btnBrowseDestinationConfig.Visible = $chkDestinationConfig.Checked  # Show/hide browse button
-})
-
-# Output RichTextBox
-$txtOutput = New-Object System.Windows.Forms.RichTextBox
-$txtOutput.Multiline = $true
-$txtOutput.ScrollBars = 'Vertical'
-$txtOutput.Size = New-Object System.Drawing.Size(880, 150)  # Adjusted width and height
-$txtOutput.ReadOnly = $true
-$txtOutput.Font = New-Object System.Drawing.Font("Courier New", 10)
-$txtOutput.BackColor = [System.Drawing.Color]::Black
-$txtOutput.ForeColor = [System.Drawing.Color]::Cyan
-$flowPanel.Controls.Add($txtOutput)
-
-# Create the StatusStrip
-$statusStrip = New-Object System.Windows.Forms.StatusStrip
-$statusStrip.Dock = 'Bottom'
-$form.Controls.Add($statusStrip)
-
-# Create "Visit Us" button on the left
-$visitButton = New-Object System.Windows.Forms.ToolStripStatusLabel
-$visitButton.Text = "Visit Us"
-$visitButton.IsLink = $true
-$visitButton.ForeColor = $labelForeColor
-$visitButton.Font = New-Object System.Drawing.Font("Roboto", 10, [System.Drawing.FontStyle]::Bold)
-$visitButton.BackColor = $headerBackColor
-$statusStrip.Items.Add($visitButton)
-
-# Create "About" button on the right
-$aboutButton = New-Object System.Windows.Forms.ToolStripStatusLabel
-$aboutButton.Text = "About"
-$aboutButton.ForeColor = $labelForeColor
-$aboutButton.Font = New-Object System.Drawing.Font("Roboto", 10, [System.Drawing.FontStyle]::Bold)
-$aboutButton.BackColor = $headerBackColor
-$statusStrip.Items.Add($aboutButton)
-
-# Right-align the "About" button by adding a spring item (fills space between Visit Us and About)
-$spring = New-Object System.Windows.Forms.ToolStripStatusLabel
-$spring.Spring = $true
-$statusStrip.Items.Insert(1, $spring)
-
-# Add event handler for the "Visit Us" button click to open the website
-$visitButton.Click += {
-    Start-Process "https://kubetidy.io"
-}
-
-# Add event handler for the "About" button to show a new window
-$aboutButton.Click += {
-    # Create a new form for the About window
-    $aboutForm = New-Object system.Windows.Forms.Form
-    $aboutForm.Text = "About KubeTidy"
-    $aboutForm.Size = New-Object System.Drawing.Size(400, 300)
-    $aboutForm.StartPosition = "CenterParent"
-    $aboutForm.FormBorderStyle = 'FixedDialog'
-    $aboutForm.MaximizeBox = $false
-    $aboutForm.BackColor = $formBackColor
-    $aboutForm.Font = $robotoFont
-
-    # Add a label with information about the application
-    $aboutLabel = New-Object System.Windows.Forms.Label
-    $aboutLabel.Text = "KubeTidy Version 1.0`nA tool to tidy your Kubernetes configurations."
-    $aboutLabel.ForeColor = $labelForeColor
-    $aboutLabel.Location = New-Object System.Drawing.Point(20, 50)
-    $aboutLabel.AutoSize = $true
-    $aboutForm.Controls.Add($aboutLabel)
-
-    # Show the About form as a modal dialog
-    $aboutForm.ShowDialog()
-}
-
-
-# Show Save File Dialog Function
-function Show-SaveFileDialog {
-    param (
-        [string]$Filter,
-        [string]$InitialDirectory
-    )
-
-    $FileDialog = New-Object System.Windows.Forms.SaveFileDialog
-    $FileDialog.Filter = $Filter
-    $FileDialog.InitialDirectory = $InitialDirectory
-
-    if ($FileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
-        return $FileDialog.FileName
-    } else {
-        return $null
-    }
-}
-
-# Open Save File Dialog for Destination Config
-$btnBrowseDestinationConfig.Add_Click({
-    $filePath = Show-SaveFileDialog -Filter "Config Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*" -InitialDirectory [System.Environment]::GetFolderPath('MyDocuments')
-    if ($filePath) {
-        $destinationConfigTextBox.Text = $filePath
-    }
-})
-
-# Show File Dialog Function
-function Show-FileDialog {
-    param (
-        [string]$DialogType,  # 'Open' or 'Save'
-        [string]$Filter,
-        [string]$InitialDirectory
-    )
-
-    if ($DialogType -eq 'Open') {
-        $FileDialog = New-Object System.Windows.Forms.OpenFileDialog
-    } elseif ($DialogType -eq 'Save') {
-        $FileDialog = New-Object System.Windows.Forms.SaveFileDialog
+    if (-not $window) {
+        Write-Error "Failed to load the WPF window."
+        return
     }
 
-    $FileDialog.Filter = $Filter
-    $FileDialog.InitialDirectory = $InitialDirectory
+    # Set Button Event Handlers
+    $btnRun = $window.FindName("btnRun")
+    if ($btnRun) {
+        $btnRun.Add_Click({
+                $txtOutput = $window.FindName("txtOutput")
+                $txtOutput.Clear()
+                
 
-    if ($FileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
-        return $FileDialog.FileName
-    } else {
-        return $null
+                # Gather inputs from UI elements
+                $kubeConfigPath = ($window.FindName("txtKubeConfig")).Text
+                $backup = ($window.FindName("chkBackup")).IsChecked
+                $dryRun = ($window.FindName("chkDryRun")).IsChecked
+                $force = ($window.FindName("chkForce")).IsChecked
+                $listClusters = ($window.FindName("radListClusters")).IsChecked
+                $listContexts = ($window.FindName("radListContexts")).IsChecked
+                $excludeCluster = ($window.FindName("chkExcludeCluster")).IsChecked
+                $exclusionList = if ($excludeCluster) { ($window.FindName("txtExclusion")).Text } else { $null }
+                $mergeConfig = ($window.FindName("chkMergeConfig")).IsChecked
+                $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text } else { $null }
+                $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
+                $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
+
+                # Construct and run the Invoke-KubeTidy command
+                # Construct and run the Invoke-KubeTidy command directly in the current session
+                try {
+                    # Construct command arguments
+                    $arguments = @{
+                        KubeConfigPath    = $kubeConfigPath
+                        Backup            = $backup
+                        Force             = $force
+                        ListClusters      = $listClusters
+                        ListContexts      = $listContexts
+                        DryRun            = $dryRun
+                        ExclusionList     = if ($excludeCluster) { $exclusionList } else { $null }
+                        MergeConfigs      = if ($mergeConfig) { $mergeConfigs } else { $null }
+                        DestinationConfig = if ($destinationConfigChecked) { $destinationConfig } else { $null }
+                    }
+                
+                    # Use transcript to capture Write-Host output
+                    $transcriptPath = [System.IO.Path]::GetTempFileName()
+                    Start-Transcript -Path $transcriptPath -Force
+                
+                    # Run Invoke-KubeTidy
+                    Invoke-KubeTidy @arguments
+                
+                    Stop-Transcript
+
+# Read the transcript file, filter out unnecessary transcript metadata, and append to UI output
+$inTranscriptBody = $false
+Get-Content -Path $transcriptPath | ForEach-Object {
+    if ($_ -match 'PowerShell transcript start|PowerShell transcript end|^\*{22}|^End time:') {
+        # Skip transcript metadata, section dividers, and end time
+        $inTranscriptBody = -not $inTranscriptBody
+    } elseif ($inTranscriptBody -eq $true) {
+        # Append only the actual output to the text box
+        $txtOutput.AppendText("$_`n")
     }
 }
+Remove-Item -Path $transcriptPath -Force
 
-# Open File Dialog for KubeConfig
-$btnBrowseKubeConfig.Add_Click({
-    $filePath = Show-FileDialog -DialogType 'Open' `
-                                -Filter "KubeConfig Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*" `
-                                -InitialDirectory [System.Environment]::GetFolderPath('MyDocuments')
-    if ($filePath) {
-        $txtKubeConfig.Text = $filePath
-    }
-})
-
-# Capture Output Function
-function Write-ColoredOutput {
-    param (
-        [string]$message,
-        [string]$color = 'Cyan'
-    )
-    $txtOutput.SelectionColor = [System.Drawing.Color]::$color
-    $txtOutput.AppendText("$message`r`n")
-    $txtOutput.ScrollToCaret()
-}
-
-# Action for the Run button
-$btnExecute.Add_Click({
-    $txtOutput.Clear()
-    # Get values from inputs
-    $KubeConfigPath = $txtKubeConfig.Text
-    $ExclusionList = $exclusionTextBox.Text  # Update to get text from exclusionTextBox
-    $MergeConfigs = $mergeConfigTextBox.Text  # Update to get text from mergeConfigTextBox
-    $DestinationConfig = $destinationConfigTextBox.Text
-
-    # Prepare the parameters for Invoke-KubeTidy
-    $invokeParams = @{
-        KubeConfigPath  = $KubeConfigPath
-        ExclusionList   = $ExclusionList
-        MergeConfigs    = $MergeConfigs
-        DestinationConfig = $DestinationConfig
-    }
-
-    # Add parameters based on selected radio button
-if ($radListClusters.Checked) {
-    $invokeParams['ListClusters'] = $true  # Add ListClusters flag
-} elseif ($radListContexts.Checked) {
-    $invokeParams['ListContexts'] = $true   # Add ListContexts flag
-}
-
-    # Script execution
-    $psOutput = {
-        try {
-            # Try running the command
-            Invoke-KubeTidy @invokeParams
-        } catch {
-            Write-ColoredOutput "An error occurred while running KubeTidy: $($_.Exception.Message)" 'Red'
-        }
-    }
-    try {
-        . {
-            & $psOutput 4>&1 5>&1 6>&1 |
-            ForEach-Object {
-                if ($_ -match "ERROR") {
-                    Write-ColoredOutput $_ 'Red'
                 }
-                elseif ($_ -match "WARNING") {
-                    Write-ColoredOutput $_ 'Orange'
-                } else {
-                    Write-ColoredOutput $_ 'Cyan'
+                catch {
+                    $txtOutput.AppendText("Error: $_`n")
                 }
-            }
-        }
-    }
-    catch {
-        Write-ColoredOutput "An error occurred: $_" 'Red'
-    }
-})
+                
 
-# Show the form
-$form.Topmost = $true
-$form.Add_Shown({ $form.Activate() })
-[void]$form.ShowDialog()
+                # Capture the output and display it in the UI
+                $output = $output
+                
+            })
+    }
+
+    $btnBrowseKubeConfig = $window.FindName("btnBrowseKubeConfig")
+    if ($btnBrowseKubeConfig) {
+        $btnBrowseKubeConfig.Add_Click({
+                $fileDialog = New-Object -TypeName Microsoft.Win32.OpenFileDialog
+                $fileDialog.Filter = "KubeConfig Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*"
+                if ($fileDialog.ShowDialog() -eq $true) {
+                    $txtKubeConfig.Text = $fileDialog.FileName
+                }
+            })
+    }
+
+    $btnBrowseDestinationConfig = $window.FindName("btnBrowseDestinationConfig")
+    if ($btnBrowseDestinationConfig) {
+        $btnBrowseDestinationConfig.Add_Click({
+                $fileDialog = New-Object -TypeName Microsoft.Win32.SaveFileDialog
+                $fileDialog.Filter = "Config Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*"
+                if ($fileDialog.ShowDialog() -eq $true) {
+                    $txtDestinationConfig.Text = $fileDialog.FileName
+                }
+            })
+    }
+
+    # CheckBox Visibility Handling
+    $chkExcludeCluster = $window.FindName("chkExcludeCluster")
+    $txtExclusion = $window.FindName("txtExclusion")
+    $lblExclusion = $window.FindName("lblExclusion")
+    if ($chkExcludeCluster) {
+        $chkExcludeCluster.Add_Checked({
+                $txtExclusion.Visibility = [System.Windows.Visibility]::Visible
+                $lblExclusion.Visibility = [System.Windows.Visibility]::Visible
+            })
+        $chkExcludeCluster.Add_Unchecked({
+                $txtExclusion.Visibility = [System.Windows.Visibility]::Collapsed
+                $lblExclusion.Visibility = [System.Windows.Visibility]::Collapsed
+            })
+    }
+
+    $chkMergeConfig = $window.FindName("chkMergeConfig")
+    $txtMergeConfig = $window.FindName("txtMergeConfig")
+    $lblMergeConfig = $window.FindName("lblMergeConfig")
+    if ($chkMergeConfig) {
+        $chkMergeConfig.Add_Checked({
+                $txtMergeConfig.Visibility = [System.Windows.Visibility]::Visible
+                $lblMergeConfig.Visibility = [System.Windows.Visibility]::Visible
+            })
+        $chkMergeConfig.Add_Unchecked({
+                $txtMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
+                $lblMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
+            })
+    }
+
+    $chkDestinationConfig = $window.FindName("chkDestinationConfig")
+    $txtDestinationConfig = $window.FindName("txtDestinationConfig")
+    $lblDestinationConfig = $window.FindName("lblDestinationConfig")
+    $btnBrowseDestinationConfig = $window.FindName("btnBrowseDestinationConfig")
+
+    if ($chkDestinationConfig) {
+        $chkDestinationConfig.Add_Checked({
+                $txtDestinationConfig.Visibility = [System.Windows.Visibility]::Visible
+                $lblDestinationConfig.Visibility = [System.Windows.Visibility]::Visible
+                $btnBrowseDestinationConfig.Visibility = [System.Windows.Visibility]::Visible
+            })
+        $chkDestinationConfig.Add_Unchecked({
+                $txtDestinationConfig.Visibility = [System.Windows.Visibility]::Collapsed
+                $lblDestinationConfig.Visibility = [System.Windows.Visibility]::Collapsed
+                $btnBrowseDestinationConfig.Visibility = [System.Windows.Visibility]::Collapsed
+            })
+    }
+
+    # Show the main window
+    $window.ShowDialog()
+}
+
+# Launch the KubeTidy Launcher
+Create-KubeTidyLauncher
