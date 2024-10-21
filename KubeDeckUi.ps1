@@ -29,6 +29,9 @@ $cardShadowColor = if ($isDarkMode -eq "Dark") { "#000000" } else { "#999999" }
 
 # Function to create the KubeDeck launcher using WPF
 function Create-KubeDeckLauncher {
+    # Define the path to the icon file dynamically
+    $iconPath = Join-Path -Path $PSScriptRoot -ChildPath 'assets\images\gen\home\KubeDeck.ico'
+
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -108,6 +111,12 @@ function Create-KubeDeckLauncher {
     # Parse the XAML
     $reader = (New-Object System.Xml.XmlNodeReader $xaml)
     $window = [Windows.Markup.XamlReader]::Load($reader)
+
+    # Set the icon property after loading the XAML
+    $window.Icon = New-Object System.Windows.Media.Imaging.BitmapImage
+    $window.Icon.BeginInit()
+    $window.Icon.UriSource = New-Object System.Uri($iconPath, [System.UriKind]::Absolute)
+    $window.Icon.EndInit()
 
     # Set the logo image source using $PSScriptRoot
     $logoImage = $window.FindName("logoImage")
