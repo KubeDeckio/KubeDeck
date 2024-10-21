@@ -170,9 +170,12 @@ function Create-KubeTidyLauncher {
     if ($btnRun) {
         $btnRun.Add_Click({
                 $txtOutput = $window.FindName("txtOutput")
-                $txtOutput.Clear()
                 
-
+                # Display "Working..." message while the task is running
+                $txtOutput.Clear()
+                $txtOutput.AppendText("Working...`n")
+                $window.Cursor = [System.Windows.Input.Cursors]::Wait
+                
                 # Gather inputs from UI elements
                 $kubeConfigPath = ($window.FindName("txtKubeConfig")).Text
                 $backup = ($window.FindName("chkBackup")).IsChecked
@@ -187,7 +190,6 @@ function Create-KubeTidyLauncher {
                 $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
                 $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
 
-                # Construct and run the Invoke-KubeTidy command
                 # Construct and run the Invoke-KubeTidy command directly in the current session
                 try {
                     # Construct command arguments
@@ -212,28 +214,32 @@ function Create-KubeTidyLauncher {
                 
                     Stop-Transcript
 
-# Read the transcript file, filter out unnecessary transcript metadata, and append to UI output
-$inTranscriptBody = $false
-Get-Content -Path $transcriptPath | ForEach-Object {
-    if ($_ -match 'PowerShell transcript start|PowerShell transcript end|^\*{22}|^End time:') {
-        # Skip transcript metadata, section dividers, and end time
-        $inTranscriptBody = -not $inTranscriptBody
-    } elseif ($inTranscriptBody -eq $true) {
-        # Append only the actual output to the text box
-        $txtOutput.AppendText("$_`n")
-    }
-}
-Remove-Item -Path $transcriptPath -Force
+                    # Clear "Working..." message and display actual output
+                    $txtOutput.Clear()
+
+                    # Read the transcript file, filter out unnecessary transcript metadata, and append to UI output
+                    $inTranscriptBody = $false
+                    Get-Content -Path $transcriptPath | ForEach-Object {
+                        if ($_ -match 'PowerShell transcript start|PowerShell transcript end|^\*{22}|^End time:') {
+                            # Skip transcript metadata, section dividers, and end time
+                            $inTranscriptBody = -not $inTranscriptBody
+                        } elseif ($inTranscriptBody -eq $true) {
+                            # Append only the actual output to the text box
+                            $txtOutput.AppendText("$_`n")
+                        }
+                    }
+                    Remove-Item -Path $transcriptPath -Force
 
                 }
                 catch {
+                    # Clear "Working..." message and display error
+                    $txtOutput.Clear()
                     $txtOutput.AppendText("Error: $_`n")
                 }
-                
-
-                # Capture the output and display it in the UI
-                $output = $output
-                
+                finally {
+                    # Reset cursor to default
+                    $window.Cursor = [System.Windows.Input.Cursors]::Arrow
+                }
             })
     }
 
