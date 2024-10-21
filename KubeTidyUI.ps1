@@ -109,20 +109,22 @@ function Create-KubeTidyLauncher {
 
                 <!-- Radio Buttons Section for List Clusters and Contexts -->
                 <StackPanel Orientation="Horizontal" Margin="10,15">
-                    <RadioButton x:Name="radListClusters" Content="List Clusters" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0"/>
-                    <RadioButton x:Name="radListContexts" Content="List Contexts" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0"/>
-                    <RadioButton x:Name="radNone" Content="None" GroupName="RadioGroup" Foreground="$labelForeColor" IsChecked="True" Margin="10,0"/>
+                    <RadioButton x:Name="radListClusters" Content="List Clusters" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="radListContexts" Content="List Contexts" GroupName="RadioGroup" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="radNone" Content="None" GroupName="RadioGroup" Foreground="$labelForeColor" IsChecked="True" Margin="10,0" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
-                <!-- Checkboxes Section for Exclude Cluster, Merge Config, Destination Config -->
+                <!-- Checkboxes Section for Exclude Cluster, Merge Config, Destination Config, Export Contexts -->
                 <StackPanel Orientation="Horizontal" Margin="10,15">
-                    <CheckBox x:Name="chkExcludeCluster" Content="Exclude Cluster" Foreground="$labelForeColor" Margin="10,0"/>
-                    <CheckBox x:Name="chkMergeConfig" Content="Merge Config Files" Foreground="$labelForeColor" Margin="10,0"/>
-                    <CheckBox x:Name="chkDestinationConfig" Content="Destination Config" Foreground="$labelForeColor" Margin="10,0"/>
+                    <CheckBox x:Name="chkExcludeCluster" Content="Exclude Cluster" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
+                    <CheckBox x:Name="chkMergeConfig" Content="Merge Config Files" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
+                    <CheckBox x:Name="chkExportContexts" Content="Export Contexts" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
+                    <CheckBox x:Name="chkDestinationConfig" Content="Destination Config" Foreground="$labelForeColor" Margin="10,0" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
                 <Grid Margin="10,20,10,20">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -142,9 +144,13 @@ function Create-KubeTidyLauncher {
                     <TextBox x:Name="txtMergeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"/>
                     <Button x:Name="btnBrowseMergeConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="1" Grid.Column="2" Margin="10,10,10,10"/>
 
+                    <!-- Export Contexts Section -->
+                    <TextBlock x:Name="lblExportContexts" Text="Export Contexts:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox x:Name="txtExportContexts" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"/>
+
                     <!-- Destination Config Section -->
-                    <TextBlock x:Name="lblDestinationConfig" Text="Destination Config:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"/>
+                    <TextBlock x:Name="lblDestinationConfig" Text="Destination Config:" VerticalAlignment="Center" Foreground="$labelForeColor" Visibility="Collapsed" Grid.Row="3" Grid.Column="0"/>
+                    <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"/>
                     <Button x:Name="btnBrowseDestinationConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="2" Grid.Column="2" Margin="10,10,10,10"/>
                 </Grid>
 
@@ -189,6 +195,8 @@ function Create-KubeTidyLauncher {
                 $exclusionList = if ($excludeCluster) { ($window.FindName("txtExclusion")).Text } else { $null }
                 $mergeConfig = ($window.FindName("chkMergeConfig")).IsChecked
                 $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text -split ";" } else { $null }
+                $exportContexts = ($window.FindName("chkExportContexts")).IsChecked
+                $exportContextsPath = if ($exportContexts) { ($window.FindName("txtExportContexts")).Text } else { $null }
                 $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
                 $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
 
@@ -205,6 +213,7 @@ function Create-KubeTidyLauncher {
                         ExclusionList     = if ($excludeCluster) { $exclusionList } else { $null }
                         MergeConfigs      = $mergeConfigs
                         DestinationConfig = if ($destinationConfigChecked) { $destinationConfig } else { $null }
+                        ExportContexts    = if ($exportContexts) { $exportContextsPath } else { $null }
                     }
                 
                     # Use transcript to capture Write-Host output
@@ -311,6 +320,20 @@ function Create-KubeTidyLauncher {
                 $txtMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
                 $lblMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
                 $btnBrowseMergeConfig.Visibility = [System.Windows.Visibility]::Collapsed
+            })
+    }
+
+    $chkExportContexts = $window.FindName("chkExportContexts")
+    $txtExportContexts = [System.Windows.Controls.TextBox]$window.FindName("txtExportContexts")
+    $lblExportContexts = $window.FindName("lblExportContexts")
+    if ($chkExportContexts) {
+        $chkExportContexts.Add_Checked({
+                $txtExportContexts.Visibility = [System.Windows.Visibility]::Visible
+                $lblExportContexts.Visibility = [System.Windows.Visibility]::Visible
+            })
+        $chkExportContexts.Add_Unchecked({
+                $txtExportContexts.Visibility = [System.Windows.Visibility]::Collapsed
+                $lblExportContexts.Visibility = [System.Windows.Visibility]::Collapsed
             })
     }
 
