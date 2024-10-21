@@ -169,7 +169,7 @@ function Create-KubeTidyLauncher {
     $btnRun = $window.FindName("btnRun")
     if ($btnRun) {
         $btnRun.Add_Click({
-                $txtOutput = $window.FindName("txtOutput")
+                $txtOutput = [System.Windows.Controls.TextBox]$window.FindName("txtOutput")
                 
                 # Display "Working..." message while the task is running
                 $txtOutput.Clear()
@@ -177,7 +177,8 @@ function Create-KubeTidyLauncher {
                 $window.Cursor = [System.Windows.Input.Cursors]::Wait
                 
                 # Gather inputs from UI elements
-                $kubeConfigPath = ($window.FindName("txtKubeConfig")).Text
+                $txtKubeConfig = [System.Windows.Controls.TextBox]$window.FindName("txtKubeConfig")
+                $kubeConfigPath = $txtKubeConfig.Text
                 $backup = ($window.FindName("chkBackup")).IsChecked
                 $dryRun = ($window.FindName("chkDryRun")).IsChecked
                 $force = ($window.FindName("chkForce")).IsChecked
@@ -249,6 +250,7 @@ function Create-KubeTidyLauncher {
                 $fileDialog = New-Object -TypeName Microsoft.Win32.OpenFileDialog
                 $fileDialog.Filter = "KubeConfig Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*"
                 if ($fileDialog.ShowDialog() -eq $true) {
+                    $txtKubeConfig = [System.Windows.Controls.TextBox]$window.FindName("txtKubeConfig")
                     $txtKubeConfig.Text = $fileDialog.FileName
                 }
             })
@@ -260,6 +262,7 @@ function Create-KubeTidyLauncher {
                 $fileDialog = New-Object -TypeName Microsoft.Win32.SaveFileDialog
                 $fileDialog.Filter = "Config Files (*.yaml, *.yml, *.config)|*.yaml;*.yml;*.config|All Files (*.*)|*.*"
                 if ($fileDialog.ShowDialog() -eq $true) {
+                    $txtDestinationConfig = [System.Windows.Controls.TextBox]$window.FindName("txtDestinationConfig")
                     $txtDestinationConfig.Text = $fileDialog.FileName
                 }
             })
@@ -267,7 +270,7 @@ function Create-KubeTidyLauncher {
 
     # CheckBox Visibility Handling
     $chkExcludeCluster = $window.FindName("chkExcludeCluster")
-    $txtExclusion = $window.FindName("txtExclusion")
+    $txtExclusion = [System.Windows.Controls.TextBox]$window.FindName("txtExclusion")
     $lblExclusion = $window.FindName("lblExclusion")
     if ($chkExcludeCluster) {
         $chkExcludeCluster.Add_Checked({
@@ -281,7 +284,7 @@ function Create-KubeTidyLauncher {
     }
 
     $chkMergeConfig = $window.FindName("chkMergeConfig")
-    $txtMergeConfig = $window.FindName("txtMergeConfig")
+    $txtMergeConfig = [System.Windows.Controls.TextBox]$window.FindName("txtMergeConfig")
     $lblMergeConfig = $window.FindName("lblMergeConfig")
     if ($chkMergeConfig) {
         $chkMergeConfig.Add_Checked({
@@ -295,7 +298,7 @@ function Create-KubeTidyLauncher {
     }
 
     $chkDestinationConfig = $window.FindName("chkDestinationConfig")
-    $txtDestinationConfig = $window.FindName("txtDestinationConfig")
+    $txtDestinationConfig = [System.Windows.Controls.TextBox]$window.FindName("txtDestinationConfig")
     $lblDestinationConfig = $window.FindName("lblDestinationConfig")
     $btnBrowseDestinationConfig = $window.FindName("btnBrowseDestinationConfig")
 
