@@ -19,7 +19,7 @@ jobs:
           # Get the version from the tag
           version="${{ github.ref_name }}"
           
-          $GITHUB_ACTION_PATH/app/MergeScripts.ps1 -version $version"  
+          '& $env:GITHUB_ACTION_PATH/app/MergeScripts.ps1 -version $version'
 
       - name: Create Release
         id: create_release
