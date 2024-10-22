@@ -14,11 +14,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run merge script
+        shell: pwsh
         run: |
           # Get the version from the tag
           version="${{ github.ref_name }}"
           
-          pwsh -File ".\app\MergeScripts.ps1 -version $version"  
+          $GITHUB_ACTION_PATH/app/MergeScripts.ps1 -version $version"  
 
       - name: Create Release
         id: create_release

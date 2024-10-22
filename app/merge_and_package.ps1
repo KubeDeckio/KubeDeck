@@ -1,7 +1,7 @@
 param (
-    [string]$KubeDeckPath = "apps\KubeDeckUi.ps1",
-    [string]$KubeTidyPath = "apps\KubeTidyUi.ps1",
-    [string]$KubeSnapItPath = "apps\KubeSnapItUI.ps1",    
+    [string]$KubeDeckPath = ".\app\KubeDeckUi.ps1",
+    [string]$KubeTidyPath = ".\app\KubeTidyUi.ps1",
+    [string]$KubeSnapItPath = ".\app\KubeSnapItUI.ps1",    
     [string]$IconPath = "..\assets\images\gen\home\KubeDeck.ico",
     [string]$version = "0.0.1"
 )
