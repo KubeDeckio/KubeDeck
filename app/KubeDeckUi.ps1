@@ -22,10 +22,10 @@ $isDarkMode = Get-SystemTheme
 $formBackColor = if ($isDarkMode -eq "Dark") { "#202f3d" } else { "#f0f0f0" }
 $headerBackColor = "Black"
 $headerForeColor = "White"
-$labelForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 $btnBackColor = "#11A9BB"
 $cardBackground = if ($isDarkMode -eq "Dark") { "#2c3e50" } else { "#ffffff" }
 $cardShadowColor = if ($isDarkMode -eq "Dark") { "#000000" } else { "#999999" }
+$txtForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 
 # Base64-encoded images (replace the placeholders with the actual Base64 strings from your files)
 $base64KubeDeckLogo = @"
@@ -46,10 +46,80 @@ AAABAAkAEBAAAAEAIABoBAAAlgAAABgYAAABACAAiAkAAP4EAAAgIAAAAQAgAKgQAACGDgAAMDAAAAEA
 
 # Function to create the KubeDeck launcher using WPF
 function Start-KubeDeckLauncher {
+
+    # Set-ExecutionPolicy for the current process
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+
+    # Load WPF assemblies
+    Add-Type -AssemblyName PresentationFramework
+
+    # Create a simple WPF loading window
+    $loadingWindowXAML = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Loading" 
+        WindowStartupLocation="CenterScreen" 
+        Height="200" 
+        Width="400" 
+        Background="{StaticResource formBackColor}"  <!-- Assuming it's defined as a resource -->
+        WindowStyle="None" 
+        ResizeMode="NoResize" 
+        ShowInTaskbar="False">
+    <Grid>
+        <TextBlock VerticalAlignment="Center" 
+                   HorizontalAlignment="Center" 
+                   FontFamily="Roboto" 
+                   FontSize="20" 
+                   Foreground="{StaticResource txtForeColor}">  <!-- Assuming it's defined as a resource -->
+            <Run Text="KubeDeck " FontSize="24"/>
+            <LineBreak/>
+            <Run Text="is checking and updating modules..."/>
+        </TextBlock>
+    </Grid>
+</Window>
+
+"@
+
+    # Use StringReader instead of XmlNodeReader
+    $stringReader = New-Object System.IO.StringReader $loadingWindowXAML
+    $xmlReader = [System.Xml.XmlReader]::Create($stringReader)
+    $loadingWindow = [Windows.Markup.XamlReader]::Load($xmlReader)
+
+    # Show the window
+    $loadingWindow.Show()
+
+    # Check and update modules
+    $modulesToCheck = @("KubeTidy", "KubeSnapIt")
+    foreach ($moduleName in $modulesToCheck) {
+        $installedModule = Get-Module -Name $moduleName -ListAvailable | Select-Object -First 1
+        $newVersion = Find-Module -Name $moduleName | Select-Object -ExpandProperty Version
+        if ($newVersion -gt $installedModule.Version) {
+            # Update module and show progress
+            Update-Module -Name $moduleName -Force
+        }
+        else {
+            Import-Module -Name $moduleName -Force
+        }
+    }
+
+    # Close the loading window once updates are done
+    $loadingWindow.Close()
+
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KubeDeck Launcher" Width="900" Background="$formBackColor" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" FontFamily="Roboto" FontSize="14" SizeToContent="Height">
+        Title="KubeDeck Launcher"
+        Height="540" 
+        Width="920"
+        SizeToContent="WidthAndHeight"
+        MinHeight="550" MinWidth="920"
+        MaxWidth="1920"
+        MaxHeight="1080"
+        Background="$formBackColor" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanResizeWithGrip" 
+        FontFamily="Roboto" 
+        FontSize="14">
     <DockPanel>
 
         <!-- Header Section -->
@@ -88,7 +158,7 @@ function Start-KubeDeckLauncher {
                     <!-- Image for KubeTidy Header, filling the card's width -->
                     <Image x:Name="imgKubeTidyHeader" Stretch="UniformToFill" />
 
-                    <TextBlock Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
+                    <TextBlock Foreground="$txtForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
                         A PowerShell tool for cleaning up Kubernetes kubeconfig files by removing unreachable clusters, users, and contexts.
                         <LineBreak/>
                         <LineBreak/>
@@ -107,7 +177,7 @@ function Start-KubeDeckLauncher {
                     <!-- Image for KubeSnapIt Header, filling the card's width -->
                     <Image x:Name="imgKubeSnapItHeader" Stretch="UniformToFill" />
 
-                    <TextBlock Foreground="$labelForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
+                    <TextBlock Foreground="$txtForeColor" Margin="10,10,10,10" TextWrapping="Wrap">
                         A PowerShell tool for managing Kubernetes snapshots, restorations, and comparisons with ease.
                         <LineBreak/>
                         <LineBreak/>
@@ -176,13 +246,12 @@ if ($imgKubeSnapItHeader -ne $null) {
     $btnKubeTidy = $window.FindName("btnKubeTidy")
     $btnKubeTidy.Add_Click({
             try {
-                $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath 'KubeTidyUi.ps1'
-                Start-Process pwsh -ArgumentList "-ExecutionPolicy Bypass -File `"$scriptPath`"" -WindowStyle Hidden
+                Start-KubeTidyLauncher
             }
             catch {
                 # Capture the error and show it in a message box
                 $errorMessage = $_.Exception.Message
-                [System.Windows.MessageBox]::Show("An error occurred while trying to launch KubeTidyUi.ps1:`n$errorMessage", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+                [System.Windows.MessageBox]::Show("An error occurred while trying to launch KubeTidy:`n$errorMessage", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
             }
         })
 
@@ -190,9 +259,15 @@ if ($imgKubeSnapItHeader -ne $null) {
     # Event Handler for KubeSnapIt button to show "Coming Soon"
     $btnKubeSnapIt = $window.FindName("btnKubeSnapIt")
     $btnKubeSnapIt.Add_Click({
-            [System.Windows.MessageBox]::Show("KubeSnapIt is coming soon! Stay tuned for updates.", "Coming Soon", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
-        })
-
+        try {
+            Start-KubeSnapItLauncher
+        }
+        catch {
+            # Capture the error and show it in a message box
+            $errorMessage = $_.Exception.Message
+            [System.Windows.MessageBox]::Show("An error occurred while trying to launch KubeSnapIt:`n$errorMessage", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        }
+    })
     # About Button Click Event
     $aboutButton.Add_Click({
             # About window setup
@@ -212,7 +287,7 @@ if ($imgKubeSnapItHeader -ne $null) {
 
             $aboutText = New-Object Windows.Controls.TextBlock
             $aboutText.Text = "KubeDeck is a suite of open-source tools designed to simplify Kubernetes management.`n `nKubeDeck automates tasks such as cleaning up your KubeConfig file with KubeTidy and managing Kubernetes snapshots with KubeSnapIt, helping you keep your clusters organized and efficient.`n`n"
-            $aboutText.Foreground = [System.Windows.Media.Brushes]::White
+            $aboutText.Foreground = [System.Windows.Media.Brushes]::$txtForeColor
             $aboutText.Margin = "0,0,0,10"
             $aboutText.TextWrapping = 'Wrap'
             $stackPanel.Children.Add($aboutText)
@@ -224,7 +299,7 @@ if ($imgKubeSnapItHeader -ne $null) {
             # Create version labels
             $versionText = New-Object Windows.Controls.TextBlock
             $versionText.Text = "KubeTidy Version: $kubeTidyVersion`nKubeSnapIt Version: $kubeSnapItVersion"
-            $versionText.Foreground = [System.Windows.Media.Brushes]::White
+            $versionText.Foreground = [System.Windows.Media.Brushes]::$txtForeColor
             $versionText.Margin = "0,0,0,10"
             $versionText.TextWrapping = 'Wrap'
             $stackPanel.Children.Add($versionText)
@@ -258,7 +333,7 @@ if ($imgKubeSnapItHeader -ne $null) {
                     $progressLabel.Text = "Checking for updates, please wait..."
                     $progressLabel.Margin = "0,0,0,10"
                     $progressLabel.TextWrapping = 'Wrap'
-                    $progressLabel.Foreground = [System.Windows.Media.Brushes]::White
+                    $progressLabel.Foreground = [System.Windows.Media.Brushes]::$txtForeColor
                     $progressPanel.Children.Add($progressLabel)
 
                     # Add a progress bar
@@ -273,6 +348,8 @@ if ($imgKubeSnapItHeader -ne $null) {
                     $script:progressWindow.Show()
 
                     # Check for updates on PowerShell Gallery
+                    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+                    Import-Module PowerShellGet
                     $modulesToCheck = @("KubeTidy", "KubeSnapIt")
                     foreach ($moduleName in $modulesToCheck) {
                         $installedModule = Get-Module -Name $moduleName -ListAvailable | Select-Object -First 1
@@ -304,14 +381,14 @@ if ($imgKubeSnapItHeader -ne $null) {
 
             # Add the URL under the "Check for Updates" button
             $urlTextBlock = New-Object Windows.Controls.TextBlock
-            $urlTextBlock.Foreground = [System.Windows.Media.Brushes]::White
+            $urlTextBlock.Foreground = [System.Windows.Media.Brushes]::$txtForeColor
             $urlTextBlock.Margin = "0,10,0,0"
             $urlTextBlock.TextWrapping = 'Wrap'
 
             $hyperlink = New-Object Windows.Documents.Hyperlink
             $hyperlink.Inlines.Add("Visit us at: KubeDeck.io")
             $hyperlink.NavigateUri = [Uri]::new("https://kubedeck.io")
-            $hyperlink.Foreground = [System.Windows.Media.Brushes]::White
+            $hyperlink.Foreground = [System.Windows.Media.Brushes]::$txtForeColor
             $urlTextBlock.Inlines.Add($hyperlink)
 
             $hyperlink.add_RequestNavigate({
@@ -327,17 +404,9 @@ if ($imgKubeSnapItHeader -ne $null) {
         })
 
     # Show the main window
-    $window.ShowDialog()
-}
-
-# Import KubeTidy and KubeSnapIt modules
-try {
-    Import-Module KubeTidy -ErrorAction Stop
-    Import-Module KubeSnapIt -ErrorAction Stop
-}
-catch {
-    [System.Windows.MessageBox]::Show("Error importing modules. Please ensure KubeTidy and KubeSnapIt are installed.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+    $null = $window.ShowDialog()
 }
 
 # Launch the KubeDeck launcher
 Start-KubeDeckLauncher
+
