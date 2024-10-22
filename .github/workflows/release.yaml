@@ -34,4 +34,5 @@ jobs:
 
       - name: Upload Release Asset
         run: |
-          pwsh -File "app\LaunchKubeDeck_v*.ps1 -version $env:GITHUB_REF_NAME"
+          $version="${{ github.ref_name }}"
+          gh release upload "$version" ".app\LaunchKubeDeck_v*.ps1" --clobber
