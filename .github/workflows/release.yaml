@@ -20,6 +20,7 @@ jobs:
           $version="${{ github.ref_name }}"
           
           '.\app\MergeScripts.ps1 -version $version'
+          ls
 
       - name: Create Release
         id: create_release
