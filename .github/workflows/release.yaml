@@ -36,3 +36,5 @@ jobs:
         run: |
           $version="${{ github.ref_name }}"
           gh release upload "$version" ".app\LaunchKubeDeck_v*.ps1" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
