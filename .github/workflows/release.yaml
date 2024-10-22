@@ -17,7 +17,7 @@ jobs:
         shell: pwsh
         run: |
           # Get the version from the tag
-          version="${{ github.ref_name }}"
+          $version="${{ github.ref_name }}"
           
           '.\app\MergeScripts.ps1 -version $version'
 
