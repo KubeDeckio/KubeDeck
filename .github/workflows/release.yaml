@@ -15,7 +15,10 @@ jobs:
 
       - name: Run merge script
         run: |
-          pwsh -File "app\MergeScripts.ps1 -version $env:GITHUB_REF_NAME"  
+          # Get the version from the tag
+          version="${{ github.ref_name }}"
+          
+          pwsh -File ". app\MergeScripts.ps1 -version $version"  
 
       - name: Create Release
         id: create_release
