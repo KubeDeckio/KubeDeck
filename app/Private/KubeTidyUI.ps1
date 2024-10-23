@@ -1,3 +1,6 @@
+# Function to create the KubeTidy UI using WPF
+function Start-KubeTidyLauncher {
+
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
@@ -57,8 +60,7 @@ iVBORw0KGgoAAAANSUhEUgAABdwAAAH0CAYAAAAnhe8sAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFAGlU
 "@
 
 
-# Function to create the KubeTidy UI using WPF
-function Start-KubeTidyLauncher {
+
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -156,11 +158,10 @@ function Start-KubeTidyLauncher {
                     <TextBox x:Name="txtDestinationConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,10,10,10" Visibility="Collapsed" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"/>
                     <Button x:Name="btnBrowseDestinationConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Visibility="Collapsed" Grid.Row="3" Grid.Column="2" Margin="10,0"/>
                 </Grid>
-
-                <!-- Output Section -->
-                <TextBox x:Name="txtOutput" MinHeight="150" Margin="10" VerticalScrollBarVisibility="Auto" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Roboto" Background="Black" Foreground="Cyan" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom"/>
             </StackPanel>
         </ScrollViewer>
+                        <!-- Output Section -->
+                <TextBox x:Name="txtOutput" MinHeight="150" Margin="10" VerticalScrollBarVisibility="Auto" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Roboto" Background="Black" Foreground="Cyan" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom"/>
     </DockPanel>
 </Window>
 "@
@@ -188,6 +189,34 @@ function Start-KubeTidyLauncher {
         $imgKubeTidyLogo.Source = $bitmapKubeTidyLogo
     }
 
+# Define Progress Window in XAML format, with dynamic background and foreground colors
+$progressWindowXAML = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Processing..." Height="150" Width="300" WindowStartupLocation="CenterScreen" Background='$formBackColor'>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Name="txtProgressStatus" Text="Processing..." HorizontalAlignment="Center" Margin="10" FontSize="20" Foreground='$txtForeColor'/>
+    </StackPanel>
+</Window>
+"@
+
+# Function to create a new progress window (so it can be reopened after closing)
+function New-ProgressWindow {
+    # Use -replace to inject the background and foreground colors from the variables into the XAML string
+    $windowXaml = $progressWindowXAML -replace '\$formBackColor', $formBackColor
+    $windowXaml = $windowXaml -replace '\$txtForeColor', $txtForeColor
+    
+    # Load the XAML as an XML document and create the WPF window
+    [xml]$xaml = $windowXaml
+    $reader = (New-Object System.Xml.XmlNodeReader $xaml)
+    $progressWindow = [Windows.Markup.XamlReader]::Load($reader)
+
+    # Access elements from the progress window
+    $txtProgressStatus = $progressWindow.FindName("txtProgressStatus")
+    
+    return $progressWindow
+}
+
 # Set Button Event Handlers
 $btnRun = $window.FindName("btnRun")
 $txtOutput = $window.FindName("txtOutput")
@@ -198,24 +227,30 @@ if ($btnRun) {
         $txtOutput.AppendText("Working...`n")
         $window.Cursor = [System.Windows.Input.Cursors]::Wait
 
-        # Gather inputs from UI elements
-        $kubeConfigPath = ($window.FindName("txtKubeConfig")).Text
-        $backup = ($window.FindName("chkBackup")).IsChecked
-        $dryRun = ($window.FindName("chkDryRun")).IsChecked
-        $force = ($window.FindName("chkForce")).IsChecked
-        $listClusters = ($window.FindName("radListClusters")).IsChecked
-        $listContexts = ($window.FindName("radListContexts")).IsChecked
-        $excludeCluster = ($window.FindName("chkExcludeCluster")).IsChecked
-        $exclusionList = if ($excludeCluster) { ($window.FindName("txtExclusion")).Text } else { $null }
-        $mergeConfig = ($window.FindName("chkMergeConfig")).IsChecked
-        $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text -split ";" } else { $null }
-        $exportContexts = ($window.FindName("chkExportContexts")).IsChecked
-        $exportContextsPath = if ($exportContexts) { ($window.FindName("txtExportContexts")).Text } else { $null }
-        $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
-        $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
+        # Create a new progress window every time the button is clicked
+        $progressWindow = New-ProgressWindow
+
+        # Show the progress window (non-modal, so the rest of the code continues to execute)
+        $progressWindow.Show()
 
         try {
-            # Redirect output streams to capture Write-Host output
+            # Gather inputs from UI elements
+            $kubeConfigPath = ($window.FindName("txtKubeConfig")).Text
+            $backup = ($window.FindName("chkBackup")).IsChecked
+            $dryRun = ($window.FindName("chkDryRun")).IsChecked
+            $force = ($window.FindName("chkForce")).IsChecked
+            $listClusters = ($window.FindName("radListClusters")).IsChecked
+            $listContexts = ($window.FindName("radListContexts")).IsChecked
+            $excludeCluster = ($window.FindName("chkExcludeCluster")).IsChecked
+            $exclusionList = if ($excludeCluster) { ($window.FindName("txtExclusion")).Text } else { $null }
+            $mergeConfig = ($window.FindName("chkMergeConfig")).IsChecked
+            $mergeConfigs = if ($mergeConfig) { ($window.FindName("txtMergeConfig")).Text -split ";" } else { $null }
+            $exportContexts = ($window.FindName("chkExportContexts")).IsChecked
+            $exportContextsPath = if ($exportContexts) { ($window.FindName("txtExportContexts")).Text } else { $null }
+            $destinationConfigChecked = ($window.FindName("chkDestinationConfig")).IsChecked
+            $destinationConfig = if ($destinationConfigChecked) { ($window.FindName("txtDestinationConfig")).Text } else { $null }
+
+            # Run your task
             $output = & {
                 $arguments = @{
                     KubeConfigPath    = $kubeConfigPath
@@ -229,29 +264,25 @@ if ($btnRun) {
                     DestinationConfig = if ($destinationConfigChecked) { $destinationConfig } else { $null }
                     ExportContexts    = if ($exportContexts) { $exportContextsPath } else { $null }
                 }
-
                 # Run Invoke-KubeTidy with arguments
                 Invoke-KubeTidy @arguments
-
             } *>&1 | Out-String
-
+    
             # Clear "Working..." message and display actual output
             $txtOutput.Clear()
             $txtOutput.AppendText($output)
-
-        }
-        catch {
-            # Clear "Working..." message and display error
+    
+        } catch {
             $txtOutput.Clear()
             $txtOutput.AppendText("Error: $_`n")
-        }
-        finally {
+        } finally {
             # Reset cursor to default
             $window.Cursor = [System.Windows.Input.Cursors]::Arrow
+            # Close the progress window once the task is done
+            $progressWindow.Close()
         }
     })
 }
-
 
     # Button Browse event for KubeConfig
     $btnBrowseKubeConfig = $window.FindName("btnBrowseKubeConfig")

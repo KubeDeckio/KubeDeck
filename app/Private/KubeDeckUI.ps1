@@ -1,3 +1,5 @@
+function Start-KubeDeckLauncher {
+
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
@@ -45,7 +47,7 @@ AAABAAkAEBAAAAEAIABoBAAAlgAAABgYAAABACAAiAkAAP4EAAAgIAAAAQAgAKgQAACGDgAAMDAAAAEA
 "@
 
 # Function to create the KubeDeck launcher using WPF
-function Start-KubeDeckLauncher {
+
 
     # Set-ExecutionPolicy for the current process
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
@@ -111,10 +113,8 @@ function Start-KubeDeckLauncher {
         Title="KubeDeck Launcher"
         Height="540" 
         Width="920"
-        SizeToContent="WidthAndHeight"
+        SizeToContent="Manual"
         MinHeight="550" MinWidth="920"
-        MaxWidth="1920"
-        MaxHeight="1080"
         Background="$formBackColor" 
         WindowStartupLocation="CenterScreen" 
         ResizeMode="CanResizeWithGrip" 
@@ -246,12 +246,18 @@ if ($imgKubeSnapItHeader -ne $null) {
     $btnKubeTidy = $window.FindName("btnKubeTidy")
     $btnKubeTidy.Add_Click({
             try {
+                # Close the current window
+                $window.Close()
+                
                 Start-KubeTidyLauncher
+
             }
             catch {
                 # Capture the error and show it in a message box
                 $errorMessage = $_.Exception.Message
                 [System.Windows.MessageBox]::Show("An error occurred while trying to launch KubeTidy:`n$errorMessage", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+
+                Start-KubeDeckLauncher
             }
         })
 
@@ -260,7 +266,12 @@ if ($imgKubeSnapItHeader -ne $null) {
     $btnKubeSnapIt = $window.FindName("btnKubeSnapIt")
     $btnKubeSnapIt.Add_Click({
         try {
+
+            # Close the current window
+            $window.Close()
+
             Start-KubeSnapItLauncher
+            
         }
         catch {
             # Capture the error and show it in a message box
@@ -408,5 +419,5 @@ if ($imgKubeSnapItHeader -ne $null) {
 }
 
 # Launch the KubeDeck launcher
-Start-KubeDeckLauncher
+#Start-KubeDeckLauncher
 
