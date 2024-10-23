@@ -19,7 +19,7 @@ jobs:
           # Get the version from the tag
           $version="${{ github.ref_name }}"
           
-          . .\app\MergeScripts.ps1 -version $version
+          ./app/MergeScripts.ps1 -version $version
           ls app
 
       - name: Create Release
@@ -36,6 +36,6 @@ jobs:
       - name: Upload Release Asset
         run: |
           $version="${{ github.ref_name }}"
-          gh release upload "$version" ".\app\LaunchKubeDeck_${version}.ps1" --clobber
+          gh release upload "$version" "./app/LaunchKubeDeck_${version}.ps1" --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
