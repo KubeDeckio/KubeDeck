@@ -61,7 +61,7 @@ function Start-KubeDeckLauncher {
         WindowStartupLocation="CenterScreen" 
         Height="200" 
         Width="400" 
-        Background="{StaticResource formBackColor}"  <!-- Assuming it's defined as a resource -->
+        Background="$formBackColor"
         WindowStyle="None" 
         ResizeMode="NoResize" 
         ShowInTaskbar="False">
@@ -70,7 +70,7 @@ function Start-KubeDeckLauncher {
                    HorizontalAlignment="Center" 
                    FontFamily="Roboto" 
                    FontSize="20" 
-                   Foreground="{StaticResource txtForeColor}">  <!-- Assuming it's defined as a resource -->
+                   Foreground="$txtForeColor">
             <Run Text="KubeDeck " FontSize="24"/>
             <LineBreak/>
             <Run Text="is checking and updating modules..."/>
