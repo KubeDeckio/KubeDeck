@@ -19,7 +19,7 @@ jobs:
           # Get the version from the tag
           $version="${{ github.ref_name }}"
           
-          ./app/MergeScripts.ps1 -version $version
+          ./app/merge_and_package.ps1 -version $version
           ls app
 
       - name: Create Release
