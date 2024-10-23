@@ -37,6 +37,6 @@ $kubeDeckContent
 "@
 
 # Create the output file name with the version number
-$mergedFilePath = Join-Path -Path .\app\ -ChildPath "LaunchKubeDeck_v$version.ps1"
+$mergedFilePath = Join-Path -Path .\app\ -ChildPath "LaunchKubeDeck_$version.ps1"
 Write-Output "Writing merged content to temporary file: $mergedFilePath..."
 $mergedContent | Out-File -FilePath $mergedFilePath -Encoding UTF8 -Force
