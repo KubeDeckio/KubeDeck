@@ -1,6 +1,6 @@
 param (
-    [string]$KubeDeckPath = ".\app\KubeDeckUi.ps1",
-    [string]$KubeTidyPath = ".\app\KubeTidyUi.ps1",
+    [string]$KubeDeckPath = ".\app\KubeDeckUI.ps1",
+    [string]$KubeTidyPath = ".\app\KubeTidyUI.ps1",
     [string]$KubeSnapItPath = ".\app\KubeSnapItUI.ps1",    
     [string]$IconPath = "..\assets\images\gen\home\KubeDeck.ico",
     [string]$version = "0.0.1"
@@ -15,7 +15,7 @@ Write-Output "Reading KubeDeckUi.ps1 content..."
 $kubeDeckContent = Get-Content -Path $KubeDeckPath -Raw
 
 # Read KubeSnapIt.ps1 content
-Write-Output "Reading KubeSnapIt.ps1 content..."
+Write-Output "Reading KubeSnapItUi.ps1 content..."
 $kubeSnapItContent = Get-Content -Path $KubeSnapItPath -Raw
 
 # Merged Content Creation
