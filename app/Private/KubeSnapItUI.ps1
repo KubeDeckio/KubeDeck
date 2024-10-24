@@ -444,6 +444,65 @@ function Populate-NamespaceComboBox {
     $btnBrowseRestoreInputPath = $window.FindName("btnBrowseRestoreInputPath")
     $btnBrowseOutputPath = $window.FindName("btnBrowseOutputPath")
 
+     # Browse for Input Path (Select YAML or YML File)
+     $btnBrowseInputPath.Add_Click({
+        $dialog = New-Object System.Windows.Forms.OpenFileDialog
+        $dialog.Filter = "YAML Files (*.yaml;*.yml)|*.yaml;*.yml|All Files (*.*)|*.*"  # Filter for YAML and YML files
+        $dialog.DefaultExt = "yaml"  # Default file extension
+        if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+            $txtInputPath = $window.FindName("txtInputPath")
+            if ($null -ne $txtInputPath) {
+                $txtInputPath.Text = $dialog.FileName
+            }
+        }
+    })
+
+# Browse for Compare Path (Select YAML or YML File)
+$btnBrowseComparePath.Add_Click({
+        $dialog = New-Object System.Windows.Forms.OpenFileDialog
+        $dialog.Filter = "YAML Files (*.yaml;*.yml)|*.yaml;*.yml|All Files (*.*)|*.*"  # Filter for YAML and YML files
+        $dialog.DefaultExt = "yaml"  # Default file extension
+        if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+            $txtComparePath = $window.FindName("txtComparePath")
+            if ($null -ne $txtComparePath) {
+                $txtComparePath.Text = $dialog.FileName
+            }
+        }
+    })
+
+# Browse for Restore Input Path (Select YAML or YML File)
+$btnBrowseRestoreInputPath.Add_Click({
+        $dialog = New-Object System.Windows.Forms.OpenFileDialog
+        $dialog.Filter = "YAML Files (*.yaml;*.yml)|*.yaml;*.yml|All Files (*.*)|*.*"  # Filter for YAML and YML files
+        $dialog.DefaultExt = "yaml"  # Default file extension
+        if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+            $txtRestoreInputPath = $window.FindName("txtRestoreInputPath")
+            if ($null -ne $txtRestoreInputPath) {
+                $txtRestoreInputPath.Text = $dialog.FileName
+            }
+        }
+    })
+
+# Browse for Output Path (Select Folder)
+$btnBrowseOutputPath.Add_Click({
+        $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
+        $dialog.Description = "Select an output folder"  # Optional: Set a description for the dialog
+
+        try {
+            # Show the dialog and check if the user clicked OK
+            if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                $txtOutputPath = $window.FindName("txtOutputPath")
+                if ($null -ne $txtOutputPath) {
+                    $txtOutputPath.Text = $dialog.SelectedPath
+                }
+            }
+        }
+        catch {
+            # Handle any errors that occur when showing the dialog
+            $txtOutput.AppendText("Error: $_`n")
+        }
+    })
+
 # Get the ComboBox from the XAML
 $cmbNamespace = $window.FindName("cmbNamespace")
 
