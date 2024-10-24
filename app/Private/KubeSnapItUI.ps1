@@ -110,9 +110,9 @@ function Populate-NamespaceComboBox {
             $cmbNamespace.Items.Clear()
             $cmbNamespace.Items.Add("Loading...")  # Add a temporary loading message
 
-            # Run kubectl asynchronously
+            # Run kubectl asynchronously, suppressing errors
             $job = Start-Job -ScriptBlock {
-                kubectl get namespace -o jsonpath='{.items[*].metadata.name}' | Out-String
+                kubectl get namespace -o jsonpath='{.items[*].metadata.name}' 2>$null | Out-String
             }
 
             # Wait for the job to finish, then get the results
@@ -132,13 +132,15 @@ function Populate-NamespaceComboBox {
                 return
             }
 
-            # Parse the output into namespace names
-            $namespaceList = $result -split ' '
+            # Parse the output into namespace names and trim whitespace
+            $namespaceList = $result -split ' ' | ForEach-Object { $_.Trim() }
 
             # Clear the loading message and add namespaces
             $cmbNamespace.Items.Clear()
             foreach ($namespace in $namespaceList) {
-                $cmbNamespace.Items.Add($namespace)
+                if (-not [string]::IsNullOrWhiteSpace($namespace)) {
+                    $cmbNamespace.Items.Add($namespace)
+                }
             }
 
             # Optionally select the first item by default
@@ -146,14 +148,17 @@ function Populate-NamespaceComboBox {
                 $cmbNamespace.SelectedIndex = 0  # Set default selection
             }
         } catch {
-            Write-Error "Error retrieving namespaces: $_"
+            # Handle the error silently or show a user-friendly message in the UI
             $cmbNamespace.Items.Clear()
             $cmbNamespace.Items.Add("Error loading namespaces")
         }
     } else {
-        Write-Error "ComboBox cmbNamespace not found in XAML."
+        # Handle the case where the ComboBox is not found in the UI
+        $cmbNamespace.Items.Clear()
+        $cmbNamespace.Items.Add("ComboBox not found")
     }
 }
+
 
 
     [xml]$xaml = @"
