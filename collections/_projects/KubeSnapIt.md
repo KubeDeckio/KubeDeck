@@ -2,7 +2,7 @@
 title: "KubeSnapIt"
 description: "KubeSnapIt simplifies Kubernetes resource management by enabling snapshots, restorations, and comparisons of your cluster state."
 date: 2024-10-18
-weight: 2
+weight: 3
 header_transparent: false
 thumbnail: "/assets/images/gen/projects/KubeSnapItHeader.png"
 image: "/assets/images/gen/projects/KubeSnapItHeader.png"
