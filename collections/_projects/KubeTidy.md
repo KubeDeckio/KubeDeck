@@ -2,7 +2,7 @@
 title: "KubeTidy"
 description: "KubeTidy helps you clean up your KubeConfig file by automatically removing unused and outdated entries, keeping your configuration organized and efficient."
 date: 2024-10-12
-weight: 1
+weight: 2
 header_transparent: false
 thumbnail: "/assets/images/gen/projects/KubeTidyHeader.png"
 image: "/assets/images/gen/projects/KubeTidyHeader.png"

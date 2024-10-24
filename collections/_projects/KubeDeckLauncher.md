@@ -2,7 +2,7 @@
 title: "KubeDeck Launcher"  
 description: "KubeDeck Launcher brings the power of KubeTidy and KubeSnapIt into a unified, intuitive PowerShell-based UI for streamlined Kubernetes management."  
 date: 2024-10-24  
-weight: 3  
+weight: 1  
 header_transparent: false  
 thumbnail: "/assets/images/gen/projects/KubeDeckLauncherHeader.png"  
 image: "/assets/images/gen/projects/KubeDeckLauncherHeader.png"  
