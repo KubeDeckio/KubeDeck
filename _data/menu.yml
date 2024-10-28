@@ -6,6 +6,8 @@ main:
     url: /projects/
     weight: 2
     child:
+      - name: "KubeDeck Launcher"
+        url: /projects/KubeDeckLauncher/
       - name: "KubeTidy"
         url: /projects/KubeTidy/
       - name: "KubeSnapIt"

@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v0.0.1
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run merge script
+        shell: pwsh
+        run: |
+          # Get the version from the tag
+          $version="${{ github.ref_name }}"
+          
+          ./app/merge_and_package.ps1 -version $version
+          ls app
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: KubeDeck Launcher ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        run: |
+          $version="${{ github.ref_name }}"
+          gh release upload "$version" "./app/LaunchKubeDeck_${version}.ps1" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

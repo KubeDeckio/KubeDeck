@@ -58,7 +58,7 @@ intro:
   align: left
   image: "/assets/images/gen/home/KubeDeck.png"
   heading: "Effortless Kubernetes Management"
-  sub_heading: "With KubeDeck, managing your Kubernetes environment is easier than ever. Use KubeTidy to automatically clean up resources, and leverage KubeSnapIt, our powerful tool for seamless snapshot, restore, and comparison management in your Kubernetes clusters."
+  sub_heading: "With KubeDeck, managing your Kubernetes environment is easier than ever. Use KubeTidy to automatically clean up your KubeConfig file, and leverage KubeSnapIt, our powerful tool for seamless snapshot, restore, and comparison management in your Kubernetes clusters. Now, with KubeDeck Launcher, you can access both KubeTidy and KubeSnapIt through a single, intuitive PowerShell-based UI, streamlining your Kubernetes operations even further."
   features:
     enabled: true
     list:
