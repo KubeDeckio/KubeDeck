@@ -81,6 +81,6 @@ jobs:
         run: |
           Install-Module -Name PowerShellGet -Force -AllowClobber
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          Publish-Module -Path ./app/ -NuGetApiKey $env:PSGALLERY_API_KEY -Repository PSGallery
+          Publish-Module -Path ./app -NuGetApiKey $env:PSGALLERY_API_KEY -Repository PSGallery
         env:
           PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
