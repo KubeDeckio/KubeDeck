@@ -9,10 +9,10 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'Start-KubeDeck.psm1'
+RootModule = 'KubeDeck.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.02'
+ModuleVersion = '0.0.03'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
