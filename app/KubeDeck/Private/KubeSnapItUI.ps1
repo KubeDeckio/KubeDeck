@@ -764,6 +764,96 @@ function Start-KubeSnapItLauncher {
             })
     }
 
+                "Compare" {
+                        # Compare tab parameters
+                        $inputPath = ($window.FindName("txtInputPath")).Text
+                        $comparePath = ($window.FindName("txtComparePath")).Text
+                        $compareWithCluster = ($window.FindName("chkCompareWithCluster")).IsChecked -eq $true
+                        $compareSnapshots = ($window.FindName("chkCompareSnapshots")).IsChecked -eq $true
+        
+                        # Validate Input Path
+                        if ([string]::IsNullOrWhiteSpace($inputPath)) {
+                            $txtOutput.AppendText("Error: Input Path is required for Compare.`n")
+                            return
+                        }
+
+                        # Add parameters to the arguments dictionary
+                        $arguments["InputPath"] = $inputPath
+
+                        # Only add ComparePath if comparing snapshots
+                        if ($compareSnapshots) {
+                            if ([string]::IsNullOrWhiteSpace($comparePath)) {
+                                $txtOutput.AppendText("Error: Compare Path is required for comparing snapshots.`n")
+                                return
+                            }
+                            $arguments["ComparePath"] = $comparePath
+                            $arguments["CompareSnapshots"] = $compareSnapshots  # Pass this parameter
+                        }
+                        else {
+                            # If not comparing snapshots, ensure ComparePath is not set
+                            $arguments["CompareWithCluster"] = $compareWithCluster
+                        }
+
+                        break
+                    }
+        
+                    "Restore" {
+                        # Restore tab parameters
+                        $restoreInputPath = ($window.FindName("txtRestoreInputPath")).Text
+                        $restore = $chkRestore.IsChecked -eq $true
+        
+                        # Validate Restore Input Path
+                        if ([string]::IsNullOrWhiteSpace($restoreInputPath)) {
+                            $txtOutput.AppendText("Error: Restore Input Path is required for Restore.`n")
+                            return
+                        }
+        
+                        # Add parameters to the arguments dictionary
+                        $arguments["RestoreInputPath"] = $restoreInputPath
+                        $arguments["Restore"] = $restore
+                        break
+                    }
+        
+                    default {
+                        $txtOutput.AppendText("Error: Unknown tab selected.`n")
+                        return
+                    }
+            }
+
+            # Gather common parameters
+            $arguments["Force"] = ($window.FindName("chkForce")).IsChecked -eq $true
+            $arguments["DryRun"] = ($window.FindName("chkDryRun")).IsChecked -eq $true
+            $arguments["UI"] = $true
+
+            try {
+
+                # Run Invoke-KubeSnapIT with arguments
+                $output = & {
+                    Invoke-KubeSnapIt @arguments
+                } *>&1 | Out-String
+
+                # Clear "Working..." message and display actual output
+                $txtOutput.Clear()
+                $txtOutput.AppendText($output)
+
+            } catch {
+                # Clear "Working..." message and display error
+                $txtOutput.Clear()
+                $txtOutput.AppendText("Error: $_`n")
+            } finally {
+                # Close the progress window when done
+                $progressWindow.Close()
+                # Reset cursor to default
+                $window.Cursor = [System.Windows.Input.Cursors]::Arrow
+            }
+        } catch {
+            $txtOutput.AppendText("Error: $_`n")
+            $progressWindow.Close()
+            $window.Cursor = [System.Windows.Input.Cursors]::Arrow
+        }
+    })
+}
+
 # Queue up another action to run asynchronously after the window is shown
 $window.Dispatcher.InvokeAsync({
     # Code for the other action you want to run concurrently
