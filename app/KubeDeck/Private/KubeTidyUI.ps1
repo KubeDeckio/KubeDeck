@@ -1,6 +1,11 @@
 # Function to create the KubeTidy UI using WPF
 function Start-KubeTidyLauncher {
 
+    param (
+        [Parameter(Mandatory = $true)]
+        [System.Windows.Window]$LoadingWindow
+    )
+
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
@@ -391,8 +396,19 @@ if ($btnRun) {
         })
     }
 
+
+    # Queue up another action to run asynchronously after the window is shown
+$window.Dispatcher.InvokeAsync({
+    # Code for the other action you want to run concurrently
+    if ($LoadingWindow -and $LoadingWindow.IsVisible) {
+        $LoadingWindow.Dispatcher.Invoke([action] { $LoadingWindow.Close() })
+    }
+})
+
     # Show the main window
     $null = $window.ShowDialog()
+
+    Start-KubeDeckLauncher
 }
 
 #Start-KubeTidyLauncher
