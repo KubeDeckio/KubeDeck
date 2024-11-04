@@ -408,7 +408,7 @@ $window.Dispatcher.InvokeAsync({
     # Show the main window
     $null = $window.ShowDialog()
 
-    Start-KubeDeckLauncher
+    # Start-KubeDeckLauncher
 }
 
 #Start-KubeTidyLauncher

@@ -109,65 +109,68 @@ function Start-KubeSnapItLauncher {
 
 
     function Populate-NamespaceComboBox {
-        # Get the ComboBox from the XAML
-        $cmbNamespace = $window.FindName("cmbNamespace")
-
-        if ($cmbNamespace -ne $null) {
+        param (
+            [Parameter(Mandatory = $true)]
+            [System.Windows.Controls.ComboBox]$namespaceComboBox  # Pass in the specific ComboBox
+        )
+    
+        if ($namespaceComboBox -ne $null) {
             try {
                 # Clear existing items in the ComboBox
-                $cmbNamespace.Items.Clear()
-                $cmbNamespace.Items.Add("Loading...")  # Add a temporary loading message
-
+                $namespaceComboBox.Items.Clear()
+                $namespaceComboBox.Items.Add("Loading...")  # Add a temporary loading message
+    
                 # Run kubectl asynchronously, suppressing errors
                 $job = Start-Job -ScriptBlock {
                     kubectl get namespace -o jsonpath='{.items[*].metadata.name}' 2>$null | Out-String
                 }
-
+    
                 # Wait for the job to finish, then get the results
                 $result = Receive-Job -Job $job -Wait -AutoRemoveJob
-
+    
                 # Check if the result contains a message asking for username
                 if ($result -match "Please enter Username:") {
-                    $cmbNamespace.Items.Clear()
-                    $cmbNamespace.Items.Add("Authentication required")
+                    $namespaceComboBox.Items.Clear()
+                    $namespaceComboBox.Items.Add("Authentication required")
                     return
                 }
-
+    
                 # Check if the command returned valid data
                 if ([string]::IsNullOrWhiteSpace($result)) {
-                    $cmbNamespace.Items.Clear()
-                    $cmbNamespace.Items.Add("No namespaces found")
+                    $namespaceComboBox.Items.Clear()
+                    $namespaceComboBox.Items.Add("No namespaces found")
                     return
                 }
-
+    
                 # Parse the output into namespace names and trim whitespace
                 $namespaceList = $result -split ' ' | ForEach-Object { $_.Trim() }
-
+    
                 # Clear the loading message and add namespaces
-                $cmbNamespace.Items.Clear()
+                $namespaceComboBox.Items.Clear()
                 foreach ($namespace in $namespaceList) {
                     if (-not [string]::IsNullOrWhiteSpace($namespace)) {
-                        $cmbNamespace.Items.Add($namespace)
+                        $namespaceComboBox.Items.Add($namespace)
                     }
                 }
-
+    
                 # Optionally select the first item by default
-                if ($cmbNamespace.Items.Count -gt 0) {
-                    $cmbNamespace.SelectedIndex = 0  # Set default selection
+                if ($namespaceComboBox.Items.Count -gt 0) {
+                    $namespaceComboBox.SelectedIndex = 0  # Set default selection
                 }
             }
             catch {
                 # Handle the error silently or show a user-friendly message in the UI
-                $cmbNamespace.Items.Clear()
-                $cmbNamespace.Items.Add("Error loading namespaces")
+                $namespaceComboBox.Items.Clear()
+                $namespaceComboBox.Items.Add("Error loading namespaces")
             }
         }
         else {
             # Handle the case where the ComboBox is not found in the UI
-            $cmbNamespace.Items.Clear()
-            $cmbNamespace.Items.Add("ComboBox not found")
+            $namespaceComboBox.Items.Clear()
+            $namespaceComboBox.Items.Add("ComboBox not found")
         }
     }
+    
 
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
@@ -376,6 +379,9 @@ function Start-KubeSnapItLauncher {
                 <!-- All Namespaces Checkbox -->
                 <CheckBox x:Name="chkAllNamespaces" Content="All Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
 
+                <!-- All Non-System Namespaces Checkbox -->
+<CheckBox x:Name="chkAllNonSystemNamespaces" Content="All Non-System Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
+
                 <!-- Output Path Section -->
                 <Grid Margin="10,5">
                     <Grid.ColumnDefinitions>
@@ -469,6 +475,48 @@ function Start-KubeSnapItLauncher {
                 </Grid>
             </StackPanel>
         </TabItem>
+
+    <!-- Helm Snapshot Tab -->
+    <TabItem Header="Helm Snapshot">
+        <StackPanel Margin="10" Background="$formBackColor">
+            
+            <!-- Namespace Section -->
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />  <!-- Label Column -->
+                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Namespace:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
+                <!-- ComboBox for Namespace selection -->
+                <ComboBox x:Name="cmbHelmNamespace" Height="30" 
+                    Style="{DynamicResource ComboBoxStyleCustom}" 
+                    Grid.Column="1" 
+                    Padding="5,0,0,0" 
+                    Foreground="$txtForeColor" 
+                    Background="$formBackColor" 
+                    Margin="10,0"/>
+            </Grid>
+            
+            <!-- Namespace Selection Checkboxes -->
+            <CheckBox x:Name="chkHelmAllNamespaces" Content="All Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
+            <CheckBox x:Name="chkHelmNonSystemNamespaces" Content="All Non-System Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
+            
+            <!-- Output Path Section -->
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />  <!-- Label Column -->
+                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
+                    <ColumnDefinition Width="Auto" /> <!-- Browse Button Column -->
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Output Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
+                <TextBox x:Name="txtHelmOutputPath" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,0" Grid.Column="1" Text="./helm_snapshots" Padding="5,5,0,0"/>
+                <Button x:Name="btnBrowseHelmOutputPath" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2" Margin="10,0"/>
+            </Grid>
+            
+        </StackPanel>
+    </TabItem>
     </TabControl>
 
     <!-- Output Section -->
@@ -482,7 +530,9 @@ function Start-KubeSnapItLauncher {
     $reader = (New-Object System.Xml.XmlNodeReader $xaml)
     $window = [Windows.Markup.XamlReader]::Load($reader)
 
-    Populate-NamespaceComboBox
+    # Refresh both Namespace ComboBoxes
+    Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbNamespace")
+    Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbHelmNamespace")
 
     if (-not $window) {
         Write-Error "Failed to load the WPF window."
@@ -549,9 +599,12 @@ function Start-KubeSnapItLauncher {
     
             # Check if any item is selected in the ComboBox
             if ($cmbContext.SelectedItem -eq $null) {
-                Write-Error "No context selected in 'cmbContext'."
+                # Show a popup message box prompting the user to select a context
+                [System.Windows.MessageBox]::Show("Please select a context and try again.", "No Context Selected", 
+                    [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Warning)
                 return
             }
+
             else {
                 # Use SelectedItem directly if ComboBox contains strings
                 $newContext = $cmbContext.SelectedItem
@@ -561,9 +614,9 @@ function Start-KubeSnapItLauncher {
                 # Switch to the selected context
                 kubectl config use-context $newContext
             
-                # Update the context display and refresh the namespace ComboBox
-                Update-KubernetesContextDisplay
-                Populate-NamespaceComboBox
+                # Populate both Namespace ComboBoxes
+                Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbNamespace")
+                Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbHelmNamespace")
             }
             catch {
                 Write-Error "Error switching context: $_"
@@ -578,7 +631,9 @@ function Start-KubeSnapItLauncher {
     $window.Add_Loaded({
             Update-KubernetesContextDisplay
             Populate-ContextComboBox
-            Populate-NamespaceComboBox
+            # Refresh both Namespace ComboBoxes
+            Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbNamespace")
+            Populate-NamespaceComboBox -namespaceComboBox $window.FindName("cmbHelmNamespace")
         })
 
 
@@ -671,6 +726,79 @@ function Start-KubeSnapItLauncher {
             $selectedNamespace = $cmbNamespace.SelectedItem
         })
 
+    # Define components for Helm Snapshot tab
+    $btnBrowseHelmOutputPath = $window.FindName("btnBrowseHelmOutputPath")
+    $cmbHelmNamespace = $window.FindName("cmbHelmNamespace")
+    $chkHelmAllNamespaces = $window.FindName("chkHelmAllNamespaces")
+    $chkHelmNonSystemNamespaces = $window.FindName("chkHelmNonSystemNamespaces")
+
+    # Event handler for 'Browse' button on Helm Output Path
+    $btnBrowseHelmOutputPath.Add_Click({
+            $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
+            $dialog.Description = "Select an output folder for Helm snapshots"
+            if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                $txtHelmOutputPath = $window.FindName("txtHelmOutputPath")
+                if ($null -ne $txtHelmOutputPath) {
+                    $txtHelmOutputPath.Text = $dialog.SelectedPath
+                }
+            }
+        })
+
+    # Get references to checkboxes and the namespace ComboBox
+    $chkAllNamespaces = $window.FindName("chkAllNamespaces")
+    $chkAllNonSystemNamespaces = $window.FindName("chkAllNonSystemNamespaces")
+    $cmbNamespace = $window.FindName("cmbNamespace")
+
+    # Event handler for selecting 'All Namespaces' checkbox
+    $chkAllNamespaces.Add_Click({
+            if ($chkAllNamespaces.IsChecked -eq $true) {
+                $chkAllNonSystemNamespaces.IsChecked = $false
+                $cmbNamespace.IsEnabled = $false  # Disable specific namespace selection
+            }
+            else {
+                # Enable ComboBox if neither 'All Namespaces' nor 'All Non-System Namespaces' is selected
+                if ($chkAllNonSystemNamespaces.IsChecked -ne $true) {
+                    $cmbNamespace.IsEnabled = $true
+                }
+            }
+        })
+
+    # Event handler for selecting 'All Non-System Namespaces' checkbox
+    $chkAllNonSystemNamespaces.Add_Click({
+            if ($chkAllNonSystemNamespaces.IsChecked -eq $true) {
+                $chkAllNamespaces.IsChecked = $false
+                $cmbNamespace.IsEnabled = $false  # Disable specific namespace selection
+            }
+            else {
+                # Enable ComboBox if neither 'All Namespaces' nor 'All Non-System Namespaces' is selected
+                if ($chkAllNamespaces.IsChecked -ne $true) {
+                    $cmbNamespace.IsEnabled = $true
+                }
+            }
+        })
+
+    # Event handler for selecting 'All Namespaces' checkbox
+    $chkHelmAllNamespaces.Add_Click({
+            if ($chkHelmAllNamespaces.IsChecked -eq $true) {
+                $chkHelmNonSystemNamespaces.IsChecked = $false
+                $cmbHelmNamespace.IsEnabled = $false  # Disable specific namespace selection
+            }
+            else {
+                $cmbHelmNamespace.IsEnabled = $true  # Enable specific namespace selection if unchecked
+            }
+        })
+
+    # Event handler for selecting 'All Non-System Namespaces' checkbox
+    $chkHelmNonSystemNamespaces.Add_Click({
+            if ($chkHelmNonSystemNamespaces.IsChecked -eq $true) {
+                $chkHelmAllNamespaces.IsChecked = $false
+                $cmbHelmNamespace.IsEnabled = $false  # Disable specific namespace selection
+            }
+            else {
+                $cmbHelmNamespace.IsEnabled = $true  # Enable specific namespace selection if unchecked
+            }
+        })
+
     # When "Run" button is clicked
     if ($btnRun) {
         $btnRun.Add_Click({
@@ -692,21 +820,24 @@ function Start-KubeSnapItLauncher {
                     # Gather inputs based on the selected tab
                     switch ($selectedTab) {
                         "Snapshot" {
-                            # Snapshot tab parameters
-                            $namespace = [string]$cmbNamespace.SelectedItem  # Ensure it's treated as a string
+                            # Get values from the checkboxes
+                            $allNamespaces = ($window.FindName("chkAllNamespaces")).IsChecked -eq $true
+                            $allNonSystemNamespaces = ($window.FindName("chkAllNonSystemNamespaces")).IsChecked -eq $true
 
+                            # Determine namespace parameter based on the checkbox states
+                            $namespace = if ($allNamespaces -or $allNonSystemNamespaces) { "" } else { [string]$cmbNamespace.SelectedItem }
 
-                            # Check if the selected namespace is valid
-                            if (-not $namespace) {
-                                $txtOutput.AppendText("Error: Please select a namespace.`n")
+                            # Check if a specific namespace is required but not selected
+                            if (-not $allNamespaces -and -not $allNonSystemNamespaces -and -not $namespace) {
+                                $txtOutput.AppendText("Error: Please select a namespace or enable one of the 'All Namespaces' options.`n")
                                 return
                             }
 
+                            # Retrieve other parameters
                             $outputPath = ($window.FindName("txtOutputPath")).Text
                             $inputPath = ($window.FindName("txtInputPath")).Text
                             $labels = ($window.FindName("txtLabels")).Text
                             $objects = ($window.FindName("txtObjects")).Text
-                            $allNamespaces = ($window.FindName("chkAllNamespaces")).IsChecked -eq $true
 
                             # Validate Output Path
                             if ([string]::IsNullOrWhiteSpace($outputPath)) {
@@ -715,12 +846,13 @@ function Start-KubeSnapItLauncher {
                             }
 
                             # Add parameters to the arguments dictionary
-                            $arguments["Namespace"] = $namespace  # Use selected namespace
+                            $arguments["Namespace"] = $namespace  # Use selected namespace if specified
                             $arguments["OutputPath"] = $outputPath
                             $arguments["InputPath"] = $inputPath
                             $arguments["Labels"] = $labels
                             $arguments["Objects"] = $objects
                             $arguments["AllNamespaces"] = $allNamespaces
+                            $arguments["AllNonSystemNamespaces"] = $allNonSystemNamespaces
 
                             break
                         }
@@ -770,6 +902,30 @@ function Start-KubeSnapItLauncher {
                             # Add parameters to the arguments dictionary
                             $arguments["RestoreInputPath"] = $restoreInputPath
                             $arguments["Restore"] = $restore
+                            break
+                        }
+
+                        # Helm Snapshot Tab
+                        "Helm Snapshot" {
+                            # Determine if "All Namespaces" or "All Non-System Namespaces" is selected
+                            $allNamespaces = $chkHelmAllNamespaces.IsChecked -eq $true
+                            $nonSystemNamespaces = $chkHelmNonSystemNamespaces.IsChecked -eq $true
+                            $namespace = if ($allNamespaces -or $nonSystemNamespaces) { "" } else { [string]$cmbHelmNamespace.SelectedItem }
+
+                            $outputPath = ($window.FindName("txtHelmOutputPath")).Text
+
+                            # Validate Output Path
+                            if ([string]::IsNullOrWhiteSpace($outputPath)) {
+                                $txtOutput.AppendText("Error: Output Path is required for Helm Snapshot.`n")
+                                return
+                            }
+
+                            # Add parameters to the arguments dictionary
+                            $arguments["AllNamespaces"] = $allNamespaces
+                            $arguments["AllNonSystemNamespaces"] = $nonSystemNamespaces
+                            $arguments["Namespace"] = $namespace
+                            $arguments["OutputPath"] = $outputPath
+                            $arguments["SnapshotHelm"] = $true
                             break
                         }
         
@@ -827,7 +983,7 @@ function Start-KubeSnapItLauncher {
     # Open the window as a modal dialog
     $null = $window.ShowDialog()
 
-    Start-KubeDeckLauncher
+    # Start-KubeDeckLauncher
 }
 
 #Start-KubeSnapItLauncher
