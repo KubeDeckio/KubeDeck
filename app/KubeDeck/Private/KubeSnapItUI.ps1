@@ -306,7 +306,6 @@ function Start-KubeSnapItLauncher {
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0">
             <CheckBox x:Name="chkDryRun" Content="Dry Run" Foreground="$headerForeColor" Margin="10,0"/>
             <CheckBox x:Name="chkForce" Content="Force" Foreground="$headerForeColor" Margin="10,0"/>
-            <CheckBox x:Name="chkRestore" Content="Restore" Foreground="$headerForeColor" Margin="10,0"/>
         </StackPanel>
 
         <!-- Align Run Button to the right -->
@@ -422,6 +421,52 @@ function Start-KubeSnapItLauncher {
                 </Grid>
             </StackPanel>
         </TabItem>
+
+            <!-- Helm Snapshot Tab -->
+    <TabItem Header="Helm Snapshot">
+        <StackPanel Margin="10" Background="$formBackColor">
+            
+            <!-- Namespace Section -->
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />  <!-- Label Column -->
+                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Namespace:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
+                <!-- ComboBox for Namespace selection -->
+                <ComboBox x:Name="cmbHelmNamespace" Height="30" 
+                    Style="{DynamicResource ComboBoxStyleCustom}" 
+                    Grid.Column="1" 
+                    Padding="5,0,0,0" 
+                    Foreground="$txtForeColor" 
+                    Background="$formBackColor" 
+                    Margin="10,0"/>
+            </Grid>
+            
+            <!-- Namespace Selection Checkboxes -->
+            <CheckBox x:Name="chkHelmAllNamespaces" Content="All Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
+            <CheckBox x:Name="chkHelmNonSystemNamespaces" Content="All Non-System Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
+
+            <!-- Helm components Section Checkboxes -->
+            <CheckBox x:Name="chkHelmSnapshotAll" Content="Snapshot All" Foreground="$labelForeColor" Margin="10,5"/>
+            <CheckBox x:Name="chkHelmSnapshotValues" Content="Snapshot Values Only" Foreground="$labelForeColor" Margin="10,5"/>
+            
+            <!-- Output Path Section -->
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />  <!-- Label Column -->
+                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
+                    <ColumnDefinition Width="Auto" /> <!-- Browse Button Column -->
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Output Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
+                <TextBox x:Name="txtHelmOutputPath" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,0" Grid.Column="1" Text="./helm_snapshots" Padding="5,5,0,0"/>
+                <Button x:Name="btnBrowseHelmOutputPath" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2" Margin="10,0"/>
+            </Grid>
+            
+        </StackPanel>
+    </TabItem>
         
         <!-- Compare Tab -->
         <TabItem Header="Compare">
@@ -475,48 +520,6 @@ function Start-KubeSnapItLauncher {
                 </Grid>
             </StackPanel>
         </TabItem>
-
-    <!-- Helm Snapshot Tab -->
-    <TabItem Header="Helm Snapshot">
-        <StackPanel Margin="10" Background="$formBackColor">
-            
-            <!-- Namespace Section -->
-            <Grid Margin="10,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />  <!-- Label Column -->
-                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Namespace:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
-                <!-- ComboBox for Namespace selection -->
-                <ComboBox x:Name="cmbHelmNamespace" Height="30" 
-                    Style="{DynamicResource ComboBoxStyleCustom}" 
-                    Grid.Column="1" 
-                    Padding="5,0,0,0" 
-                    Foreground="$txtForeColor" 
-                    Background="$formBackColor" 
-                    Margin="10,0"/>
-            </Grid>
-            
-            <!-- Namespace Selection Checkboxes -->
-            <CheckBox x:Name="chkHelmAllNamespaces" Content="All Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
-            <CheckBox x:Name="chkHelmNonSystemNamespaces" Content="All Non-System Namespaces" Foreground="$labelForeColor" Margin="10,5"/>
-            
-            <!-- Output Path Section -->
-            <Grid Margin="10,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />  <!-- Label Column -->
-                    <ColumnDefinition Width="*" />    <!-- Input Box Column -->
-                    <ColumnDefinition Width="Auto" /> <!-- Browse Button Column -->
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Output Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0"/>
-                <TextBox x:Name="txtHelmOutputPath" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,0" Grid.Column="1" Text="./helm_snapshots" Padding="5,5,0,0"/>
-                <Button x:Name="btnBrowseHelmOutputPath" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2" Margin="10,0"/>
-            </Grid>
-            
-        </StackPanel>
-    </TabItem>
     </TabControl>
 
     <!-- Output Section -->
@@ -640,18 +643,6 @@ function Start-KubeSnapItLauncher {
     # Set button and checkbox handlers
     $btnRun = $window.FindName("btnRun")
     $tabControl = $window.FindName("tabControl")
-    $chkRestore = $window.FindName("chkRestore")
-
-    # Event handler for tab selection change
-    $tabControl.add_SelectionChanged({
-            if ($tabControl.SelectedIndex -eq 2) {
-                # Index for Restore tab
-                $chkRestore.IsChecked = $true
-            }
-            else {
-                $chkRestore.IsChecked = $false
-            }
-        })
 
     $btnBrowseInputPath = $window.FindName("btnBrowseInputPath")
     $btnBrowseComparePath = $window.FindName("btnBrowseComparePath")
@@ -731,6 +722,8 @@ function Start-KubeSnapItLauncher {
     $cmbHelmNamespace = $window.FindName("cmbHelmNamespace")
     $chkHelmAllNamespaces = $window.FindName("chkHelmAllNamespaces")
     $chkHelmNonSystemNamespaces = $window.FindName("chkHelmNonSystemNamespaces")
+    $chkHelmSnapshotAll = $window.FindName("chkHelmSnapshotAll")
+    $chkHelmSnapshotValues = $window.FindName("chkHelmSnapshotValues")
 
     # Event handler for 'Browse' button on Helm Output Path
     $btnBrowseHelmOutputPath.Add_Click({
@@ -798,6 +791,20 @@ function Start-KubeSnapItLauncher {
                 $cmbHelmNamespace.IsEnabled = $true  # Enable specific namespace selection if unchecked
             }
         })
+
+    # Define event handlers
+    $chkHelmSnapshotAll.Add_Checked({
+            # When 'Snapshot All' is checked
+            $chkHelmSnapshotValues.IsChecked = $true
+            $chkHelmSnapshotValues.IsEnabled = $false
+        })
+
+    $chkHelmSnapshotAll.Add_Unchecked({
+            # When 'Snapshot All' is unchecked
+            $chkHelmSnapshotValues.IsEnabled = $true
+            $chkHelmSnapshotValues.IsChecked = $false
+        })
+
 
     # When "Run" button is clicked
     if ($btnRun) {
@@ -891,7 +898,6 @@ function Start-KubeSnapItLauncher {
                         "Restore" {
                             # Restore tab parameters
                             $restoreInputPath = ($window.FindName("txtRestoreInputPath")).Text
-                            $restore = $chkRestore.IsChecked -eq $true
         
                             # Validate Restore Input Path
                             if ([string]::IsNullOrWhiteSpace($restoreInputPath)) {
@@ -901,7 +907,7 @@ function Start-KubeSnapItLauncher {
         
                             # Add parameters to the arguments dictionary
                             $arguments["RestoreInputPath"] = $restoreInputPath
-                            $arguments["Restore"] = $restore
+                            $arguments["Restore"] = $true
                             break
                         }
 
@@ -911,6 +917,9 @@ function Start-KubeSnapItLauncher {
                             $allNamespaces = $chkHelmAllNamespaces.IsChecked -eq $true
                             $nonSystemNamespaces = $chkHelmNonSystemNamespaces.IsChecked -eq $true
                             $namespace = if ($allNamespaces -or $nonSystemNamespaces) { "" } else { [string]$cmbHelmNamespace.SelectedItem }
+
+                            $SnapshotHelm = $chkHelmSnapshotAll.IsChecked -eq $true
+                            $SnapshotHelmUsedValues = $chkHelmSnapshotValues.IsChecked -eq $true
 
                             $outputPath = ($window.FindName("txtHelmOutputPath")).Text
 
@@ -925,7 +934,8 @@ function Start-KubeSnapItLauncher {
                             $arguments["AllNonSystemNamespaces"] = $nonSystemNamespaces
                             $arguments["Namespace"] = $namespace
                             $arguments["OutputPath"] = $outputPath
-                            $arguments["SnapshotHelm"] = $true
+                            $arguments["SnapshotHelm"] = $SnapshotHelm
+                            $arguments["SnapshotHelmUsedValues"] = $SnapshotHelmUsedValues
                             break
                         }
         
@@ -941,16 +951,14 @@ function Start-KubeSnapItLauncher {
                     $arguments["UI"] = $true
 
                     try {
-
                         # Run Invoke-KubeSnapIT with arguments
                         $output = & {
                             Invoke-KubeSnapIt @arguments
                         } *>&1 | Out-String
-
+                    
                         # Clear "Working..." message and display actual output
                         $txtOutput.Clear()
                         $txtOutput.AppendText($output)
-
                     }
                     catch {
                         # Clear "Working..." message and display error
