@@ -116,7 +116,7 @@ iVBORw0KGgoAAAANSUhEUgAABdwAAAFyCAYAAADvbBjpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="KubeConfig Path:" VerticalAlignment="Center" Foreground="$labelForeColor" Grid.Column="0" Margin="10,0,10,0"/>
-                    <TextBox x:Name="txtKubeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,0,10,0" Grid.Column="1" VerticalContentAlignment="Center"/>
+                    <TextBox x:Name="txtKubeConfig" Height="30" Background="$txtBackColor" Foreground="$txtForeColor" Margin="10,0,10,0" Grid.Column="1" VerticalContentAlignment="Center" Text="$HOME\.kube\config"/>
                     <Button x:Name="btnBrowseKubeConfig" Content="Browse" Width="100" Height="30" Background="$btnBackColor" Foreground="$headerForeColor" Grid.Column="2" Margin="10,0,10,0"/>
                 </Grid>
 
@@ -268,6 +268,7 @@ if ($btnRun) {
                     MergeConfigs      = $mergeConfigs
                     DestinationConfig = if ($destinationConfigChecked) { $destinationConfig } else { $null }
                     ExportContexts    = if ($exportContexts) { $exportContextsPath } else { $null }
+                    UI                = $true
                 }
                 # Run Invoke-KubeTidy with arguments
                 Invoke-KubeTidy @arguments
