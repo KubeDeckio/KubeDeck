@@ -3,7 +3,7 @@ layout: list
 collection: "projects"
 title: "Tools"
 description: "Explore the tools available under KubeDeck to simplify and enhance your Kubernetes management."
-permalink: "/projects/"
+permalink: "/tools/"
 header_transparent: false
 
 hero:
