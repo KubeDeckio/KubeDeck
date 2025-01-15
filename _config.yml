@@ -22,7 +22,7 @@ collections:
   services:
     output: true
     permalink: /:collection/:path/
-  projects:
+  tools:
     output: true
     permalink: /:collection/:path/
   team:
@@ -41,9 +41,9 @@ defaults:
       layout: service
   - scope:
       path: ""
-      type: projects
+      type: tools
     values:
-      layout: project
+      layout: tools
   - scope:
       path: ""
       type: team
