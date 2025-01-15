@@ -43,13 +43,6 @@ jobs:
         env:
           JEKYLL_ENV: production
 
-      - name: Build Doc sites with Jekyll
-        run: |
-            cd docs
-            bundle exec jekyll build
-        env:
-          JEKYLL_ENV: production
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
