@@ -207,6 +207,6 @@ bottom:
 sidebar:
   enable_sidebar_services: true
   enable_breadcrumbs_services: true
-  enable_sidebar_projects: false
-  enable_breadcrumbs_projects: true
+  enable_sidebar_tools: false
+  enable_breadcrumbs_tools: true
 

@@ -1,6 +1,6 @@
 ---
 layout: list
-collection: "projects"
+collection: "tools"
 title: "Tools"
 description: "Explore the tools available under KubeDeck to simplify and enhance your Kubernetes management."
 permalink: "/tools/"
@@ -30,7 +30,7 @@ hero:
         style: "light"
 
 grid:
-  collection: "projects"
+  collection: "tools"
   sort_by: "weight" # "date", "weight"
   columns: 2
   prevent_click: false

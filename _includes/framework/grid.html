@@ -38,9 +38,9 @@
               url=card.url 
             %}
           </div>
-        {% when 'projects' %}
+        {% when 'tools' %}
           <div class="col-12 col-md-6 {{ columns }} mb-gutter mt-gutter {% if forloop.first %}mt-0{% endif %} {% if forloop.last %}mb-0{% endif %} mt-md-0">
-            {% include theme/cards/card-project.html
+            {% include theme/cards/card-tool.html
               title=card.title 
               description=card.description
               thumbnail=card.thumbnail

@@ -45,7 +45,7 @@ At **KubeDeck**, we believe in keeping things simple:
 
 ## Get Involved
 
-All of our tools are open source, and we love working with the community. You can check out our projects on [GitHub](https://github.com/kubedeckio), and we welcome any feedback or contributions. If you’ve got ideas or want to help make **KubeDeck** even better, we’d love to hear from you.
+All of our tools are open source, and we love working with the community. You can check out our tools on [GitHub](https://github.com/kubedeckio), and we welcome any feedback or contributions. If you’ve got ideas or want to help make **KubeDeck** even better, we’d love to hear from you.
 
 ## Meet the Founder: Richard Hooper
 

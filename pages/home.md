@@ -75,7 +75,7 @@ intro:
         outline: false
         style: "primary"
 
-projects:
+tools:
   enabled: true
   heading: "Our Tools"
   sub_heading: "Discover how KubeDeck simplifies Kubernetes management with powerful, easy-to-use tools for optimizing and maintaining your clusters."
@@ -83,7 +83,7 @@ projects:
   columns: 2
   sort: "weight" # 'date'
   view_more_button_text: "View All Tools"
-  view_more_button_link: "/projects"
+  view_more_button_link: "/tools"
   prevent_click: false
 
 outro:

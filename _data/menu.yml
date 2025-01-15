@@ -3,15 +3,15 @@ main:
     url: /
     weight: 1
   - name: Tools
-    url: /projects/
+    url: /tools/
     weight: 2
     child:
       - name: "KubeDeck Launcher"
-        url: /projects/KubeDeckLauncher/
+        url: /tools/KubeDeckLauncher/
       - name: "KubeTidy"
-        url: /projects/KubeTidy/
+        url: /tools/KubeTidy/
       - name: "KubeSnapIt"
-        url: /projects/KubeSnapIt/
+        url: /tools/KubeSnapIt/
   # - name: Blog
   #   url: /blog/
   #   weight: 4
@@ -28,8 +28,8 @@ footer_primary:
   - name: Services
     url: /services/
     weight: 2
-  - name: Projects
-    url: /projects/
+  - name: tools
+    url: /tools/
     weight: 3
   - name: Team
     url: /team/
