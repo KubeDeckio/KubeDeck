@@ -67,6 +67,10 @@ defaults:
       path: "pages"
     values:
       permalink: /:basename/
+  - scope:
+      path: "docs"
+    values:
+      permalink: /docs/
 
 # SCSS
 sass:
