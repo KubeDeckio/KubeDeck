@@ -1,8 +1,8 @@
-title: KubeSnapIt
-description: The docs page for KubeSnapIt!
+title: KubeDeckLauncher
+description: The docs page for KubeDeck Launcher!
 theme: just-the-docs
 
-url: https://KubeSnapIt.io
+url: https://kubedeck.io/docs/kubedecklauncher
 
 aux_links:
   View Project in GitHub: https://github.com/KubeDeckio/KubeSnapIt
