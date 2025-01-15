@@ -6,6 +6,8 @@ url: "https://kubedeck.io"
 permalink: pretty
 markdown: kramdown
 highlighter: rouge
+keep_files:
+  - "docs/**"
 
 
 # Plugins
