@@ -12,6 +12,15 @@ main:
         url: /tools/KubeTidy/
       - name: "KubeSnapIt"
         url: /tools/KubeSnapIt/
+  - name: docs
+    weight: 3
+    child:
+      - name: "KubeDeck Launcher"
+        url: /docs/KubeDeckLauncher/
+      - name: "KubeTidy"
+        url: /docs/KubeTidy/
+      - name: "KubeSnapIt"
+        url: /docs/KubeSnapIt/
   # - name: Blog
   #   url: /blog/
   #   weight: 4
