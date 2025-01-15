@@ -1,6 +1,6 @@
 ---
 layout: default
-body_classes: page-projects
+body_classes: page-tools
 ---
 
 {% if page.hero.enabled %}
@@ -36,15 +36,15 @@ body_classes: page-projects
     <div class="row justify-content-center">
 
       <div class="col-12 col-lg-8">
-        {% if site.enable_breadcrumbs_projects %}
+        {% if site.enable_breadcrumbs_tools %}
           {% include framework/breadcrumbs.html %}
         {% endif %}
         <div class="content">{{ content }}</div>
       </div>
 
-      {% if site.enable_sidebar_projects %}
+      {% if site.enable_sidebar_tools %}
         <div class="col-12 col-lg-3 offset-lg-1">
-          {% include framework/sidebar.html collection="projects" %}
+          {% include framework/sidebar.html collection="tools" %}
         </div>
       {% endif %}
 

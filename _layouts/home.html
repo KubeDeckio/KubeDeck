@@ -117,35 +117,35 @@ body_classes: page-home
 {% endif %}
 
 
-{% assign cards = site.projects | sort: 'date' | reverse %}
-{% assign limit = page.projects.limit | default: 2 %}
-{% assign sort_by = page.projects.sort | default: 'date' %}
-{% assign columns =  page.projects.columns | default: 2 %}
+{% assign cards = site.tools | sort: 'date' | reverse %}
+{% assign limit = page.tools.limit | default: 2 %}
+{% assign sort_by = page.tools.sort | default: 'date' %}
+{% assign columns =  page.tools.columns | default: 2 %}
 {% capture columns %}col-lg-{{ 12 | divided_by:columns }}{% endcapture %}
 {% if sort_by == 'weight' %}
   {% assign cards = cards | sort: 'weight' %}
 {% endif %}
 
-{% if page.projects.enabled %}
+{% if page.tools.enabled %}
   <div class="section section-base-bg-2">
     <div class="container">
       <div class="row">
 
         {% include framework/grid-header.html
-          heading=page.projects.heading
-          sub_heading=page.projects.sub_heading
+          heading=page.tools.heading
+          sub_heading=page.tools.sub_heading
           align="center"
         %}
         
         {% for card in cards limit: limit %}
 
           {% assign url = card.url %}
-          {% if page.projects.prevent_click %}
+          {% if page.tools.prevent_click %}
             {% assign url = null %}
           {% endif %}
 
           <div class="col-12 col-md-4 {{ columns }} mb-3 {% if forloop.first %}mt-0 {% endif %} {% if forloop.last %}mb-0 {% endif %}">
-            {% include theme/cards/card-projects.html 
+            {% include theme/cards/card-tools.html 
               title=card.title 
               description=card.description
               thumbnail=card.thumbnail
@@ -156,8 +156,8 @@ body_classes: page-home
         {% endfor %}
 
         {% include framework/grid-footer.html 
-          view_more_button_text=page.projects.view_more_button_text
-          view_more_button_link=page.projects.view_more_button_link
+          view_more_button_text=page.tools.view_more_button_text
+          view_more_button_link=page.tools.view_more_button_link
           align="center"
         %}
 
