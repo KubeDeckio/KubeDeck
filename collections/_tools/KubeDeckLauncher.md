@@ -13,7 +13,7 @@ hero:
   heading: "KubeDeck Launcher"  
   sub_heading: "Effortlessly manage Kubernetes resources with KubeDeck Launcher, integrating KubeTidy and KubeSnapIt into a single, intuitive UI built with PowerShell."  
   text_color: "#FFFFFF"  
-  background_color: "#289dcd"  
+  background_color: "#02baff"  
   background_gradient: false  
   background_image: "/assets/images/gen/home/home.png"  
   background_image_blend_mode: false  

@@ -95,7 +95,7 @@ category_dir: category
 
 colors:
   #light-mode colors
-  primary_bg: "#289dcd"
+  primary_bg: "#02baff"
   primary_bg_2: "#000000"
   primary_bg_3: "#702bf7"
   primary_text: "#fdfcf9"
@@ -104,11 +104,11 @@ colors:
   base_bg_3: "#eef2f9"
   text: "#0d042b"
   text_2: "#3b364c"
-  logo_text: "#289dcd"
+  logo_text: "#02baff"
   header_text: "#0d042b"
 
   # dark-mode colors
-  primary_bg_dark: "#289dcd"
+  primary_bg_dark: "#02baff"
   primary_bg_2_dark: "#000000"
   primary_bg_3_dark: "#702bf7"
   primary_text_dark: "#fdfcf9"
@@ -117,7 +117,7 @@ colors:
   base_bg_3_dark: "#222124"
   text_dark: "#f5f5ec"
   text_2_dark: "#b6c3d6"
-  logo_text_dark: "#289dcd"
+  logo_text_dark: "#02baff"
   header_text_dark: "#f5f5ec"
 
 fonts:

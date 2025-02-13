@@ -13,7 +13,7 @@ hero:
   heading: "KubeSnapIt"
   sub_heading: "Easily manage your Kubernetes cluster state with KubeSnapIt. Automate snapshots, restores, and comparisons for streamlined operations."
   text_color: "#FFFFFF"
-  background_color: "#289dcd"
+  background_color: "#02baff"
   background_gradient: false
   background_image: "/assets/images/gen/home/home.png"
   background_image_blend_mode: false
