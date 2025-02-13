@@ -16,7 +16,7 @@ hero:
   background_color: "#289dcd"  
   background_gradient: false  
   background_image: "/assets/images/gen/home/home.png"  
-  background_image_blend_mode: overlay  
+  background_image_blend_mode: false  
   fullscreen_mobile: false  
   fullscreen_desktop: false  
   height: "600px"  
