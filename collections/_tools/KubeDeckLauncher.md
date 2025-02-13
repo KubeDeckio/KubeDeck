@@ -24,7 +24,7 @@ hero:
     enabled: true  
     list:  
       - text: "View Documentation"  
-        url: "https://KubeDeckLauncher.io"  
+        url: "https://KubeDeck.io"  
         external: true  
         fa_icon: false  
         size: large  

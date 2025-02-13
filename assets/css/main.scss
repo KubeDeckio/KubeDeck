@@ -7,7 +7,7 @@
   --font-family-monospace: {{ site.fonts.monospace }}, monospace;
   --font-family-logo: {{ site.fonts.logo }}, sans-serif;
 
-  --color-primary-bg: {{ site.colors.primary_bg | default: "#2b3af7" }};
+  --color-primary-bg: {{ site.colors.primary_bg | default: "#02baff" }};
   --color-primary-bg-2: {{ site.colors.primary_bg_2 | default: "#424ff8" }};
   --color-primary-bg-3: {{ site.colors.primary_bg_3 | default: "#702bf7" }};
   --color-primary-text: {{ site.colors.primary_text | default: "#ffffff" }};
