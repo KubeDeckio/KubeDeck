@@ -135,8 +135,8 @@ logo:
   logo_image_mobile: assets/images/logo/KubeDeckLogo.png
   logo_image_invert: assets/images/logo/KubeDeckLogo.png
   logo_image_invert_mobile: assets/images/logo/KubeDeckLogo.png
-  logo_image_desktop_height: "60px"
-  logo_image_desktop_width: "264px"
+  logo_image_desktop_height: "50px"
+  logo_image_desktop_width: "220px"
   logo_image_mobile_height: "40px"
   logo_image_mobile_width: "176px"
   show_logo_image_on_mobile: true
