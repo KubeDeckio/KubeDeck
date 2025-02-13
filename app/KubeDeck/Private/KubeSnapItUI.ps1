@@ -35,7 +35,7 @@ function Start-KubeSnapItLauncher {
     $headerBackColor = "Black"
     $headerForeColor = "White"
     $labelForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
-    $btnBackColor = "#11A9BB"
+    $btnBackColor = "#02baff"
     $txtBackColor = if ($isDarkMode -eq "Dark") { "#323232" } else { "White" }
     $txtForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 
@@ -219,7 +219,7 @@ function Start-KubeSnapItLauncher {
                             <Setter TargetName="border" Property="Background" Value="#2C3E50" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#11A9BB" />
+                            <Setter TargetName="border" Property="Background" Value="#02baff" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

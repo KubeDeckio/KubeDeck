@@ -90,7 +90,7 @@ outro:
   enabled: true
   align: center
   image: false
-  heading: Get Involved
+  heading: Join the Deck
   sub_heading: "Join the KubeDeck community on GitHub and help us optimize and manage Kubernetes environments together. Contribute, collaborate, and make Kubernetes management easier for everyone."
   buttons:
     enabled: true

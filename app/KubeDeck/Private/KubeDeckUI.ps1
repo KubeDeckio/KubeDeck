@@ -25,7 +25,7 @@ function Start-KubeDeckLauncher {
     $formBackColor = if ($isDarkMode -eq "Dark") { "#202f3d" } else { "#f0f0f0" }
     $headerBackColor = "Black"
     $headerForeColor = "White"
-    $btnBackColor = "#11A9BB"
+    $btnBackColor = "#02baff"
     $cardBackground = if ($isDarkMode -eq "Dark") { "#2c3e50" } else { "#ffffff" }
     $cardShadowColor = if ($isDarkMode -eq "Dark") { "#000000" } else { "#999999" }
     $txtForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }

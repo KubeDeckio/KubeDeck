@@ -55,7 +55,7 @@ $formBackColor = if ($isDarkMode -eq "Dark") { "#202f3d" } else { "#f0f0f0" }
 $headerBackColor = "Black"
 $headerForeColor = "White"
 $labelForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
-$btnBackColor = "#11A9BB"
+$btnBackColor = "#02baff"
 $txtBackColor = if ($isDarkMode -eq "Dark") { "#323232" } else { "White" }
 $txtForeColor = if ($isDarkMode -eq "Dark") { "White" } else { "Black" }
 
