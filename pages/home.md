@@ -11,7 +11,7 @@ hero:
   heading: "KubeDeck"
   sub_heading: "The ultimate platform for simplifying Kubernetes management, featuring tools like KubeTidy and KubeSnapIt to automate resource cleanup and snapshots."
   text_color: "#FFFFFF"
-  # background_color: "#289dcd"
+  background_color: "#0071ff"
   background_gradient: false
   background_image: "/assets/images/gen/home/home.png"
   background_image_blend_mode: overlay # "overlay", "multiply", "screen"
