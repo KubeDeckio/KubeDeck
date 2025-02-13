@@ -207,7 +207,7 @@ footer:
 bottom:
   enable_bottom: true # show/hide the entire bottom (below the footer)
   enable_bottom_menu: true # if enabled, the bottom menu can be edited in `_data/menu.yml`
-  copyright_text: "© 2024 KubeDeck"
+  copyright_text: "© 2025 KubeDeck"
   show_rss_icon: false
 
 sidebar:
