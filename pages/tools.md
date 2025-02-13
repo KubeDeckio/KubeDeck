@@ -11,10 +11,10 @@ hero:
   heading: "KubeDeck Tools"
   sub_heading: "Discover the tools that simplify Kubernetes management. From cleaning up your KubeConfig with KubeTidy to managing snapshots, restores, and comparisons with KubeSnapIt."
   text_color: "#FFFFFF"
-  background_color: "#0071ff"
+  # background_color: "#0071ff"
   background_gradient: false
   background_image: "/assets/images/gen/home/home.png"
-  background_image_blend_mode: overlay # "overlay", "multiply", "screen"
+  background_image_blend_mode: screen # "overlay", "multiply", "screen"
   fullscreen_mobile: false
   fullscreen_desktop: false
   height: "600px"
