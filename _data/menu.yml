@@ -16,7 +16,7 @@ main:
     weight: 3
     child:
       - name: "KubeDeck Launcher"
-        url: /docs/KubeDeckLauncher/
+        url: https://kubedecklauncher.kubedeck.io/
       - name: "KubeTidy"
         url: /docs/KubeTidy/
       - name: "KubeSnapIt"
