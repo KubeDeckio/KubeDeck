@@ -6,6 +6,8 @@ main:
     url: /tools/
     weight: 2
     child:
+      - name: "KubeBuddy"
+        url: /tools/KubeBuddy
       - name: "KubeDeck Launcher"
         url: /tools/KubeDeckLauncher/
       - name: "KubeTidy"
@@ -15,6 +17,8 @@ main:
   - name: docs
     weight: 3
     child:
+      - name: "KubeBuddy"
+        url: https://kubebuddy.kubedeck.io/
       - name: "KubeDeck Launcher"
         url: https://kubedecklauncher.kubedeck.io/
       - name: "KubeTidy"
