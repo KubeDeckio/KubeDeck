@@ -54,4 +54,12 @@ Clusters and workloads change. Misconfigurations or security gaps can appear at 
 
 Interested in how **KubeBuddy** can simplify your Kubernetes management? See the [KubeBuddy Documentation](https://kubebuddy.kubedeck.io) for a step-by-step guide on installation and usage. Then let KubeBuddy handle the heavy lifting while you focus on development.
 
-{% include framework/shortcodes/figure.html full=true src="/assets/images/gen/projects/KubeBuddyHeader.png" title="KubeBuddy Documentation" caption="Explore Kube
+{% include framework/shortcodes/figure.html 
+   full=true 
+   src="/assets/images/gen/projects/KubeBuddyHeader.png"
+   title="KubeBuddy Documentation" 
+   caption="Explore KubeBuddy docs"
+   alt="KubeBuddy docs" 
+   link="https://kubebuddy.kubedeck.io" 
+   target="_blank" 
+%}
