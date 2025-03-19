@@ -36,7 +36,16 @@ hero:
 
 **KubeBuddy** helps you keep track of **cluster health, workloads, networking, and security**. You can generate clear HTML or text-based reports to highlight any issues. You stay on top of errors and warnings without manual digging.
 
-{% include framework/shortcodes/figure.html full=true src="/https://raw.githubusercontent.com/KubeDeckio/KubeBuddy/refs/heads/main/docs/assets/images/report-examples/html-report-sample.png" title="KubeBuddy Reports" caption="Monitor your cluster with minimal fuss" alt="KubeBuddy cluster checks" link="https://kubebuddy.kubedeck.io" target="_blank" %}
+{% include framework/shortcodes/figure.html 
+   full=true 
+   src="https://raw.githubusercontent.com/KubeDeckio/KubeBuddy/main/docs/assets/images/report-examples/html-report-sample.png"
+   title="KubeBuddy Reports"
+   caption="Monitor your cluster with minimal fuss"
+   alt="KubeBuddy cluster checks"
+   link="https://kubebuddy.kubedeck.io"
+   target="_blank"
+%}
+
 
 ## Why Use KubeBuddy?
 
