@@ -1,6 +1,6 @@
 ---
-title: "KubeBuddy"
-description: "KubeBuddy helps you monitor and analyze your Kubernetes clusters without fuss. Run quick checks for health, security, and workload performance."
+title: "KubeBuddy powered by KubeDeck"
+description: "Run Kubernetes health checks and best practice scans in seconds. KubeBuddy powered by KubeDeck is a PowerShell tool for AKS and Kubernetes cluster monitoring, reporting, and analysis."
 date: 2025-03-19
 weight: 2
 header_transparent: false
@@ -10,8 +10,8 @@ client: "KubeDeck"
 
 hero:
   enabled: true
-  heading: "KubeBuddy"
-  sub_heading: "Spot issues in your Kubernetes clusters fast. Run menu-driven health checks, event analysis, and security scans."
+  heading: "KubeBuddy powered by KubeDeck – Effortless Kubernetes Health Checks & AKS Monitoring"
+  sub_heading: "Run detailed cluster diagnostics, detect security issues, and ensure AKS best practices – all with a user-friendly PowerShell tool."
   text_color: "#FFFFFF"
   background_color: "#02baff"
   background_gradient: false
@@ -32,43 +32,71 @@ hero:
         style: "light"
 ---
 
-## Easy Kubernetes Monitoring
+## 🔍 Kubernetes Health Checks Made Simple
 
-**KubeBuddy** helps you keep track of **cluster health, workloads, networking, and security**. You can generate clear HTML or text-based reports to highlight any issues. You stay on top of errors and warnings without manual digging.
+**KubeBuddy powered by KubeDeck** helps DevOps engineers, SREs, and platform teams quickly assess **Kubernetes cluster health**, **AKS configuration**, and **security posture** – all from an intuitive PowerShell interface.
+
+Generate clean, easy-to-understand reports that help you spot misconfigurations, resource bottlenecks, and failing workloads — without digging through `kubectl` output or YAML files.
+
+---
 
 {% include framework/shortcodes/figure.html 
    full=true 
    src="https://raw.githubusercontent.com/KubeDeckio/KubeBuddy/main/docs/assets/images/report-examples/html-report-sample.png"
    title="KubeBuddy Reports"
-   caption="Monitor your cluster with minimal fuss"
-   alt="KubeBuddy cluster checks"
+   caption="Visualize your Kubernetes health with ease"
+   alt="Kubernetes health report with KubeBuddy"
    link="https://kubebuddy.kubedeck.io"
    target="_blank"
 %}
 
+---
 
-## Why Use KubeBuddy?
+## ⚙️ What KubeBuddy powered by KubeDeck Does Best
 
-Clusters and workloads change. Misconfigurations or security gaps can appear at any time. **KubeBuddy** helps you detect these problems quickly. It cuts out guesswork so you can maintain a safer, more stable environment.
+### ✅ **Kubernetes Cluster Health Check**
+- Checks node readiness, CPU/memory pressure, and taints
+- Flags non-running or crash-looping pods
+- Highlights warning and critical conditions
 
-### What You Get with KubeBuddy
-- **Interactive Menu**: Browse checks in an easy-to-use interface.  
-- **Detailed Checks**: Examine pod restarts, node resource usage, and security misconfigurations.  
-- **Straightforward Reports**: HTML or text-based outputs for fast reviews.  
-- **AKS Support**: Run best-practice checks for Azure Kubernetes Service clusters.
+### 🔐 **Security & RBAC Analysis**
+- Finds over-permissive roles and service accounts
+- Flags missing resource limits or security contexts
 
-<!-- > “KubeBuddy saved us hours of cluster troubleshooting!” — Unsolicited Praise -->
+### 📦 **Workload & Resource Monitoring**
+- Detects failing Jobs, CronJobs, and deployments
+- Analyzes persistent volumes and service connectivity
 
-## Ready to Get Started?
+### ☁️ **AKS Best Practice Validation**
+- Integrates Azure CLI commands to scan AKS clusters
+- Validates configuration against Microsoft recommendations
 
-Interested in how **KubeBuddy** can simplify your Kubernetes management? See the [KubeBuddy Documentation](https://kubebuddy.kubedeck.io) for a step-by-step guide on installation and usage. Then let KubeBuddy handle the heavy lifting while you focus on development.
+### 📝 **Menu-Driven Reporting**
+- Run checks from an interactive PowerShell menu
+- Output results as HTML or plain-text for easy sharing
+
+---
+
+## 🚀 Why Use KubeBuddy powered by KubeDeck for Kubernetes Monitoring?
+
+- No need to install heavy agents or dashboards  
+- Quick setup with simple PowerShell commands  
+- Works great on CI/CD runners, admin shells, and laptops  
+- Clear documentation and fast results in under 2 minutes  
+- Ideal for **security audits**, **support escalations**, or **daily checks**
+
+---
+
+## 📘 Ready to Get Started?
+
+Explore the [KubeBuddy Documentation](https://kubebuddy.kubedeck.io) to learn how to install and use the tool. You'll be running production-grade **Kubernetes health checks** in minutes with **KubeBuddy powered by KubeDeck**.
 
 {% include framework/shortcodes/figure.html 
    full=true 
    src="/assets/images/gen/projects/KubeBuddyHeader.png"
    title="KubeBuddy Documentation" 
-   caption="Explore KubeBuddy docs"
-   alt="KubeBuddy docs" 
+   caption="Get started with cluster monitoring and AKS insights"
+   alt="Kubernetes AKS monitoring docs" 
    link="https://kubebuddy.kubedeck.io" 
    target="_blank" 
 %}
