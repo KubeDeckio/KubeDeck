@@ -1,13 +1,36 @@
 ---
-title: KubeBuddy powered by KubeDeck
-description: Run deep health checks, RBAC audits, and AKS validation across your Kubernetes clusters—all from your terminal.
-layout: tool
-tags:
-  - kubernetes
-  - diagnostics
-  - powershell
-  - health-check
-  - aks
+title: "KubeBuddy powered by KubeDeck"  
+description: "Run deep health checks, RBAC audits, and AKS validation across your Kubernetes clusters—all from your terminal."  
+date: 2024-10-24  
+weight: 4  
+header_transparent: false  
+thumbnail: "/assets/images/gen/projects/KubeBuddyrHeader.png"  
+image: "/assets/images/gen/projects/KubeBuddyHeader.png"  
+client: "KubeBuddy"
+
+hero:  
+  enabled: true  
+  heading: "KubeBuddy powered by KubeDeck"  
+  sub_heading: "Run deep health checks, RBAC audits, and AKS validation across your Kubernetes clusters—all from your terminal."  
+  text_color: "#FFFFFF"  
+  background_color: "#02baff"  
+  background_gradient: false  
+  background_image: "/assets/images/gen/home/home.png"  
+  background_image_blend_mode: false  
+  fullscreen_mobile: false  
+  fullscreen_desktop: false  
+  height: "600px"  
+  buttons:  
+    enabled: true  
+    list:  
+      - text: "View Documentation"  
+        url: "https://kubebuddy.KubeDeck.io"  
+        external: true  
+        fa_icon: false  
+        size: large  
+        outline: false  
+        style: "light"
+
 ---
 
 # Kubernetes Looks Healthy. It’s Not.
