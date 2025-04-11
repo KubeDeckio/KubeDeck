@@ -2,9 +2,9 @@
 title: "KubeBuddy powered by KubeDeck"  
 description: "Run deep health checks, RBAC audits, and AKS validation across your Kubernetes clusters—all from your terminal."  
 date: 2024-10-24  
-weight: 4  
+weight: 1  
 header_transparent: false  
-thumbnail: "/assets/images/gen/projects/KubeBuddyrHeader.png"  
+thumbnail: "/assets/images/gen/projects/KubeBuddyHeader.png"  
 image: "/assets/images/gen/projects/KubeBuddyHeader.png"  
 client: "KubeBuddy"
 
@@ -68,12 +68,10 @@ hero:
 Install-Module -Name KubeBuddy -Repository PSGallery -Scope CurrentUser
 ```
 
-KubeBuddy
-
-Works on Windows, macOS, and Linux with PowerShell 7+.
+KubeBuddy works on Windows, macOS, and Linux with PowerShell 7+.
 
 
 **KubeBuddy powered by KubeDeck** helps you catch what probes and dashboards miss.  
 No noise. Just answers.
 
-[View Documentation →](https://kubebuddy.kubedeck.io/docs/)
+{% include framework/shortcodes/figure.html full=true src="/assets/images/gen/projects/KubeBuddyHeader.png" title="KubeBuddy Documentation" caption="Explore KubeBuddy's full documentation" alt="KubeBuddy documentation" link="https://KubeBuddy.kubedeck.io.io" target="_blank" %}
