@@ -13,7 +13,7 @@ We welcome contributions of all kinds, whether it’s reporting bugs, suggesting
 
    ```bash
    git clone https://github.com/<your-username>/KubeDeck.git
-   cd KubeTidy
+   cd KubeDeck
    ```
 
 3. Add the main **KubeDeck** repository as a remote:
