@@ -18,7 +18,7 @@ main:
     weight: 3
     child:
       - name: "KubeBuddy"
-        url: https://kubebuddy.kubedeck.io/
+        url: https://kubebuddy.io/
       - name: "KubeDeck Launcher"
         url: https://kubedecklauncher.kubedeck.io/
       - name: "KubeTidy"

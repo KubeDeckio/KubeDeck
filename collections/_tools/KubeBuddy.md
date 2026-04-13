@@ -24,7 +24,7 @@ hero:
     enabled: true  
     list:  
       - text: "View Documentation"  
-        url: "https://kubebuddy.KubeDeck.io"  
+        url: "https://kubebuddy.io"  
         external: true  
         fa_icon: false  
         size: large  
@@ -74,4 +74,4 @@ KubeBuddy works on Windows, macOS, and Linux with PowerShell 7+.
 **KubeBuddy powered by KubeDeck** helps you catch what probes and dashboards miss.  
 No noise. Just answers.
 
-{% include framework/shortcodes/figure.html full=true src="/assets/images/gen/projects/KubeBuddyHeader.png" title="KubeBuddy Documentation" caption="Explore KubeBuddy's full documentation" alt="KubeBuddy documentation" link="https://KubeBuddy.kubedeck.io.io" target="_blank" %}
+{% include framework/shortcodes/figure.html full=true src="/assets/images/gen/projects/KubeBuddyHeader.png" title="KubeBuddy Documentation" caption="Explore KubeBuddy's full documentation" alt="KubeBuddy documentation" link="https://kubebuddy.io" target="_blank" %}
